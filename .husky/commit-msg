@@ -1,0 +1,22 @@
+MSG_FILE=$1
+
+# ───── 1) 브랜치에서 티켓 번호 추출 ─────
+TICKET_ID=$(git symbolic-ref --short HEAD 2>/dev/null | grep -oE '[A-Z]+-[0-9]+')
+
+# ───── 2) 커밋 메시지에 접두어 없으면 삽입 ─────
+if [ -n "$TICKET_ID" ] && ! grep -q "\[$TICKET_ID\]" "$MSG_FILE"; then
+  TMP=$(mktemp)
+  {
+    printf '[%s] %s\n' "$TICKET_ID" "$(head -n1 "$MSG_FILE")"
+    tail -n +2 "$MSG_FILE"
+  } > "$TMP"
+  mv "$TMP" "$MSG_FILE"
+fi
+
+# ───── 3) commitlint 검사 ─────
+npx --no -- commitlint --edit "$MSG_FILE" || {
+  echo
+  echo "❌  커밋 메시지 형식 오류!"
+  echo "   예) feat: 로그인 기능 추가"
+  exit 1
+}
