@@ -17,24 +17,27 @@ npx create-next-app@latest GlobalNomad --typescript
 ## Updates 📝
 
 - 250528 프로젝트 생성 및 Tailwind 설정
+- 250529 공통 스타일 적용 및 Storybook, React Query 설정
 
 ## Folder Structure 📁
 
 ```
 .storybook/
+public/
+|   +-- fonts/
 src/
 +-- apis/
 +-- app/
 |   +-- page.ts
+|   +-- ...
 +-- assets/
-|   +-- fonts/
 |   +-- imgs/
 |   +-- icons/
 +-- components/ (reusable UI components having atoms combined)
 |   +-- Button.tsx
 |   +-- Header.tsx
 |   +-- Footer.tsx
-|   +-- Sidebar.tsx
+|   +-- SideMenu.tsx
 |   +-- ...
 +-- hooks/
 +-- layouts/
@@ -96,7 +99,7 @@ git clone https://github.com/FE14-part4-team4-globalnomad/GlobalNomad.git
 npm install
 ```
 
-### 2. run the development server
+### 2. run the development serverç
 
 ```bash
 npm run dev
@@ -109,6 +112,16 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### 3. run Storybook
+
+스토리북 설정은 `npm create storybook`로 할 수 있습니다. [공식문서](https://storybook.js.org/docs/get-started/install) 참고
+
+```bash
+npm run storybook
+```
+
+Open [http://localhost:6006](http://localhost:6006) with your browser to see Storybook Docs.
 
 ## Learn More
 
