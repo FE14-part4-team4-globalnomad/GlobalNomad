@@ -1,0 +1,129 @@
+import { Meta, Typeset } from "@storybook/addon-docs/blocks";
+import "../../styles/globals.css";
+
+export const example = "The quick brown fox jumps over the lazy dog.";
+
+export const fontSizeCommonMedium = {
+  "11-m": ["10px", { fontWeight: 500 }],
+  "12-m": ["12px", { fontWeight: 500 }],
+  "13-m": ["13px", { fontWeight: 500 }],
+  "14-m": ["14px", { fontWeight: 500 }],
+  "16-m": ["16px", { fontWeight: 500 }],
+  "18-m": ["18px", { fontWeight: 500 }],
+  "20-m": ["20px", { fontWeight: 500 }],
+  "24-m": ["24px", { fontWeight: 500 }],
+  "32-m": ["32px", { fontWeight: 500 }],
+};
+export const fontSizeCommonBold = {
+  "11-b": ["10px", { fontWeight: 700 }],
+  "12-b": ["12px", { fontWeight: 700 }],
+  "13-b": ["13px", { fontWeight: 700 }],
+  "14-b": ["14px", { fontWeight: 700 }],
+  "16-b": ["16px", { fontWeight: 700 }],
+  "18-b": ["18px", { fontWeight: 700 }],
+  "20-b": ["20px", { fontWeight: 700 }],
+  "24-b": ["24px", { fontWeight: 700 }],
+  "32-b": ["32px", { fontWeight: 700 }],
+};
+export const fontSizeBodyMedium = {
+  "14-body-m": ["14px", { lineHeight: "180%", fontWeight: 500 }],
+  "16-body-m": ["16px", { lineHeight: "180%", fontWeight: 500 }],
+};
+export const fontSizeBodyBold = {
+  "18-body-b": ["18px", { lineHeight: "140%", fontWeight: 700 }],
+  "20-body-b": ["20px", { lineHeight: "160%", fontWeight: 700 }],
+};
+
+<Meta title="Foundation/Typography" />
+
+# 서체(Typography)
+
+기본 폰트는 Pretendard를 사용합니다. 텍스트의 두께는 Medium(500), Bold(700) 2가지에서
+활용합니다.
+
+<table id="guide" style={{ width: "100%", margin: "60px 0" }}>
+  <thead>
+    <tr>
+      <th>Usage Name</th>
+      <th>Font Size</th>
+      <th>Font Weight</th>
+      <th>Line Height</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.keys(fontSizeCommonMedium).map((usageNm) => {
+      const usageObj = fontSizeCommonMedium[usageNm];
+      return (
+        <tr key={`${usageNm}`}>
+          <td className="weight-600">{usageNm}</td>
+          <td>{usageObj[0]}</td>
+          <td>{usageObj[1].fontWeight}</td>
+          <td>{usageObj[1].lineHeight || "-"}</td>
+        </tr>
+      );
+    })}
+    {Object.keys(fontSizeCommonBold).map((usageNm) => {
+      const usageObj = fontSizeCommonBold[usageNm];
+      return (
+        <tr key={`${usageNm}`}>
+          <td className="weight-600">{usageNm}</td>
+          <td>{usageObj[0]}</td>
+          <td>{usageObj[1].fontWeight}</td>
+          <td>{usageObj[1].lineHeight || "-"}</td>
+        </tr>
+      );
+    })}
+    {Object.keys(fontSizeBodyMedium).map((usageNm) => {
+      const usageObj = fontSizeBodyMedium[usageNm];
+      return (
+        <tr key={`${usageNm}`}>
+          <td className="weight-600">{usageNm}</td>
+          <td>{usageObj[0]}</td>
+          <td>{usageObj[1].fontWeight}</td>
+          <td>{usageObj[1].lineHeight || "-"}</td>
+        </tr>
+      );
+    })}
+    {Object.keys(fontSizeBodyBold).map((usageNm) => {
+      const usageObj = fontSizeBodyBold[usageNm];
+      return (
+        <tr key={`${usageNm}`}>
+          <td className="weight-600">{usageNm}</td>
+          <td>{usageObj[0]}</td>
+          <td>{usageObj[1].fontWeight}</td>
+          <td>{usageObj[1].lineHeight || "-"}</td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
+
+### 1. Common
+
+<Typeset
+  fontFamily="Pretendard"
+  fontWeight={500}
+  fontSizes={Object.values(fontSizeCommonMedium).map((el) => el[0])}
+  sampleText={example}
+/>
+<Typeset
+  fontFamily="Pretendard"
+  fontWeight={700}
+  fontSizes={Object.values(fontSizeCommonMedium).map((el) => el[0])}
+  sampleText={example}
+/>
+
+### 2. Body
+
+<Typeset
+  fontFamily="Pretendard"
+  fontWeight={500}
+  fontSizes={Object.values(fontSizeBodyMedium).map((el) => el[0])}
+  sampleText={example}
+/>
+<Typeset
+  fontFamily="Pretendard"
+  fontWeight={700}
+  fontSizes={Object.values(fontSizeBodyBold).map((el) => el[0])}
+  sampleText={example}
+/>
