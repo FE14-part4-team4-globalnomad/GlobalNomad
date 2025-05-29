@@ -19,8 +19,11 @@
     "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.77.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
