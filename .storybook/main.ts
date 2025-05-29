@@ -14,5 +14,20 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  previewHead: (head) => `
+    ${head}
+  <style type="text/css">
+    @font-face {
+      font-family: "Pretendard";
+      font-weight: 500;
+      src: url("../public/fonts/Pretendard-Medium.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Pretendard";
+      font-weight: 700;
+      src: url("../public/fonts/Pretendard-Bold.woff2") format("woff2");
+    }
+  </style>
+  `,
 };
 export default config;
