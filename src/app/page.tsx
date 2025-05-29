@@ -1,7 +1,10 @@
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      Hello GlobalNomad
+    <div className="flex flex-row sm:flex-col items-center justify-center gap-[16px] min-h-screen text-20-body-b">
+      <div>Hello,</div>
+      <div className="p-[0.8rem] sm:pb-[20px] text-32-b text-brand-500">
+        GlobalNomad
+      </div>
     </div>
   );
 }
