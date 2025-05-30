@@ -52,8 +52,8 @@ module.exports = {
       "14-b": ["1.4rem", { fontWeight: 700 }],
       "16-b": ["1.6rem", { fontWeight: 700 }],
       "18-b": ["1.8rem", { fontWeight: 700 }],
-      "20-b": ["2rem", { fontWeight: 500 }],
-      "24-b": ["2.4rem", { fontWeight: 500 }],
+      "20-b": ["2rem", { fontWeight: 700 }],
+      "24-b": ["2.4rem", { fontWeight: 700 }],
       "32-b": ["3.2rem", { fontWeight: 700 }],
       // Body
       "14-body-m": ["1.4rem", { lineHeight: "180%", fontWeight: 500 }],

@@ -1,0 +1,46 @@
+import { ColorItem, ColorPalette, Meta } from "@storybook/addon-docs/blocks";
+
+export const colors = {
+  white: ["#FFFFFF"],
+  black: ["#000000"],
+  gray: {
+    25: "#F8F8F8",
+    50: "#EDEEF2",
+    100: "#E0E0E5",
+    200: "#C6C8CF",
+    300: "#B3B4BC",
+    400: "#9FA0A7",
+    500: "#84858C",
+    600: "#707177",
+    700: "#5D5D61",
+    800: "#49494C",
+    900: "#323236",
+    950: "#1F1F22",
+  },
+  brand: {
+    100: "#E5F3FF",
+    500: "#3D9EF2",
+  },
+  red: {
+    500: "#FF2727",
+  },
+};
+
+<Meta title="Foundation/Color Palette" />
+
+# Color Palette
+
+사용되는 색상의 팔레트를 정의합니다.
+
+<div style={{ marginTop: "60px" }}>
+  <ColorPalette>
+    {Object.keys(colors).map((colorNm) => (
+      <ColorItem
+        key={colorNm}
+        title={colorNm}
+        subtitle={`colors.${colorNm}`}
+        colors={colors[colorNm]}
+      />
+    ))}
+  </ColorPalette>
+</div>
