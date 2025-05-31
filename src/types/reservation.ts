@@ -32,6 +32,12 @@ export interface MyReservationType
 }
 
 //* ------------------- MyReservations -------------------
+export interface GetMyReservationListPayloadType {
+  cursorId?: number;
+  size?: number;
+  status?: ReservationStatusType;
+}
+
 export interface GetMyReservationListResultType {
   cursorId: number;
   totalCount: number;
