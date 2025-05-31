@@ -9,6 +9,13 @@ export interface MyNotificationType {
 }
 
 //* ------------------- Payload & Result Type -------------------
+export interface GetMyNotificationListPayloadType {
+  query?: {
+    cursorId?: number;
+    size?: number;
+  };
+}
+
 export interface GetMyNotificationListResultType {
   cursorId: number;
   totalCount: number;
