@@ -11,17 +11,21 @@ export interface UserType {
 export type GetUserResultType = UserType;
 
 export interface PostUserPayloadType {
-  email: string;
-  nickname: string;
-  password: string;
+  payload: {
+    email: string;
+    nickname: string;
+    password: string;
+  };
 }
 
 export type PostUserResultType = UserType;
 
 export interface PatchUserPayloadType {
-  nickname: string;
-  profileImageUrl: string;
-  newPassword: string;
+  payload: {
+    nickname: string;
+    profileImageUrl: string;
+    newPassword: string;
+  };
 }
 
 export type PatchUserResultType = UserType;
