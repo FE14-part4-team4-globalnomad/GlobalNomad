@@ -18,28 +18,58 @@ export interface MyActivityReservationCountType {
   pending: number;
 }
 
-//* ------------------- Payload & Result Type -------------------
-export type GetMyActivityListResultType = GetActivityListResultType;
-
-export interface MyActivityReservationDashboardType {
+export interface GetMyMonthlyActivityReservationType {
   date: string;
   reservations: MyActivityReservationCountType;
 }
 
-export type GetMyActivityReservationDashboardResultType =
-  MyActivityReservationDashboardType[];
-
-export interface GetMyActivitiesReservedScheduleType {
+export interface MyActivitiesReservedScheduleType {
   scheduleId: number;
   startTime: string;
   endTime: string;
   count: MyActivityReservationCountType;
 }
 
-export type GetMyActivitiesReservedScheduleResultType =
-  GetMyActivitiesReservedScheduleType[];
+//* ------------------- Payload & Result Type -------------------
+export interface GetMyActivityListPayloadType {
+  cursorId?: number;
+  size?: number;
+}
 
-export interface GetMyActivityReservationListResultType {
+export type GetMyActivityListResultType = GetActivityListResultType;
+
+export interface GetMyMonthlyActivityReservationsPayloadType {
+  activityId: number;
+  query: {
+    year: string;
+    month: string;
+  };
+}
+
+export type GetMyMonthlyActivityReservationsResultType =
+  GetMyMonthlyActivityReservationType[];
+
+export interface GetMyActivityReservedSchedulePayloadType {
+  activityId: number;
+  query: {
+    date: string;
+  };
+}
+
+export type GetMyActivityReservedScheduleResultType =
+  MyActivitiesReservedScheduleType[];
+
+export interface GetMyHourlyActivityReservationsPayloadType {
+  activityId: number;
+  query: {
+    cursorId?: number;
+    size?: number;
+    scheduleId: number;
+    status: "pending" | MyActivityReservationStatusType;
+  };
+}
+
+export interface GetMyHourlyActivityReservationsResultType {
   cursorId: number;
   totalCount: number;
   reservations: MyActivityReservationType[];
