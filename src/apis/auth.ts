@@ -1,11 +1,13 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
 import {
   PostAuthLoginPayloadType,
   PostAuthLoginResultType,
   PostAuthTokensResultType,
 } from "@/types/auth";
+import { ApiRequestParams } from "@/types/common";
 
 class AuthService {
   fetcher: AxiosInstance;
@@ -17,18 +19,27 @@ class AuthService {
   /**
    * 로그인
    */
-  async postAuthLogin(payload: PostAuthLoginPayloadType) {
-    return await this.fetcher.post<PostAuthLoginResultType>(
-      "/auth/login",
-      payload,
-    );
+  postAuthLogin({
+    payload,
+    options,
+  }: ApiRequestParams<PostAuthLoginPayloadType>) {
+    return this.fetcher<PostAuthLoginResultType>({
+      url: "/auth/login",
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 토큰 재발급
    */
-  async postAuthToken() {
-    return await this.fetcher.post<PostAuthTokensResultType>("/auth/tokens");
+  postAuthToken(options?: ApiRequestParams<object>) {
+    return this.fetcher<PostAuthTokensResultType>({
+      url: "/auth/tokens",
+      method: HTTP_METHODS.POST,
+      ...options,
+    });
   }
 }
 

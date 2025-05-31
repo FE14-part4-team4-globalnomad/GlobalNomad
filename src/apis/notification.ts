@@ -1,6 +1,8 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 import {
   GetMyNotificationListPayloadType,
   GetMyNotificationListResultType,
@@ -16,21 +18,32 @@ class NotificationService {
   /**
    * 내 알림 리스트 조회
    */
-  async getMyNotifications(params?: GetMyNotificationListPayloadType) {
+  getMyNotifications(
+    params?: ApiRequestParams<GetMyNotificationListPayloadType>,
+  ) {
     const query = params?.query;
-    return await this.fetcher.get<GetMyNotificationListResultType>(
-      "/my-notifications",
-      {
-        params: query,
-      },
-    );
+    const options = params?.options;
+
+    return this.fetcher<GetMyNotificationListResultType>({
+      url: "/my-notifications",
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
    * 내 알림 삭제
    */
-  async deleteMyNotification(notificationId: number) {
-    return await this.fetcher.delete(`/my-notifications/${notificationId}`);
+  deleteMyNotification(params?: ApiRequestParams<{ notificationId: number }>) {
+    const notificationId = params?.notificationId;
+    const options = params?.options;
+
+    return this.fetcher({
+      url: `/my-notifications/${notificationId}`,
+      method: HTTP_METHODS.DELETE,
+      ...options,
+    });
   }
 }
 

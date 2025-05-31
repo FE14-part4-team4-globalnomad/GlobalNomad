@@ -7,8 +7,10 @@ export interface TokenType {
 
 //* ------------------- Payload & Result Type -------------------
 export interface PostAuthLoginPayloadType {
-  email: string;
-  password: string;
+  payload: {
+    email: string;
+    password: string;
+  };
 }
 
 export type PostAuthLoginResultType = { user: UserType } & TokenType;

@@ -1,6 +1,8 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 import {
   GetMyReservationListPayloadType,
   GetMyReservationListResultType,
@@ -20,37 +22,50 @@ class ReservationService {
   /**
    * 내 예약 리스트 조회
    */
-  async getMyReservations(query?: GetMyReservationListPayloadType) {
-    return await this.fetcher.get<GetMyReservationListResultType>(
-      "/my-reservations",
-      { params: query },
-    );
+  getMyReservations(
+    params?: ApiRequestParams<GetMyReservationListPayloadType>,
+  ) {
+    const query = params?.query;
+    const options = params?.options;
+
+    return this.fetcher<GetMyReservationListResultType>({
+      url: "/my-reservations",
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
    * 내 예약 수정(취소)
    */
-  async patchMyReservations({
+  patchMyReservations({
     reservationId,
     payload,
-  }: PatchMyReservationPayloadType) {
-    return await this.fetcher.patch<PatchMyReservationResultType>(
-      `/my-reservations/${reservationId}`,
-      payload,
-    );
+    options,
+  }: ApiRequestParams<PatchMyReservationPayloadType>) {
+    return this.fetcher<PatchMyReservationResultType>({
+      url: `/my-reservations/${reservationId}`,
+      method: HTTP_METHODS.PATCH,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 내 예약 리뷰 작성
    */
-  async postMyReservationReview({
+  postMyReservationReview({
     reservationId,
     payload,
-  }: PostMyReservationReviewPayloadType) {
-    return await this.fetcher.post<PostMyReservationReviewResultType>(
-      `/my-reservations/${reservationId}`,
-      payload,
-    );
+    options,
+  }: ApiRequestParams<PostMyReservationReviewPayloadType>) {
+    return this.fetcher<PostMyReservationReviewResultType>({
+      url: `/my-reservations/${reservationId}`,
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 }
 

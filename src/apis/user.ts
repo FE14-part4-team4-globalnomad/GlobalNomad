@@ -1,6 +1,8 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 import {
   GetUserResultType,
   PatchUserPayloadType,
@@ -20,32 +22,50 @@ class UserService {
   /**
    * 회원가입
    */
-  async postUser({ payload }: PostUserPayloadType) {
-    return await this.fetcher.post<PostUserResultType>("/users", payload);
+  postUser({ payload, options }: ApiRequestParams<PostUserPayloadType>) {
+    return this.fetcher<PostUserResultType>({
+      url: "/users",
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 내 정보 조회
    */
-  async getUser() {
-    return await this.fetcher.get<GetUserResultType>("/users/me");
+  getUser(params?: ApiRequestParams<object>) {
+    const options = params?.options;
+
+    return this.fetcher<GetUserResultType>({
+      url: "/users/me",
+      method: HTTP_METHODS.GET,
+      ...options,
+    });
   }
 
   /**
    * 내 정보 수정
    */
-  async patchUser({ payload }: PatchUserPayloadType) {
-    return await this.fetcher.patch<PatchUserResultType>("/users/me", payload);
+  patchUser({ payload, options }: ApiRequestParams<PatchUserPayloadType>) {
+    return this.fetcher<PatchUserResultType>({
+      url: "/users/me",
+      method: HTTP_METHODS.PATCH,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 프로필 이미지 url 생성
    */
-  async postUserImage(payload: FormData) {
-    return await this.fetcher.post<PostUserImageResultType>(
-      "/users/me/image",
-      payload,
-    );
+  postUserImage({ payload, options }: ApiRequestParams<{ payload: FormData }>) {
+    return this.fetcher<PostUserImageResultType>({
+      url: "/users/me/image",
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 }
 

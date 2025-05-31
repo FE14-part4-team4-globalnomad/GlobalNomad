@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
 import {
   GetActivityAvailableSchedulePayloadType,
   GetActivityAvailableScheduleResultType,
@@ -15,6 +16,7 @@ import {
   PostActivityReservationResultType,
   PostActivityResultType,
 } from "@/types/activity";
+import { ApiRequestParams } from "@/types/common";
 
 class ActivityService {
   fetcher: AxiosInstance;
@@ -29,29 +31,45 @@ class ActivityService {
    * @property {number} page - 기본 값: 1
    * @property {number} size - 기본 값: 20
    */
-  async getActivities({ query }: GetActivityListPayloadType) {
-    return await this.fetcher.get<GetActivityListResultType>("/activities", {
+  getActivities({
+    query,
+    options,
+  }: ApiRequestParams<GetActivityListPayloadType>) {
+    return this.fetcher<GetActivityListResultType>({
+      url: "/activities",
+      method: HTTP_METHODS.GET,
       params: query,
+      ...options,
     });
   }
 
   /**
    * 체험 등록
    */
-  async postActivity({ payload }: PostActivityPayloadType) {
-    return await this.fetcher.post<PostActivityResultType>(
-      "/activities",
-      payload,
-    );
+  postActivity({
+    payload,
+    options,
+  }: ApiRequestParams<PostActivityPayloadType>) {
+    return this.fetcher<PostActivityResultType>({
+      url: "/activities",
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 체험 상세 조회
    */
-  async getActivity(activityId: number) {
-    return await this.fetcher.get<GetActivityResultType>(
-      `/activities/${activityId}`,
-    );
+  getActivity({
+    activityId,
+    options,
+  }: ApiRequestParams<{ activityId: number }>) {
+    return this.fetcher<GetActivityResultType>({
+      url: `/activities/${activityId}`,
+      method: HTTP_METHODS.GET,
+      ...options,
+    });
   }
 
   /**
@@ -59,14 +77,17 @@ class ActivityService {
    * @property {string} query.year - ex) 2024, 2025
    * @property {string} query.month - ex) 01, 02
    */
-  async getActivityAvailableSchedule({
+  getActivityAvailableSchedule({
     activityId,
     query,
-  }: GetActivityAvailableSchedulePayloadType) {
-    return await this.fetcher.get<GetActivityAvailableScheduleResultType>(
-      `/activities/${activityId}/available-schedule`,
-      { params: query },
-    );
+    options,
+  }: ApiRequestParams<GetActivityAvailableSchedulePayloadType>) {
+    return this.fetcher<GetActivityAvailableScheduleResultType>({
+      url: `/activities/${activityId}/available-schedule`,
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
@@ -75,37 +96,48 @@ class ActivityService {
    * @property {number} query.page - 기본 값: 1
    * @property {number} query.size - 기본 값: 3
    */
-  async getActivityReviewList({
+  getActivityReviewList({
     activityId,
     query,
-  }: GetActivityReviewListPayloadType) {
-    return await this.fetcher.get<GetActivityReviewListResultType>(
-      `/activities/${activityId}/reviews`,
-      { params: query },
-    );
+    options,
+  }: ApiRequestParams<GetActivityReviewListPayloadType>) {
+    return this.fetcher<GetActivityReviewListResultType>({
+      url: `/activities/${activityId}/reviews`,
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
    * 체험 예약 신청
    */
-  async postActivityReservation({
+  postActivityReservation({
     activityId,
     payload,
-  }: PostActivityReservationPayloadType) {
-    return await this.fetcher.post<PostActivityReservationResultType>(
-      `/activities/${activityId}/reservations`,
-      payload,
-    );
+    options,
+  }: ApiRequestParams<PostActivityReservationPayloadType>) {
+    return this.fetcher<PostActivityReservationResultType>({
+      url: `/activities/${activityId}/reservations`,
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 체험 이미지 url 생성
    */
-  async postActivityImage(image: FormData) {
-    return await this.fetcher.post<PostActivityImageResultType>(
-      `/activities/image`,
-      image,
-    );
+  postActivityImage({
+    payload,
+    options,
+  }: ApiRequestParams<{ payload: FormData }>) {
+    return this.fetcher<PostActivityImageResultType>({
+      url: `/activities/image`,
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 }
 

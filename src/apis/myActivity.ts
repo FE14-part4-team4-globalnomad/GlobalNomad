@@ -1,6 +1,8 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 import {
   GetMyActivityListPayloadType,
   GetMyActivityListResultType,
@@ -25,14 +27,16 @@ class MyActivityService {
   /**
    * 내 체험 리스트 조회
    */
-  async getMyActivities(params?: GetMyActivityListPayloadType) {
+  getMyActivities(params?: ApiRequestParams<GetMyActivityListPayloadType>) {
     const query = params?.query;
-    return await this.fetcher.get<GetMyActivityListResultType>(
-      "/my-activities",
-      {
-        params: query,
-      },
-    );
+    const options = params?.options;
+
+    return this.fetcher<GetMyActivityListResultType>({
+      url: "/my-activities",
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
@@ -41,31 +45,33 @@ class MyActivityService {
    * @property {string} query.year - ex) 2024, 2025
    * @property {string} query.month - ex) 01, 02
    */
-  async getMyMonthlyActivityReservations({
+  getMyMonthlyActivityReservations({
     activityId,
     query,
-  }: GetMyMonthlyActivityReservationsPayloadType) {
-    return await this.fetcher.get<GetMyMonthlyActivityReservationsResultType>(
-      `/my-activities/${activityId}/reservation-dashboard`,
-      {
-        params: query,
-      },
-    );
+    options,
+  }: ApiRequestParams<GetMyMonthlyActivityReservationsPayloadType>) {
+    return this.fetcher<GetMyMonthlyActivityReservationsResultType>({
+      url: `/my-activities/${activityId}/reservation-dashboard`,
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
    * 내 체험 날짜별 예약정보(신청, 승인 거절)가 있는 스케줄 조회
    */
-  async getMyActivityReservedSchedule({
+  getMyActivityReservedSchedule({
     activityId,
     query,
-  }: GetMyActivityReservedSchedulePayloadType) {
-    return await this.fetcher.get<GetMyActivityReservedScheduleResultType>(
-      `/my-activities/${activityId}/reserved-schedule`,
-      {
-        params: query,
-      },
-    );
+    options,
+  }: ApiRequestParams<GetMyActivityReservedSchedulePayloadType>) {
+    return this.fetcher<GetMyActivityReservedScheduleResultType>({
+      url: `/my-activities/${activityId}/reserved-schedule`,
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
@@ -73,37 +79,48 @@ class MyActivityService {
    *
    * @property {number} size - 기본 값: 10
    */
-  async getMyHourlyActivityReservations({
+  getMyHourlyActivityReservations({
     activityId,
     query,
-  }: GetMyHourlyActivityReservationsPayloadType) {
-    return await this.fetcher.get<GetMyHourlyActivityReservationsResultType>(
-      `/my-activities/${activityId}/reservations`,
-      {
-        params: query,
-      },
-    );
+    options,
+  }: ApiRequestParams<GetMyHourlyActivityReservationsPayloadType>) {
+    return this.fetcher<GetMyHourlyActivityReservationsResultType>({
+      url: `/my-activities/${activityId}/reservations`,
+      method: HTTP_METHODS.GET,
+      params: query,
+      ...options,
+    });
   }
 
   /**
    * 내 체험 예약 상태(승인, 거절) 업데이트
    */
-  async patchMyActivityReservation({
+  patchMyActivityReservation({
     activityId,
     reservationId,
     payload,
-  }: PatchMyActivityReservationPayloadType) {
-    return await this.fetcher.patch<PatchMyActivityReservationResultType>(
-      `/my-activities/${activityId}/reservations/${reservationId}`,
-      payload,
-    );
+    options,
+  }: ApiRequestParams<PatchMyActivityReservationPayloadType>) {
+    return this.fetcher<PatchMyActivityReservationResultType>({
+      url: `/my-activities/${activityId}/reservations/${reservationId}`,
+      method: HTTP_METHODS.PATCH,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
    * 내 체험 삭제
    */
-  async deleteMyActivity(activityId: number) {
-    return await this.fetcher.delete(`/my-activities/${activityId}`);
+  deleteMyActivity({
+    activityId,
+    options,
+  }: ApiRequestParams<{ activityId: number }>) {
+    return this.fetcher({
+      url: `/my-activities/${activityId}`,
+      method: HTTP_METHODS.DELETE,
+      ...options,
+    });
   }
 
   /**
@@ -121,8 +138,17 @@ class MyActivityService {
    *   }[]
    * } payload.schedulesToAdd - 추가할 스케줄
    */
-  async patchMyActivity({ activityId, payload }: PatchMyActivityPayloadType) {
-    return await this.fetcher.patch(`/my-activities/${activityId}`, payload);
+  patchMyActivity({
+    activityId,
+    payload,
+    options,
+  }: ApiRequestParams<PatchMyActivityPayloadType>) {
+    return this.fetcher({
+      url: `/my-activities/${activityId}`,
+      method: HTTP_METHODS.PATCH,
+      data: payload,
+      ...options,
+    });
   }
 }
 

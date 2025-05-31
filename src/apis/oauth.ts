@@ -1,6 +1,8 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "./instance";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 import {
   PostOauthAppsPayload,
   PostOauthAppsResultType,
@@ -32,11 +34,13 @@ class OauthService {
    *
    * 실습을 위해 발급받은 키를 등록해주세요. 실제 서비스에서 사용 하는 키를 등록해서는 안됩니다.
    */
-  async postOauthApps({ payload }: PostOauthAppsPayload) {
-    return await this.fetcher.post<PostOauthAppsResultType>(
-      "/oauth/apps",
-      payload,
-    );
+  postOauthApps({ payload, options }: ApiRequestParams<PostOauthAppsPayload>) {
+    return this.fetcher<PostOauthAppsResultType>({
+      url: "/oauth/apps",
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
@@ -56,11 +60,17 @@ class OauthService {
    *
    * Google 의 경우에는 Google Id 토큰(JWT) 입니다. Kakao 의 경우에는 인가 코드 입니다.
    */
-  async postOauthSignup({ provider, payload }: PostOauthSignupPayloadType) {
-    return await this.fetcher.post<PostOauthSignupResultType>(
-      `/oauth/sign-up/${provider}`,
-      payload,
-    );
+  postOauthSignup({
+    provider,
+    payload,
+    options,
+  }: ApiRequestParams<PostOauthSignupPayloadType>) {
+    return this.fetcher<PostOauthSignupResultType>({
+      url: `/oauth/sign-up/${provider}`,
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 
   /**
@@ -80,11 +90,17 @@ class OauthService {
    *
    * Google 의 경우에는 Google Id 토큰(JWT) 입니다. Kakao 의 경우에는 인가 코드 입니다.
    */
-  async postOauthSignin({ provider, payload }: PostOauthSigninPayloadType) {
-    return await this.fetcher.post<PostOauthSigninResultType>(
-      `/oauth/sign-in/${provider}`,
-      payload,
-    );
+  postOauthSignin({
+    provider,
+    payload,
+    options,
+  }: ApiRequestParams<PostOauthSigninPayloadType>) {
+    return this.fetcher<PostOauthSigninResultType>({
+      url: `/oauth/sign-in/${provider}`,
+      method: HTTP_METHODS.POST,
+      data: payload,
+      ...options,
+    });
   }
 }
 
