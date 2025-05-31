@@ -1,4 +1,4 @@
-const excludedPaths = ["/auth"];
+const excludedPaths = ["/auth", "/oauth"];
 
 /**
  * 특정 URL이 토큰 인증이 **필요한** 경로인지 여부를 판단합니다.
