@@ -16,7 +16,8 @@ class NotificationService {
   /**
    * 내 알림 리스트 조회
    */
-  async getMyNotifications({ query }: GetMyNotificationListPayloadType) {
+  async getMyNotifications(params?: GetMyNotificationListPayloadType) {
+    const query = params?.query;
     return await this.fetcher.get<GetMyNotificationListResultType>(
       "/my-notifications",
       {
