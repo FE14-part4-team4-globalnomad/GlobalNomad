@@ -29,16 +29,16 @@ class ActivityService {
    * @property {number} page - 기본 값: 1
    * @property {number} size - 기본 값: 20
    */
-  async getActivities(payload: GetActivityListPayloadType) {
+  async getActivities({ query }: GetActivityListPayloadType) {
     return await this.fetcher.get<GetActivityListResultType>("/activities", {
-      params: payload,
+      params: query,
     });
   }
 
   /**
    * 체험 등록
    */
-  async postActivity(payload: PostActivityPayloadType) {
+  async postActivity({ payload }: PostActivityPayloadType) {
     return await this.fetcher.post<PostActivityResultType>(
       "/activities",
       payload,

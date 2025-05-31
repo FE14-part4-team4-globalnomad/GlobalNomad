@@ -60,13 +60,15 @@ export interface ReviewType {
 
 //* ------------------- Payload & Result Type -------------------
 export interface GetActivityListPayloadType {
-  method: "offset" | "cursor";
-  cursorId?: number;
-  category?: ActivityCategoryType;
-  keyword?: string;
-  sort?: "most_reviewed" | "price_asc" | "price_desc" | "latest";
-  page?: number;
-  size?: number;
+  query: {
+    method: "offset" | "cursor";
+    cursorId?: number;
+    category?: ActivityCategoryType;
+    keyword?: string;
+    sort?: "most_reviewed" | "price_asc" | "price_desc" | "latest";
+    page?: number;
+    size?: number;
+  };
 }
 
 export interface GetActivityListResultType {
@@ -105,14 +107,16 @@ export interface GetActivityReviewListResultType {
 }
 
 export interface PostActivityPayloadType {
-  title: string;
-  category: string;
-  description: string;
-  address: string;
-  price: number;
-  schedules: Omit<ActivityScheduleType, "id">[];
-  bannerImageUrl: string;
-  subImageUrls: string[];
+  payload: {
+    title: string;
+    category: string;
+    description: string;
+    address: string;
+    price: number;
+    schedules: Omit<ActivityScheduleType, "id">[];
+    bannerImageUrl: string;
+    subImageUrls: string[];
+  };
 }
 
 export interface PostActivityResultType extends ActivityType {
