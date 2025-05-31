@@ -32,8 +32,10 @@ export interface MyActivitiesReservedScheduleType {
 
 //* ------------------- Payload & Result Type -------------------
 export interface GetMyActivityListPayloadType {
-  cursorId?: number;
-  size?: number;
+  query?: {
+    cursorId?: number;
+    size?: number;
+  };
 }
 
 export type GetMyActivityListResultType = GetActivityListResultType;

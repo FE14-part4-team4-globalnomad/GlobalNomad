@@ -25,11 +25,12 @@ class MyActivityService {
   /**
    * 내 체험 리스트 조회
    */
-  async getMyActivities(payload: GetMyActivityListPayloadType) {
+  async getMyActivities(params?: GetMyActivityListPayloadType) {
+    const query = params?.query;
     return await this.fetcher.get<GetMyActivityListResultType>(
       "/my-activities",
       {
-        params: payload,
+        params: query,
       },
     );
   }
