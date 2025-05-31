@@ -38,5 +38,8 @@ module.exports = {
 
     /* 헤더 길이 제한 */
     "header-max-length": [2, "always", 100],
+
+    /* subject의 case 강제 비활성화 */
+    "subject-case": [0, "never"],
   },
 };
