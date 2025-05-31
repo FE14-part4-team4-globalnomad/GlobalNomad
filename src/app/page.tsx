@@ -1,4 +1,10 @@
+import activityService from "@/apis/activity";
+
 export default function Home() {
+  activityService.getActivityReviewList({
+    activityId: 1,
+  });
+
   return (
     <div className="flex flex-row sm:flex-col items-center justify-center gap-[16px] min-h-screen text-20-body-b">
       <div>Hello,</div>

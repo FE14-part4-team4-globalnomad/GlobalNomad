@@ -59,10 +59,6 @@ export interface ReviewType {
 }
 
 //* ------------------- Payload & Result Type -------------------
-/**
- * @property {number} page - 기본 값: 1
- * @property {number} size - 기본 값: 20
- */
 export interface GetActivityListPayloadType {
   method: "offset" | "cursor";
   cursorId?: number;
@@ -84,26 +80,19 @@ export interface GetActivityResultType extends ActivityType {
   schedules: ActivityScheduleType[];
 }
 
-/**
- * @property {string} year - ex) 2024, 2025
- * @property {string} month - ex) 01, 02
- */
-export interface GetActivityListAvailableSchedulePayloadType {
+export interface GetActivityAvailableSchedulePayloadType {
   activityId: number;
-  year: string;
-  month: string;
+  query: {
+    year: string;
+    month: string;
+  };
 }
 
-export type GetActivityListAvailableScheduleResultType =
-  ActivityScheduleTimeType[];
+export type GetActivityAvailableScheduleResultType = ActivityScheduleTimeType[];
 
-/**
- * @property {number} page - 기본 값: 1
- * @property {number} size - 기본 값: 3
- */
 export interface GetActivityReviewListPayloadType {
   activityId: number;
-  payload: {
+  query?: {
     page?: number;
     size?: number;
   };
