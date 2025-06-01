@@ -1,0 +1,44 @@
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+
+import Card from "@/components/card/Card";
+import "../../styles/globals.css";
+
+const meta = {
+  title: "Components/Card",
+  component: Card,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
+} satisfies Meta<typeof Card>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const commonArgs = {
+  title: "함께 배우면 즐거운 스트릿 댄스",
+  price: 58000,
+  bannerImageUrl: `https://images.unsplash.com/photo-1517520267752-34bfde704a0f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8JUVDJTk3JUI0JUVBJUI4JUIwJUVBJUI1JUFDfGVufDB8fDB8fHww`,
+  rating: 0,
+  reviewCount: 0,
+};
+
+export const MainCard: Story = {
+  args: commonArgs,
+};
+export const MainCardGroup: Story = {
+  args: commonArgs,
+  render: (args) => {
+    return (
+      <div
+        className="grid justify-stretch items-center gap-[16px] grid-cols-2"
+        style={{ width: "1000px" }}
+      >
+        <Card {...args} />
+        <Card {...args} />
+        <Card {...args} />
+        <Card {...args} />
+      </div>
+    );
+  },
+};
