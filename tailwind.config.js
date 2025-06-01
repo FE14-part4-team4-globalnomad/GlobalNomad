@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        desktop: "1280px",
-        tablet: { min: "769px", max: "1279px" },
         mobile: { max: "768px" },
+        tablet: { min: "769px" },
+        desktop: { min: "1280px" },
       },
     },
     colors: {
@@ -60,6 +60,9 @@ module.exports = {
       "16-body-m": ["1.6rem", { lineHeight: "180%", fontWeight: 500 }],
       "18-body-b": ["1.8rem", { lineHeight: "140%", fontWeight: 700 }],
       "20-body-b": ["2rem", { lineHeight: "160%", fontWeight: 700 }],
+    },
+    dropShadow: {
+      card: "0px 4px 24px rgba(156, 180, 202, 0.2)",
     },
   },
 };
