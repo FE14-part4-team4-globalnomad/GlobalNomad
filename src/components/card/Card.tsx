@@ -42,7 +42,7 @@ export default function Card({
             {title}
           </div>
           <div className="flex items-center gap-[2.8px] tablet:gap-[5px]">
-            <div className="relative w-[11.25px] h-[11.25px] tablet:w-[20px] tablet:h-[20px]">
+            <div className="relative aspect-square w-[11.25px] tablet:w-[20px]">
               <Image src={StarIcon} alt="리뷰 아이콘 이미지" fill />
             </div>
             <div className="flex items-center tablet:gap-[2px] text-12-m tablet:text-14-m">

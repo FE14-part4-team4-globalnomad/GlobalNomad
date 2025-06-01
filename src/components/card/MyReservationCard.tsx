@@ -18,6 +18,9 @@ interface MyReservationCardProps extends HTMLAttributes<HTMLDivElement> {
   endTime: string;
 }
 
+/**
+ * 예약관리 리스트 아이템
+ */
 export default function MyReservationCard({
   status,
   activity,
@@ -84,7 +87,7 @@ export default function MyReservationCard({
             </div>
             <div className="flex justify-between">
               <div className="text-12-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400 flex items-center gap-[4px]">
-                <span className="text-[1.5rem] tablet:text-18-b font-bold text-black">
+                <span className="text-16-b tablet:text-18-b font-bold text-black flex justify-start items-center gap-[2px]">
                   ₩{formatNumber(totalPrice)}
                 </span>
                 / {formatNumber(headCount)}인
