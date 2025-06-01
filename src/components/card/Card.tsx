@@ -3,7 +3,7 @@ import { HTMLAttributes } from "react";
 
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
 import { cn } from "@/utils/classNames";
-import { formatPrice } from "@/utils/price";
+import { formatNumber } from "@/utils/common";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -22,7 +22,7 @@ export default function Card({
   className = "",
 }: CardProps) {
   return (
-    <section
+    <li
       className={cn(
         "relative aspect-[0.7] min-w-[155px] tablet:min-w-[260px] flex flex-col justify-start items-stretch drop-shadow-card",
         className,
@@ -46,17 +46,20 @@ export default function Card({
               <Image src={StarIcon} alt="리뷰 아이콘 이미지" fill />
             </div>
             <div className="flex items-center tablet:gap-[2px] text-12-m tablet:text-14-m">
-              {rating} <span className="text-gray-400">({reviewCount})</span>
+              {rating}
+              <span className="text-gray-400">
+                ({formatNumber(reviewCount)})
+              </span>
             </div>
           </div>
         </div>
         <div className="text-12-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400">
           <span className="text-[1.5rem] tablet:text-18-b font-bold text-black">
-            ₩{formatPrice(price)}
+            ₩{formatNumber(price)}
           </span>
           / 인
         </div>
       </div>
-    </section>
+    </li>
   );
 }
