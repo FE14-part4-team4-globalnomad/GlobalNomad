@@ -4,7 +4,7 @@ import MyReservationCard from "@/components/card/MyReservationCard";
 import "../../styles/globals.css";
 
 const meta = {
-  title: "Components/Card (MyReservation)",
+  title: "Components/Card/My Reservation",
   component: MyReservationCard,
   parameters: {
     layout: "centered",
