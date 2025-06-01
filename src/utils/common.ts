@@ -1,3 +1,3 @@
-export const formatNumber = (price: number) => {
+export const formatNumberWithComma = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

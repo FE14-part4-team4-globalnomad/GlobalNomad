@@ -30,15 +30,23 @@ export const MainCardList: Story = {
   args: commonArgs,
   render: (args) => {
     return (
-      <ul
-        className="grid justify-stretch items-center gap-[16px] grid-cols-2"
-        style={{ width: "1000px" }}
-      >
-        <Card {...args} />
-        <Card {...args} />
-        <Card {...args} />
-        <Card {...args} />
-      </ul>
+      <div className="grid gap-[16px]">
+        <h3 className="text-18-b tablet:text-32-b">🔥 인기 체험</h3>
+        <ul className="grid justify-stretch items-center gap-[16px] grid-flow-col overflow-x-scroll desktop:grid-cols-4">
+          <li>
+            <Card {...args} />
+          </li>
+          <li>
+            <Card {...args} />
+          </li>
+          <li>
+            <Card {...args} />
+          </li>
+          <li>
+            <Card {...args} />
+          </li>
+        </ul>
+      </div>
     );
   },
 };

@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { HTMLAttributes } from "react";
 
 import { cn } from "@/utils/classNames";
-import { formatNumber } from "@/utils/common";
+import { formatNumberWithComma } from "@/utils/common";
 
-interface MyReservationCardProps extends HTMLAttributes<HTMLDivElement> {
+// TODO: type 정의 반영
+interface MyReservationCardProps {
+  id?: number;
   activity: {
     bannerImageUrl: string;
     title: string;
@@ -30,44 +31,31 @@ export default function MyReservationCard({
   totalPrice,
   headCount,
   reviewSubmitted,
-  className = "",
 }: MyReservationCardProps) {
   /* TODO: Button component 반영 */
   function ReviewButtons() {
     return reviewSubmitted ? (
       <>
-        <button className="w-[100%]">예약 변경</button>
-        <button className="w-[100%]">예약 취소</button>
+        <button className="w-full">예약 변경</button>
+        <button className="w-full">예약 취소</button>
       </>
     ) : (
-      <button className="w-[100%]">후기 작성</button>
+      <button className="w-full">후기 작성</button>
     );
   }
   return (
-    <li className="grid gap-[20px]">
+    <article className="grid gap-[20px]">
       <hr className="border-gray-50 tablet:hidden" />
       <div className="grid gap-[12px]">
         <div className="text-16-b text-gray-800 pl-[8px] tablet:hidden">
           {date}
         </div>
-        <section
-          className={cn(
-            "relative flex flex-row-reverse justify-between items-stretch drop-shadow-card",
-            className,
-          )}
-        >
-          <div className="aspect-square w-[132px] tablet:w-[200px] relative overflow-hidden rounded-r-[18px] tablet:rounded-r-[32px]">
-            <Image
-              className="absolute inset-0 object-cover"
-              src={activity.bannerImageUrl}
-              alt="체험 배너 이미지 미리보기"
-              fill
-            />
-          </div>
+        <div className="relative grid drop-shadow-card pr-[116px] desktop:pr-[155px]">
           <div
-            className={`grow-[2.4] grid gap-[8px] tablet:gap-[25px] 
-        absolute left-0 top-0 bottom-0 right-[98px] tablet:right-[174px] 
-        bg-white rounded-[1.8rem] tablet:rounded-[3.2rem] py-[1.6rem] px-[1.7rem] tablet:py-[2rem] tablet:px-[3rem]`}
+            className={cn(
+              "grow-[2.4] grid gap-[8px] tablet:gap-[25px]",
+              "bg-white rounded-[24px] tablet:rounded-[30px] p-[20px] tablet:py-[40px] tablet:px-[30px]",
+            )}
           >
             <div className="grid gap-[8px] tablet:gap-[12px]">
               <div className="grid gap-[4px] tablet:gap-[10px]">
@@ -88,20 +76,30 @@ export default function MyReservationCard({
             <div className="flex justify-between">
               <div className="text-12-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400 flex items-center gap-[4px]">
                 <span className="text-16-b tablet:text-18-b font-bold text-black flex justify-start items-center gap-[2px]">
-                  ₩{formatNumber(totalPrice)}
+                  ₩{formatNumberWithComma(totalPrice)}
                 </span>
-                / {formatNumber(headCount)}인
+                / {formatNumberWithComma(headCount)}인
               </div>
               <div className="hidden tablet:flex justify-between items-center gap-[12px]">
-                <ReviewButtons />
+                <button className="w-full">예약 변경</button>
+                <button className="w-full">예약 취소</button>
+                <button className="w-full">후기 작성</button>
               </div>
             </div>
           </div>
-        </section>
+          <div className="absolute right-0 z-[-1] aspect-square h-full overflow-hidden rounded-[24px] tablet:rounded-[30px]">
+            <Image
+              className="object-cover"
+              src={activity.bannerImageUrl}
+              alt="체험 배너 이미지 미리보기"
+              fill
+            />
+          </div>
+        </div>
         <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
           <ReviewButtons />
         </div>
       </div>
-    </li>
+    </article>
   );
 }

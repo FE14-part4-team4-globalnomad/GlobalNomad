@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { HTMLAttributes } from "react";
 
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
 import { cn } from "@/utils/classNames";
-import { formatNumber } from "@/utils/common";
+import { formatNumberWithComma } from "@/utils/common";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+// TODO: type 정의 반영
+interface CardProps {
   title: string;
   price: number;
   bannerImageUrl: string;
@@ -19,16 +19,16 @@ export default function Card({
   rating,
   reviewCount,
   price,
-  className = "",
 }: CardProps) {
   return (
-    <li
+    <article
       className={cn(
-        "relative aspect-[0.7] min-w-[155px] tablet:min-w-[260px] flex flex-col justify-start items-stretch drop-shadow-card",
-        className,
+        "min-w-[155px] tablet:min-w-[260px] h-[242.88px] tablet:h-[423px] desktop:h-[366px]",
+        "flex flex-col justify-start items-stretch",
+        "relative drop-shadow-card",
       )}
     >
-      <div className="w-[100%] h-[90%] relative overflow-hidden rounded-t-[18px] tablet:rounded-t-[32px]">
+      <div className="w-full h-[90%] relative overflow-hidden rounded-t-[18px] tablet:rounded-t-[32px]">
         <Image
           className="absolute inset-0 object-cover"
           src={bannerImageUrl}
@@ -48,18 +48,18 @@ export default function Card({
             <div className="flex items-center tablet:gap-[2px] text-12-m tablet:text-14-m">
               {rating}
               <span className="text-gray-400">
-                ({formatNumber(reviewCount)})
+                ({formatNumberWithComma(reviewCount)})
               </span>
             </div>
           </div>
         </div>
         <div className="text-12-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400">
           <span className="text-[1.5rem] tablet:text-18-b font-bold text-black">
-            ₩{formatNumber(price)}
+            ₩{formatNumberWithComma(price)}
           </span>
           / 인
         </div>
       </div>
-    </li>
+    </article>
   );
 }
