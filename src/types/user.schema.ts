@@ -21,10 +21,10 @@ export interface PostUserPayloadType {
 export type PostUserResultType = UserType;
 
 export interface PatchUserPayloadType {
-  payload: {
-    nickname: string;
-    profileImageUrl: string;
-    newPassword: string;
+  payload?: {
+    nickname?: string;
+    profileImageUrl?: string;
+    newPassword?: string;
   };
 }
 

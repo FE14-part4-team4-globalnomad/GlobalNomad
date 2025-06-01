@@ -113,9 +113,9 @@ export interface PostActivityPayloadType {
     description: string;
     address: string;
     price: number;
-    schedules: Omit<ActivityScheduleType, "id">[];
+    schedules?: Omit<ActivityScheduleType, "id">[];
     bannerImageUrl: string;
-    subImageUrls: string[];
+    subImageUrls?: string[];
   };
 }
 

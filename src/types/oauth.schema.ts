@@ -18,23 +18,40 @@ export interface PostOauthAppsResultType {
   updatedAt: string;
 }
 
-export interface PostOauthSignupPayloadType {
-  provider: "google" | "kakao";
-  payload: {
-    nickname: string;
-    redirectUri: string;
-    token: string;
-  };
-}
+export type PostOauthSignupPayloadType =
+  | {
+      provider: "kakao";
+      payload: {
+        nickname: string;
+        redirectUri: string;
+        token: string;
+      };
+    }
+  | {
+      provider: "google";
+      payload: {
+        nickname: string;
+        redirectUri?: string;
+        token: string;
+      };
+    };
 
 export type PostOauthSignupResultType = { user: UserType } & TokenType;
 
-export interface PostOauthSigninPayloadType {
-  provider: "google" | "kakao";
-  payload: {
-    redirectUri: string;
-    token: string;
-  };
-}
+export type PostOauthSigninPayloadType =
+  | {
+      provider: "google";
+      payload: {
+        redirectUri?: string;
+        token: string;
+      };
+    }
+  | {
+      provider: "kakao";
+      payload: {
+        redirectUri: string;
+        token: string;
+      };
+    };
 
 export type PostOauthSigninResultType = PostOauthSignupResultType;

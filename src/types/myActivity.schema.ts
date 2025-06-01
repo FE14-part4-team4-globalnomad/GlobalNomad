@@ -93,16 +93,16 @@ export type PatchMyActivityReservationResultType = Omit<
 export interface PatchMyActivityPayloadType {
   activityId: number;
   payload: {
-    title: string;
-    category: ActivityCategoryType;
-    description: string;
-    price: number;
-    address: string;
-    bannerImageUrl: string;
-    subImageIdsToRemove: number[];
-    subImageUrlsToAdd: string[];
-    scheduleIdsToRemove: number[];
-    schedulesToAdd: Omit<ActivityScheduleType, "id">[];
+    title?: string;
+    category?: ActivityCategoryType;
+    description?: string;
+    price?: number;
+    address?: string;
+    bannerImageUrl?: string;
+    subImageIdsToRemove?: number[];
+    subImageUrlsToAdd?: string[];
+    scheduleIdsToRemove?: number[];
+    schedulesToAdd?: Omit<ActivityScheduleType, "id">[];
   };
 }
 
