@@ -1,36 +1,18 @@
 import {
   ActivityCategoryType,
   ActivityScheduleType,
+} from "../../types/activity";
+import {
+  GetMyMonthlyActivityReservationType,
+  MyActivityReservedScheduleType,
+  MyActivityReservationStatusType,
+  MyActivityReservationType,
+} from "../../types/myActivity";
+import {
   GetActivityListResultType,
   PostActivityResultType,
-} from "./activity.schema";
-import { ActivityReservationType } from "./reservation.schema";
+} from "../activity/activity.schema";
 
-export type MyActivityReservationStatusType = "declined" | "confirmed";
-
-export interface MyActivityReservationType extends ActivityReservationType {
-  nickname: string;
-}
-
-export interface MyActivityReservationCountType {
-  completed: number;
-  confirmed: number;
-  pending: number;
-}
-
-export interface GetMyMonthlyActivityReservationType {
-  date: string;
-  reservations: MyActivityReservationCountType;
-}
-
-export interface MyActivitiesReservedScheduleType {
-  scheduleId: number;
-  startTime: string;
-  endTime: string;
-  count: MyActivityReservationCountType;
-}
-
-//* ------------------- Payload & Result Type -------------------
 export interface GetMyActivityListPayloadType {
   query?: {
     cursorId?: number;
@@ -59,7 +41,7 @@ export interface GetMyActivityReservedSchedulePayloadType {
 }
 
 export type GetMyActivityReservedScheduleResultType =
-  MyActivitiesReservedScheduleType[];
+  MyActivityReservedScheduleType[];
 
 export interface GetMyHourlyActivityReservationsPayloadType {
   activityId: number;

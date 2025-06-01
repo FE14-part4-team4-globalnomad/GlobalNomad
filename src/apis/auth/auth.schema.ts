@@ -1,11 +1,6 @@
-import { UserType } from "./user.schema";
+import { TokenType } from "../../types/auth";
+import { UserType } from "@/types/user";
 
-export interface TokenType {
-  refreshToken: string;
-  accessToken: string;
-}
-
-//* ------------------- Payload & Result Type -------------------
 export interface PostAuthLoginPayloadType {
   payload: {
     email: string;

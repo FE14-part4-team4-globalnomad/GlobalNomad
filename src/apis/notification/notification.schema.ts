@@ -1,14 +1,5 @@
-export interface MyNotificationType {
-  id: number;
-  teamId: string;
-  userId: number;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-}
+import { MyNotificationType } from "../../types/notification";
 
-//* ------------------- Payload & Result Type -------------------
 export interface GetMyNotificationListPayloadType {
   query?: {
     cursorId?: number;

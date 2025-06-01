@@ -1,7 +1,6 @@
-import { TokenType } from "./auth.schema";
-import { UserType } from "./user.schema";
+import { TokenType } from "../../types/auth";
+import { UserType } from "../../types/user";
 
-//* ------------------- Payload & Result Type -------------------
 export interface PostOauthAppsPayload {
   payload: {
     appKey: string;

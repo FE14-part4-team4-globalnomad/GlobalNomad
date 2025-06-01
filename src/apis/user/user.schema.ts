@@ -1,13 +1,5 @@
-export interface UserType {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { UserType } from "../../types/user";
 
-//* ------------------- Payload & Result Type -------------------
 export type GetUserResultType = UserType;
 
 export interface PostUserPayloadType {

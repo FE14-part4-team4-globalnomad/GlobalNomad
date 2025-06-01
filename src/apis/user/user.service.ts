@@ -1,8 +1,6 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "../instance";
-import { HTTP_METHODS } from "@/constants/httpMethod";
-import { ApiRequestParams } from "@/types/common";
 import {
   GetUserResultType,
   PatchUserPayloadType,
@@ -10,7 +8,9 @@ import {
   PostUserImageResultType,
   PostUserPayloadType,
   PostUserResultType,
-} from "@/types/user.schema";
+} from "@/apis/user/user.schema";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 
 class UserService {
   fetcher: AxiosInstance;

@@ -1,8 +1,6 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "../instance";
-import { HTTP_METHODS } from "@/constants/httpMethod";
-import { ApiRequestParams } from "@/types/common";
 import {
   PostOauthAppsPayload,
   PostOauthAppsResultType,
@@ -10,7 +8,9 @@ import {
   PostOauthSigninResultType,
   PostOauthSignupPayloadType,
   PostOauthSignupResultType,
-} from "@/types/oauth.schema";
+} from "@/apis/oauth/oauth.schema";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 
 class OauthService {
   fetcher: AxiosInstance;

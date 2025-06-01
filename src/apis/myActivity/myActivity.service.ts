@@ -1,8 +1,6 @@
 import { AxiosInstance } from "axios";
 
 import axiosInstance from "../instance";
-import { HTTP_METHODS } from "@/constants/httpMethod";
-import { ApiRequestParams } from "@/types/common";
 import {
   GetMyActivityListPayloadType,
   GetMyActivityListResultType,
@@ -15,7 +13,9 @@ import {
   PatchMyActivityReservationPayloadType,
   PatchMyActivityReservationResultType,
   PatchMyActivityPayloadType,
-} from "@/types/myActivity.schema";
+} from "@/apis/myActivity/myActivity.schema";
+import { HTTP_METHODS } from "@/constants/httpMethod";
+import { ApiRequestParams } from "@/types/common";
 
 class MyActivityService {
   fetcher: AxiosInstance;
