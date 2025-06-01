@@ -1,12 +1,12 @@
 import { AxiosInstance } from "axios";
 
-import axiosInstance from "./instance";
+import axiosInstance from "../instance";
 import { HTTP_METHODS } from "@/constants/httpMethod";
 import { ApiRequestParams } from "@/types/common";
 import {
   GetMyNotificationListPayloadType,
   GetMyNotificationListResultType,
-} from "@/types/notification";
+} from "@/types/notification.schema";
 
 class NotificationService {
   fetcher: AxiosInstance;

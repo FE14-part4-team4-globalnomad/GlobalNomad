@@ -3,8 +3,8 @@ import {
   ActivityScheduleType,
   GetActivityListResultType,
   PostActivityResultType,
-} from "./activity";
-import { ActivityReservationType } from "./reservation";
+} from "./activity.schema";
+import { ActivityReservationType } from "./reservation.schema";
 
 export type MyActivityReservationStatusType = "declined" | "confirmed";
 

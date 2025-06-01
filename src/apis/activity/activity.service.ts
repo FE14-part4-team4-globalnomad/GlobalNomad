@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import axiosInstance from "./instance";
+import axiosInstance from "../instance";
 import { HTTP_METHODS } from "@/constants/httpMethod";
 import {
   GetActivityAvailableSchedulePayloadType,
@@ -15,7 +15,7 @@ import {
   PostActivityReservationPayloadType,
   PostActivityReservationResultType,
   PostActivityResultType,
-} from "@/types/activity";
+} from "@/types/activity.schema";
 import { ApiRequestParams } from "@/types/common";
 
 class ActivityService {

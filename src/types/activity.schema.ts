@@ -1,4 +1,4 @@
-import { ActivityReservationType } from "./reservation";
+import { ActivityReservationType } from "./reservation.schema";
 
 export type ActivityCategoryType =
   | "문화 · 예술"

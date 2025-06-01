@@ -1,5 +1,5 @@
-import { TokenType } from "./auth";
-import { UserType } from "./user";
+import { TokenType } from "./auth.schema";
+import { UserType } from "./user.schema";
 
 //* ------------------- Payload & Result Type -------------------
 export interface PostOauthAppsPayload {

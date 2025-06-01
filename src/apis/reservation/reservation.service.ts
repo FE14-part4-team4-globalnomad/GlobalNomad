@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-import axiosInstance from "./instance";
+import axiosInstance from "../instance";
 import { HTTP_METHODS } from "@/constants/httpMethod";
 import { ApiRequestParams } from "@/types/common";
 import {
@@ -10,7 +10,7 @@ import {
   PatchMyReservationResultType,
   PostMyReservationReviewPayloadType,
   PostMyReservationReviewResultType,
-} from "@/types/reservation";
+} from "@/types/reservation.schema";
 
 class ReservationService {
   fetcher: AxiosInstance;

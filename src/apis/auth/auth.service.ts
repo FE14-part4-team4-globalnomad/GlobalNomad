@@ -1,12 +1,12 @@
 import { AxiosInstance } from "axios";
 
-import axiosInstance from "./instance";
+import axiosInstance from "../instance";
 import { HTTP_METHODS } from "@/constants/httpMethod";
 import {
   PostAuthLoginPayloadType,
   PostAuthLoginResultType,
   PostAuthTokensResultType,
-} from "@/types/auth";
+} from "@/types/auth.schema";
 import { ApiRequestParams } from "@/types/common";
 
 class AuthService {
