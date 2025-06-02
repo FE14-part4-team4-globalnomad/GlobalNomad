@@ -6,7 +6,7 @@ type SearchProps = {
   onSearch: (keyword: string) => void;
 };
 
-export const Search = ({ placeholder = "내가 원하는 체험은", onSearch }: SearchProps) => {
+export function Search({ placeholder = "내가 원하는 체험은", onSearch }: SearchProps) {
   const [keyword, setKeyword] = useState("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
