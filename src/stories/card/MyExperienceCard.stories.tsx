@@ -26,8 +26,12 @@ export const MyExperienceList: Story = {
   render: (args) => {
     return (
       <ul className="grid justify-stretch gap-[22px] w-[309px] tablet:w-[600px]">
-        <MyExperienceCard {...args} />
-        <MyExperienceCard {...args} />
+        <li>
+          <MyExperienceCard {...args} />
+        </li>
+        <li>
+          <MyExperienceCard {...args} />
+        </li>
       </ul>
     );
   },

@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { HTMLAttributes } from "react";
 
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
 import { cn } from "@/utils/classNames";
-import { formatNumber } from "@/utils/common";
+import { formatNumberWithComma } from "@/utils/common";
 
-interface MyExperienceCardProps extends HTMLAttributes<HTMLDivElement> {
+// TODO: type 정의 반영
+interface MyExperienceCardProps {
+  id?: number;
   title: string;
   price: number;
   bannerImageUrl: string;
@@ -22,14 +23,12 @@ export default function MyExperienceCard({
   reviewCount,
   price,
   bannerImageUrl,
-  className = "",
 }: MyExperienceCardProps) {
   return (
-    <li
+    <article
       className={cn(
         "flex justify-between items-start gap-[10px] drop-shadow-card",
-        "bg-white rounded-[1.8rem] tablet:rounded-[3.2rem] py-[1.6rem] px-[1.7rem] tablet:py-[2rem] tablet:px-[3rem]",
-        className,
+        "bg-white rounded-[24px] p-[24px] tablet:p-[30px]",
       )}
     >
       <div className="grid gap-[12px] tablet:gap-[20px]">
@@ -49,7 +48,7 @@ export default function MyExperienceCard({
           </div>
           <div className="text-14-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400">
             <span className="text-16-b tablet:text-18-b font-bold text-black">
-              ₩{formatNumber(price)}
+              ₩{formatNumberWithComma(price)}
             </span>
             / 인
           </div>
@@ -68,6 +67,6 @@ export default function MyExperienceCard({
           fill
         />
       </div>
-    </li>
+    </article>
   );
 }

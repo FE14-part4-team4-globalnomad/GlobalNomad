@@ -31,9 +31,13 @@ export const MyReservationList: Story = {
   },
   render: (args) => {
     return (
-      <ul className="grid justify-stretch gap-[22px] w-[309px] tablet:w-[600px]">
-        <MyReservationCard {...args} />
-        <MyReservationCard {...args} />
+      <ul className="grid justify-stretch gap-[22px] tablet:w-[800px]">
+        <li>
+          <MyReservationCard {...args} />
+        </li>
+        <li>
+          <MyReservationCard {...args} />
+        </li>
       </ul>
     );
   },
