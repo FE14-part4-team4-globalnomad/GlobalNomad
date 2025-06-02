@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import GnbUserSection from "./GnbUserSection";
+import Earth from "@/assets/images/logos/logo_earth.svg";
+import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg";
 
 function Gnb() {
   const isLoggedIn = true;
@@ -11,7 +13,7 @@ function Gnb() {
         <Link href="/">
           {/* 데스크탑용 로고 (기본) */}
           <Image
-            src="/images/logos/logo_globalnomad_md.svg"
+            src={LogoEarth}
             alt="로고"
             width={174}
             height={28}
@@ -20,7 +22,7 @@ function Gnb() {
 
           {/* 모바일용 로고 */}
           <Image
-            src="/images/logos/logo_earth.svg"
+            src={Earth}
             alt="모바일 로고"
             width={28}
             height={28}
