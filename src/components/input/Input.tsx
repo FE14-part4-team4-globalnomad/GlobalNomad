@@ -6,15 +6,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-function Input({ label, error, type = "text", className, ...rest }: InputProps) {
+function Input({ id, label, error, type = "text", className, ...rest }: InputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordType = type === "password";
 
   return (
     <div className="flex flex-col">
-      <label className="text-16-m text-gray-950 mb-1">{label}</label>
+      {label && <label htmlFor={id} className="text-16-m text-gray-950 mb-1">{label}</label>}
       <div className="relative">
         <input
+          id={id}
           type={isPasswordType ? (showPassword ? "text" : "password") : type}
           className={`
             h-[54px] w-full
