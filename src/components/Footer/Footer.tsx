@@ -14,7 +14,7 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="w-full my-5 bg-white text-[13px] text-[color:var(--gray-400)]">
+    <footer className="w-full my-5 bg-white text-[13px] text-gray-400">
       <div
         className="
           w-[90%] mx-auto
