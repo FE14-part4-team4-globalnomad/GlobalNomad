@@ -1,5 +1,5 @@
-import React from "react";
 import type { Meta, StoryObj } from '@storybook/nextjs';
+import React from "react";
 
 import { CalendarDay } from "../../components/calendarDate/CalendarDay";
 import { CalendarEventBadge } from "../../components/calendarDate/CalendarEventBadge";
