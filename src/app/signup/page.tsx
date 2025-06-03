@@ -71,6 +71,8 @@ export default function SignupPage() {
     );
   };
 
+  const KAKAO_SIGNUP_PATH = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI}&response_type=code&scope=profile_nickname`;
+
   return (
     <div className="min-h-screen pt-[65px] pb-[146px] flex flex-col justify-start tablet:justify-center items-center gap-[42px] tablet:gap-[62px]">
       <Logo />
@@ -115,15 +117,17 @@ export default function SignupPage() {
             <hr className="w-full border-gray-100" />
           </div>
           <div className="grid justify-stretch gap-[24px] tablet:gap-[30px]">
-            <button className="flex justify-center items-center gap-[4px] text-16-m text-gray-600">
-              <Image
-                src={KakaoIcon}
-                alt="카카오 로그인 아이콘 이미지"
-                width={24}
-                height={24}
-              />
-              카카오 회원가입
-            </button>
+            <Link className="flex justify-center" href={KAKAO_SIGNUP_PATH}>
+              <button className="flex justify-center items-center gap-[4px] text-16-m text-gray-600">
+                <Image
+                  src={KakaoIcon}
+                  alt="카카오 회원가입 아이콘 이미지"
+                  width={24}
+                  height={24}
+                />
+                카카오 회원가입
+              </button>
+            </Link>
             <div className="flex justify-center gap-[4px] text-16-m text-gray-400">
               회원이신가요?
               <Link href="/signin" className="underline">
