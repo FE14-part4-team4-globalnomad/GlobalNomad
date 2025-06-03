@@ -1,9 +1,10 @@
 "use client";
 
-import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-export default function LoginPage() {
+import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
+
+export default function SigninPage() {
   const loginMutation = usePostAuthLoginMutation();
   const [formValue, setFormValue] = useState({ email: "", password: "" });
 

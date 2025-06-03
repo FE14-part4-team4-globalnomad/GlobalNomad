@@ -1,8 +1,8 @@
 "use client";
 
-import { useUser } from "@/hooks/useAuth";
+import { useUser, withAuth } from "@/hooks/useAuth";
 
-export default function Home() {
+function Home() {
   const user = useUser();
   return (
     <div className="flex flex-row sm:flex-col items-center justify-center gap-[16px] min-h-screen text-20-body-b">
@@ -13,3 +13,4 @@ export default function Home() {
     </div>
   );
 }
+export default withAuth(Home);
