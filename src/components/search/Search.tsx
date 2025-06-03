@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
-
 import Input from "../input/Input";
+
+import React, { useRef } from "react";
 
 type SearchProps = {
   placeholder?: string;
