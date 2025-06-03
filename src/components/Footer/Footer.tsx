@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import FacebookIcon from "@/assets/image/icons/socialicon/icon_facebook.svg";
-import InstagramIcon from "@/assets/image/icons/socialicon/icon_instagram.svg";
-import XIcon from "@/assets/image/icons/socialicon/icon_X.svg";
-import YoutubeIcon from "@/assets/image/icons/socialicon/icon_youtube.svg";
+import FacebookIcon from "@/assets//icons/social/icon_facebook.svg";
+import InstagramIcon from "@/assets//icons/social/icon_instagram.svg";
+import XIcon from "@/assets//icons/social/icon_X.svg";
+import YoutubeIcon from "@/assets//icons/social/icon_youtube.svg";
 
 const socialIcons = [
   { href: "https://www.facebook.com/", src: FacebookIcon, alt: "Facebook" },
@@ -31,11 +31,11 @@ export default function Footer() {
             sm:col-span-1 sm:col-start-2 sm:row-start-1
           "
         >
-          <a href="#" className="text-[color:var(--gray-600)]">
+          <a href="#" className="text-gray-600">
             Privacy Policy
           </a>
           <span>·</span>
-          <a href="#" className="text-[color:var(--gray-600)]">
+          <a href="#" className="text-gray-600">
             FAQ
           </a>
         </div>
