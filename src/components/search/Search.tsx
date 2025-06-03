@@ -1,5 +1,5 @@
-import { forwardRef, InputHTMLAttributes, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import React, { useRef } from "react";
+import Input from "../input/Input";
 
 type SearchProps = {
   placeholder?: string;
