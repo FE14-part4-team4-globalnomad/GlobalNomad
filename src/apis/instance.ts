@@ -1,6 +1,5 @@
+// import { isTokenRequired } from "@/utils/axiosInterceptors";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-
-import { isTokenRequired } from "@/utils/axiosInterceptors";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,12 +7,12 @@ const axiosInstance = axios.create({
 
 // TODO: localStorage 사용 제거
 const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
-  const url = config.url ?? "";
+  // const url = config.url ?? "";
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
   return {
     ...config,
-    withCredentials: isTokenRequired(url),
+    // withCredentials: isTokenRequired(url),
   };
 };
 
