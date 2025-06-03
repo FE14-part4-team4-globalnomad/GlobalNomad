@@ -8,8 +8,10 @@ const axiosInstance = axios.create({
 // TODO: localStorage 사용 제거
 const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
   // const url = config.url ?? "";
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
+  if (typeof window !== "undefined") {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
+  }
   return {
     ...config,
     // withCredentials: isTokenRequired(url),
@@ -20,13 +22,15 @@ axiosInstance.interceptors.request.use(requestInterceptor);
 
 const responseInterceptorForError = async (error: AxiosError) => {
   if (error.response?.status === 401) {
-    // 토큰 만료시 localStorage 비우기
-    const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-      config.headers["Authorization"] = "";
-      localStorage.clear();
-      return config;
-    };
-    axiosInstance.interceptors.request.use(requestInterceptor);
+    if (typeof window !== "undefined") {
+      // 토큰 만료시 localStorage 비우기
+      const requestInterceptor = (config: InternalAxiosRequestConfig) => {
+        config.headers["Authorization"] = "";
+        localStorage.clear();
+        return config;
+      };
+      axiosInstance.interceptors.request.use(requestInterceptor);
+    }
   }
   return Promise.reject(error);
 };

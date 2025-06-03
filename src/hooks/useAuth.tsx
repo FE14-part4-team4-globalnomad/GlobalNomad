@@ -7,9 +7,11 @@ export const withAuth = <P,>(WrappedComponent: React.ComponentType<P>) => {
   function AuthWrapper(props: React.PropsWithChildren<P>) {
     const router = useRouter();
     useEffect(() => {
-      const accessToken = localStorage.getItem("user");
-      if (!accessToken) {
-        router.push("/signin");
+      if (typeof window !== "undefined") {
+        const accessToken = localStorage.getItem("user");
+        if (!accessToken) {
+          router.push("/signin");
+        }
       }
     });
     return <WrappedComponent {...props} />;
