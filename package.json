@@ -13,6 +13,7 @@
     "chromatic": "npx chromatic --project-token=chpt_43013a14a2911ae"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.77.2",
     "axios": "^1.9.0",
     "clsx": "^2.1.1",
