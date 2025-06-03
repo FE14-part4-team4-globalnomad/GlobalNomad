@@ -1,3 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+
 import {
   PostAuthLoginPayloadType,
   PostAuthLoginResultType,
@@ -5,8 +9,6 @@ import {
 } from "@/apis/auth/auth.schema";
 import authService from "@/apis/auth/auth.service";
 import { useSetUser } from "@/hooks/useAuth";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 /**
  * 로그인 Mutation
@@ -16,7 +18,7 @@ export const usePostAuthLoginMutation = () => {
   const setUser = useSetUser();
   return useMutation<
     PostAuthLoginResultType,
-    unknown,
+    AxiosError<{ message: string }, unknown>,
     PostAuthLoginPayloadType
   >({
     mutationFn: (payload) =>

@@ -6,7 +6,10 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
 import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
+import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
 
 // const VALIDATION_RULES = {
 //   email: {
@@ -20,7 +23,9 @@ import Logo from "@/components/logo/Logo";
 // };
 
 export default function SigninPage() {
+  const { overlay } = useOverlay();
   const loginMutation = usePostAuthLoginMutation();
+  // const kakaologinMutation = usePostOauthSigninMutation("kakao");
   const [formValue, setFormValue] = useState({ email: "", password: "" });
 
   const onChangeFormValue = (e: ChangeEvent<HTMLFormElement>) => {
@@ -30,7 +35,22 @@ export default function SigninPage() {
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
-    loginMutation.mutate({ payload: formValue });
+    loginMutation.mutate(
+      { payload: formValue },
+      {
+        onError: (error) => {
+          const errMsg =
+            error.response?.data?.message ||
+            "로그인에 실패하였습니다.\n다시 시도해주세요.";
+          overlay(<ConfirmModal message={errMsg} />);
+        },
+      },
+    );
+  };
+
+  const onLoginWithKakao = () => {
+    // const GET_URL = "https://kauth.kakao.com/oauth/authorize";
+    // kakaologinMutation.mutate()
   };
 
   return (
@@ -38,18 +58,24 @@ export default function SigninPage() {
       <Logo />
       <div className="grid w-full max-w-[640px] px-[24px] tablet:px-[52px] gap-[20px]">
         <form
-          className="grid gap-[16px]"
+          className="grid gap-[24px] tablet:gap-[30px]"
           onChange={onChangeFormValue}
           onSubmit={handleLogin}
         >
-          <label htmlFor="email">이메일</label>
-          <input type="email" id="email" placeholder="이메일을 입력해 주세요" />
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력해 주세요"
-          />
+          <div className="grid gap-[16px] tablet:gap-[20px]">
+            <Input
+              label="이메일"
+              type="email"
+              id="email"
+              placeholder="이메일을 입력해 주세요"
+            />
+            <Input
+              label="비밀번호"
+              type="password"
+              id="password"
+              placeholder="비밀번호를 입력해 주세요"
+            />
+          </div>
           <button type="submit">로그인하기</button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">
@@ -59,7 +85,10 @@ export default function SigninPage() {
             <hr className="w-full border-gray-100" />
           </div>
           <div className="grid justify-stretch gap-[24px] tablet:gap-[30px]">
-            <button className="flex justify-center items-center gap-[4px] text-16-m text-gray-600">
+            <button
+              className="flex justify-center items-center gap-[4px] text-16-m text-gray-600"
+              onClick={onLoginWithKakao}
+            >
               <Image
                 src={KakaoIcon}
                 alt="카카오 로그인 아이콘 이미지"

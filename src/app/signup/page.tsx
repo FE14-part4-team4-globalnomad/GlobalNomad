@@ -7,6 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostUserMutation } from "@/apis/user/user.query";
 import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
+import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 import ConfirmModal from "@/components/modal/ConfirmModal";
 import { useOverlay } from "@/hooks/useOverlay";
@@ -60,39 +61,51 @@ export default function SignupPage() {
             );
           }
         },
+        onError: (error) => {
+          const errMsg =
+            error.response?.data?.message ||
+            "회원가입에 실패하였습니다.\n다시 시도해주세요.";
+          overlay(<ConfirmModal message={errMsg} />);
+        },
       },
     );
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center gap-[42px] tablet:gap-[62px]">
+    <div className="min-h-screen pt-[65px] pb-[146px] flex flex-col justify-start tablet:justify-center items-center gap-[42px] tablet:gap-[62px]">
       <Logo />
       <div className="grid w-full max-w-[640px] px-[24px] tablet:px-[52px] gap-[20px]">
         <form
-          className="grid"
+          className="grid gap-[24px] tablet:gap-[30px]"
           onChange={onChangeFormValue}
           onSubmit={handleSignup}
         >
-          <label htmlFor="email">이메일</label>
-          <input type="email" id="email" placeholder="이메일을 입력해 주세요" />
-          <label htmlFor="nickname">닉네임</label>
-          <input
-            type="text"
-            id="nickname"
-            placeholder="닉네임을 입력해 주세요"
-          />
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="8자 이상 입력해 주세요"
-          />
-          <label htmlFor="passwordConfirm">비밀번호 확인</label>
-          <input
-            type="password"
-            id="passwordConfirm"
-            placeholder="비밀번호를 한 번 더 입력해 주세요"
-          />
+          <div className="grid gap-[16px] tablet:gap-[20px]">
+            <Input
+              label="이메일"
+              type="email"
+              id="email"
+              placeholder="이메일을 입력해 주세요"
+            />
+            <Input
+              label="닉네임"
+              type="text"
+              id="nickname"
+              placeholder="닉네임을 입력해 주세요"
+            />
+            <Input
+              label="비밀번호"
+              type="password"
+              id="password"
+              placeholder="8자 이상 입력해 주세요"
+            />
+            <Input
+              label="비밀번호 확인"
+              type="password"
+              id="passwordConfirm"
+              placeholder="비밀번호를 한 번 더 입력해 주세요"
+            />
+          </div>
           <button type="submit">회원가입하기</button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">

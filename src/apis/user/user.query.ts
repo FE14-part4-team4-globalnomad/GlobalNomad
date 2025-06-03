@@ -4,6 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import {
   PatchUserPayloadType,
@@ -33,7 +34,11 @@ export const useUserQuery = () => useQuery(usersQuery.myInfo());
  * 회원가입
  */
 export const usePostUserMutation = () =>
-  useMutation<PostUserResultType, unknown, PostUserPayloadType>({
+  useMutation<
+    PostUserResultType,
+    AxiosError<{ message: string }, unknown>,
+    PostUserPayloadType
+  >({
     mutationFn: (payload) =>
       userService.postUser(payload).then((res) => res.data),
   });
