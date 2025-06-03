@@ -61,6 +61,9 @@ module.exports = {
       "18-body-b": ["1.8rem", { lineHeight: "140%", fontWeight: 700 }],
       "20-body-b": ["2rem", { lineHeight: "160%", fontWeight: 700 }],
     },
+    backgroundColor: {
+      dimmed: "rgba(0, 0, 0, 0.5)",
+    },
     dropShadow: {
       card: "0px 4px 24px rgba(156, 180, 202, 0.2)",
     },
