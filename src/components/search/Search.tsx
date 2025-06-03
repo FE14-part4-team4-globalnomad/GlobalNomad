@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React from "react";
+
 import Input from "../input/Input";
 
 type SearchProps = {
