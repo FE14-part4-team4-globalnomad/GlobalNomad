@@ -42,7 +42,7 @@ const sideMenuRoutes: SideMenuItemType[] = [
 ];
 
 function SideMenu() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const isProfilePage = pathname.startsWith("/profile");
 
   const onClickChangeProfile = () => {
