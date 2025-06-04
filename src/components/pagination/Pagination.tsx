@@ -35,7 +35,7 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`w-[4rem] h-[4rem] disabled:opacity-50 flex items-center justify-center  ${currentPage === 1 ? "opacity-50" : "cursor-pointer"}`}
+        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${currentPage === 1 ? "opacity-50" : "cursor-pointer"}`}
       >
         <Image
           src={currentPage === 1 ? BackArrowGray : BackArrowBlack}
@@ -53,8 +53,8 @@ export default function Pagination({
           className={`w-[4rem] h-[4rem] flex items-center justify-center text-[1.4rem] leading-none 
             ${
               page === currentPage
-                ? "text-[var(--black)] font-bold border-b-[0.2rem] border-[var(--brand-500)] cursor-pointer"
-                : "text-[var(--gray-300)] font-medium cursor-pointer"
+                ? "text-black font-bold border-b-[0.2rem] border-brand-500 cursor-pointer"
+                : "text-gray-300 font-medium cursor-pointer"
             }
 `}
         >
@@ -66,7 +66,7 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`w-[4rem] h-[4rem] disabled:opacity-50 flex items-center justify-center  ${
+        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${
           currentPage === totalPages ? "opacity-50" : "cursor-pointer"
         }`}
       >
