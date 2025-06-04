@@ -13,7 +13,6 @@
     "chromatic": "npx chromatic --project-token=chpt_43013a14a2911ae"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.77.2",
     "axios": "^1.9.0",
     "clsx": "^2.1.1",
@@ -34,6 +33,7 @@
     "@storybook/addon-vitest": "^9.0.0",
     "@storybook/nextjs": "^9.0.4",
     "@storybook/nextjs-vite": "^9.0.0",
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5.77.2",
     "@types/node": "^20",
