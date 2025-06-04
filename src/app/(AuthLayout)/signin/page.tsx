@@ -11,28 +11,29 @@ import Logo from "@/components/logo/Logo";
 import ConfirmModal from "@/components/modal/ConfirmModal";
 import { useOverlay } from "@/hooks/useOverlay";
 
-// const VALIDATION_RULES = {
-//   email: {
-//     validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-//     errorMessage: "이메일 형식으로 작성해주세요.",
-//   },
-//   password: {
-//     validate: (value: string) => value.length >= 8,
-//     errorMessage: "8자 이상 입력해주세요.",
-//   },
-// };
+const SIGNIN_INITIAL_VALUE = { email: "", password: "" };
+const VALIDATION_RULES = {
+  email: {
+    validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+    errorMessage: "이메일 형식으로 작성해주세요.",
+  },
+  password: {
+    validate: (value: string) => value.length >= 8,
+    errorMessage: "8자 이상 입력해주세요.",
+  },
+};
 
 export default function SigninPage() {
   const { overlay } = useOverlay();
   const loginMutation = usePostAuthLoginMutation();
-  const [formValue, setFormValue] = useState({ email: "", password: "" });
+  const [formValue, setFormValue] = useState(SIGNIN_INITIAL_VALUE);
 
   const onChangeFormValue = (e: ChangeEvent<HTMLFormElement>) => {
     const { id, value } = e.target;
     setFormValue({ ...formValue, [id]: value });
   };
 
-  const handleLogin = (e: FormEvent) => {
+  const handleSignin = (e: FormEvent) => {
     e.preventDefault();
     loginMutation.mutate(
       { payload: formValue },
@@ -47,6 +48,19 @@ export default function SigninPage() {
     );
   };
 
+  const getErrorMessage = (id: keyof typeof SIGNIN_INITIAL_VALUE) => {
+    const { validate, errorMessage } = VALIDATION_RULES[id];
+    const value = formValue[id];
+    const isValid = validate(value);
+    return isValid ? undefined : errorMessage;
+  };
+
+  const signinBtnDisabled =
+    Object.entries(formValue).filter(
+      ([id, value]) =>
+        value.length === 0 || getErrorMessage(id as keyof typeof formValue),
+    ).length > 0;
+
   const KAKAO_LOGIN_PATH = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI}&response_type=code&scope=profile_nickname`;
 
   return (
@@ -56,7 +70,7 @@ export default function SigninPage() {
         <form
           className="grid gap-[24px] tablet:gap-[30px]"
           onChange={onChangeFormValue}
-          onSubmit={handleLogin}
+          onSubmit={handleSignin}
         >
           <div className="grid gap-[16px] tablet:gap-[20px]">
             <Input
@@ -64,6 +78,7 @@ export default function SigninPage() {
               type="email"
               id="email"
               placeholder="이메일을 입력해 주세요"
+              error={getErrorMessage("email")}
             />
             <Input
               label="비밀번호"
@@ -72,7 +87,9 @@ export default function SigninPage() {
               placeholder="비밀번호를 입력해 주세요"
             />
           </div>
-          <button type="submit">로그인하기</button>
+          <button type="submit" disabled={signinBtnDisabled}>
+            로그인하기
+          </button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">
           <div className="flex justify-stretch items-center gap-[14px] text-16-m text-[#79747E]">

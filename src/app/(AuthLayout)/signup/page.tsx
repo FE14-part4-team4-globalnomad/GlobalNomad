@@ -12,31 +12,44 @@ import Logo from "@/components/logo/Logo";
 import ConfirmModal from "@/components/modal/ConfirmModal";
 import { useOverlay } from "@/hooks/useOverlay";
 
+const SIGNUP_INITIAL_VALUE = {
+  nickname: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+};
+
 export default function SignupPage() {
   const router = useRouter();
   const { overlay } = useOverlay();
   const signupMutation = usePostUserMutation();
-  const [formValue, setFormValue] = useState({
-    nickname: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
+  const [formValue, setFormValue] = useState(SIGNUP_INITIAL_VALUE);
 
-  // const VALIDATION_RULES = {
-  //   email: {
-  //     validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  //     errorMessage: "잘못된 이메일입니다.",
-  //   },
-  //   password: {
-  //     validate: (value: string) => value.length >= 8,
-  //     errorMessage: "8자 이상 입력해주세요.",
-  //   },
-  //   passwordConfirm: {
-  //     validate: (value: string) => value === formValue.password,
-  //     errorMessage: "비밀번호가 일치하지 않습니다.",
-  //   },
-  // };
+  const VALIDATION_RULES = {
+    email: {
+      validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+      errorMessage: "잘못된 이메일입니다.",
+    },
+    nickname: {
+      validate: (value: string) => value.length <= 10,
+      errorMessage: "10 자 이하로 작성해주세요.",
+    },
+    password: {
+      validate: (value: string) => value.length >= 8,
+      errorMessage: "8자 이상 입력해주세요.",
+    },
+    passwordConfirm: {
+      validate: (value: string) => value === formValue.password,
+      errorMessage: "비밀번호가 일치하지 않습니다.",
+    },
+  };
+
+  const getErrorMessage = (id: keyof typeof SIGNUP_INITIAL_VALUE) => {
+    const { validate, errorMessage } = VALIDATION_RULES[id];
+    const value = formValue[id];
+    const isValid = validate(value);
+    return isValid ? undefined : errorMessage;
+  };
 
   const onChangeFormValue = (e: ChangeEvent<HTMLFormElement>) => {
     const { id, value } = e.target;
@@ -71,6 +84,12 @@ export default function SignupPage() {
     );
   };
 
+  const signupBtnDisabled =
+    Object.entries(formValue).filter(
+      ([id, value]) =>
+        value.length === 0 || getErrorMessage(id as keyof typeof formValue),
+    ).length > 0;
+
   const KAKAO_SIGNUP_PATH = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI}&response_type=code&scope=profile_nickname`;
 
   return (
@@ -88,27 +107,33 @@ export default function SignupPage() {
               type="email"
               id="email"
               placeholder="이메일을 입력해 주세요"
+              error={getErrorMessage("email")}
             />
             <Input
               label="닉네임"
               type="text"
               id="nickname"
               placeholder="닉네임을 입력해 주세요"
+              error={getErrorMessage("nickname")}
             />
             <Input
               label="비밀번호"
               type="password"
               id="password"
               placeholder="8자 이상 입력해 주세요"
+              error={getErrorMessage("password")}
             />
             <Input
               label="비밀번호 확인"
               type="password"
               id="passwordConfirm"
               placeholder="비밀번호를 한 번 더 입력해 주세요"
+              error={getErrorMessage("passwordConfirm")}
             />
           </div>
-          <button type="submit">회원가입하기</button>
+          <button type="submit" disabled={signupBtnDisabled}>
+            회원가입하기
+          </button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">
           <div className="flex justify-stretch items-center gap-[14px] text-16-m text-[#79747E]">
