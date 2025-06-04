@@ -118,7 +118,10 @@ class OauthService {
         `redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI}`,
         `code=${authCode}`,
       ].join("&"),
-      method: HTTP_METHODS.GET,
+      method: HTTP_METHODS.POST,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 

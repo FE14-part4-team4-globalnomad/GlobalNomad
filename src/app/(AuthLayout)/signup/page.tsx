@@ -19,57 +19,61 @@ const SIGNUP_INITIAL_VALUE = {
   passwordConfirm: "",
 };
 
+const VALIDATION_RULES = {
+  email: {
+    validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+    errorMessage: "잘못된 이메일입니다.",
+  },
+  nickname: {
+    validate: (value: string) => value.length <= 10,
+    errorMessage: "10 자 이하로 작성해주세요.",
+  },
+  password: {
+    validate: (value: string) => value.length >= 8,
+    errorMessage: "8자 이상 입력해주세요.",
+  },
+  passwordConfirm: {
+    validate: (value: string, form: typeof SIGNUP_INITIAL_VALUE) =>
+      value === form.password,
+    errorMessage: "비밀번호가 일치하지 않습니다.",
+  },
+};
+
 export default function SignupPage() {
   const router = useRouter();
   const { overlay } = useOverlay();
   const signupMutation = usePostUserMutation();
   const [formValue, setFormValue] = useState(SIGNUP_INITIAL_VALUE);
 
-  const VALIDATION_RULES = {
-    email: {
-      validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-      errorMessage: "잘못된 이메일입니다.",
-    },
-    nickname: {
-      validate: (value: string) => value.length <= 10,
-      errorMessage: "10 자 이하로 작성해주세요.",
-    },
-    password: {
-      validate: (value: string) => value.length >= 8,
-      errorMessage: "8자 이상 입력해주세요.",
-    },
-    passwordConfirm: {
-      validate: (value: string) => value === formValue.password,
-      errorMessage: "비밀번호가 일치하지 않습니다.",
-    },
+  const onChangeFormValue = (e: ChangeEvent<HTMLFormElement>) => {
+    const { id, value } = e.target;
+    setFormValue((prev) => ({ ...prev, [id]: value }));
   };
 
   const getErrorMessage = (id: keyof typeof SIGNUP_INITIAL_VALUE) => {
     const { validate, errorMessage } = VALIDATION_RULES[id];
     const value = formValue[id];
-    const isValid = validate(value);
-    return isValid ? undefined : errorMessage;
+    return validate(value, formValue) ? undefined : errorMessage;
   };
 
-  const onChangeFormValue = (e: ChangeEvent<HTMLFormElement>) => {
-    const { id, value } = e.target;
-    setFormValue({ ...formValue, [id]: value });
-  };
+  const signupBtnDisabled = Object.entries(formValue).some(
+    ([id, value]) =>
+      !value || getErrorMessage(id as keyof typeof formValue) !== undefined,
+  );
 
   const handleSignup = (e: FormEvent) => {
     e.preventDefault();
     const { passwordConfirm, ...payload } = formValue;
     if (!payload.password || payload.password !== passwordConfirm) return;
     signupMutation.mutate(
-      { payload: payload },
+      { payload },
       {
         onSuccess: (res) => {
           if (res.id) {
-            const onConfirm = () => router.push("/signin");
             overlay(
               <ConfirmModal
                 message="가입이 완료되었습니다"
-                onConfirm={onConfirm}
+                onConfirm={() => router.push("/signin")}
               />,
             );
           }
@@ -84,13 +88,16 @@ export default function SignupPage() {
     );
   };
 
-  const signupBtnDisabled =
-    Object.entries(formValue).filter(
-      ([id, value]) =>
-        value.length === 0 || getErrorMessage(id as keyof typeof formValue),
-    ).length > 0;
-
-  const KAKAO_SIGNUP_PATH = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI}&response_type=code&scope=profile_nickname`;
+  const getKakaoSignupUrl = () => {
+    const baseUrl = "https://kauth.kakao.com/oauth/authorize";
+    const query = new URLSearchParams({
+      client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY || "",
+      redirect_uri: process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI || "",
+      response_type: "code",
+      scope: "profile_nickname",
+    });
+    return `${baseUrl}?${query.toString()}`;
+  };
 
   return (
     <div className="min-h-screen pt-[65px] pb-[146px] flex flex-col justify-start tablet:justify-center items-center gap-[42px] tablet:gap-[62px]">
@@ -142,7 +149,7 @@ export default function SignupPage() {
             <hr className="w-full border-gray-100" />
           </div>
           <div className="grid justify-stretch gap-[24px] tablet:gap-[30px]">
-            <Link className="flex justify-center" href={KAKAO_SIGNUP_PATH}>
+            <Link href={getKakaoSignupUrl()} className="flex justify-center">
               <button className="flex justify-center items-center gap-[4px] text-16-m text-gray-600">
                 <Image
                   src={KakaoIcon}

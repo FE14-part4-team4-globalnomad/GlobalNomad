@@ -11,6 +11,7 @@ export default function OauthSigninPage() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const router = useRouter();
+
   const kakaoLoginMutation = usePostOauthSigninMutation("kakao");
   const { overlay } = useOverlay();
 
@@ -26,7 +27,7 @@ export default function OauthSigninPage() {
             error.response?.data.message ||
             "카카오 로그인에 실패하였습니다.\n다시 시도해 주세요.";
           overlay(<ConfirmModal message={message} />);
-          router.push("/signin");
+          router.push(error.response?.status === 403 ? "/signup" : "/signin");
         },
       },
     );

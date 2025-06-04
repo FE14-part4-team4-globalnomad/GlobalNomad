@@ -16,10 +16,9 @@ export default function OauthSignupPage() {
   const code = searchParams.get("code") || "";
   const router = useRouter();
 
-  const { data: tokenData, isSuccess: isTokenFetched } =
-    useGetTokenFromKakaoQuery(code);
+  const { data: tokenData } = useGetTokenFromKakaoQuery(code);
 
-  const { data: userData, isSuccess: isUserFetched } = useGetUserFromKakaoQuery(
+  const { data: userData } = useGetUserFromKakaoQuery(
     tokenData?.access_token || "",
   );
 
@@ -28,7 +27,7 @@ export default function OauthSignupPage() {
 
   const handleKakaoLogin = async () => {
     const redirectUri = process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI;
-    if (!(code && isTokenFetched && isUserFetched && redirectUri)) return;
+    if (!(code && userData?.properties.nickname && redirectUri)) return;
     kakaoSignupMutation.mutate(
       {
         token: code,
@@ -51,7 +50,7 @@ export default function OauthSignupPage() {
   useEffect(() => {
     handleKakaoLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, isTokenFetched, isUserFetched]);
+  }, [code, tokenData?.access_token, userData?.properties.nickname]);
 
   return <div></div>;
 }
