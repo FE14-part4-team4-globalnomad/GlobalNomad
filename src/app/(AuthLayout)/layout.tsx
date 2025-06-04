@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 
 import { cn } from "@/utils/classNames";
 
@@ -11,7 +11,7 @@ function Layout({ children }: { children: ReactNode }) {
         "desktop:w-[64rem] desktop:mx-auto",
       )}
     >
-      {children}
+      <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
     </main>
   );
 }
