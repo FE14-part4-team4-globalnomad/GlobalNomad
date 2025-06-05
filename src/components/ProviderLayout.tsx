@@ -1,7 +1,6 @@
 "use client";
 
 import QueryProvider from "./QueryProvider";
-import { UserProvider } from "@/hooks/useAuth";
 import { OverlayProvider } from "@/hooks/useOverlay";
 
 export default function ProviderLayout({
@@ -10,10 +9,8 @@ export default function ProviderLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <UserProvider>
-      <QueryProvider>
-        <OverlayProvider>{children}</OverlayProvider>
-      </QueryProvider>
-    </UserProvider>
+    <QueryProvider>
+      <OverlayProvider>{children}</OverlayProvider>
+    </QueryProvider>
   );
 }

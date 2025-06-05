@@ -1,5 +1,6 @@
 import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/router";
 
 import {
   PostOauthAppsPayload,
@@ -10,6 +11,8 @@ import {
   SignupPayloadType,
 } from "@/apis/oauth/oauth.schema";
 import oauthService from "@/apis/oauth/oauth.service";
+import { useAuthStore } from "@/store/authStore";
+import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
 
 const oauthQuery = {
   all: () => ["kakao"],
@@ -61,8 +64,10 @@ export const usePostOauthAppsMutation = () =>
 /**
  * 간편 회원가입
  */
-export const usePostOauthSignupMutation = (provider: "google" | "kakao") =>
-  useMutation<
+export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
+  const router = useRouter();
+  const signIn = useAuthStore((state) => state.signIn);
+  return useMutation<
     PostOauthSignupResultType,
     AxiosError<{ message: string }, unknown>,
     SignupPayloadType
@@ -71,13 +76,22 @@ export const usePostOauthSignupMutation = (provider: "google" | "kakao") =>
       oauthService
         .postOauthSignup({ provider, payload })
         .then((res) => res.data),
+    onSuccess: (result: PostOauthSigninResultType) => {
+      const { user, accessToken } = result;
+      signIn(user);
+      updateHeaderWithToken(accessToken);
+      router.push("/");
+    },
   });
+};
 
 /**
  * 간편 로그인
  */
-export const usePostOauthSigninMutation = (provider: "google" | "kakao") =>
-  useMutation<
+export const usePostOauthSigninMutation = (provider: "google" | "kakao") => {
+  const router = useRouter();
+  const signIn = useAuthStore((state) => state.signIn);
+  return useMutation<
     PostOauthSigninResultType,
     AxiosError<{ message: string }, unknown>,
     SigninPayloadType
@@ -86,4 +100,11 @@ export const usePostOauthSigninMutation = (provider: "google" | "kakao") =>
       oauthService
         .postOauthSignin({ provider, payload })
         .then((res) => res.data),
+    onSuccess: (result: PostOauthSigninResultType) => {
+      const { user, accessToken } = result;
+      signIn(user);
+      updateHeaderWithToken(accessToken);
+      router.push("/");
+    },
   });
+};

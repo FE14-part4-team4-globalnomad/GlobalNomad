@@ -1,3 +1,7 @@
+import { InternalAxiosRequestConfig } from "axios";
+
+import axiosInstance from "@/apis/instance";
+
 const excludedPaths = ["/oauth"];
 
 /**
@@ -8,6 +12,13 @@ const excludedPaths = ["/oauth"];
  */
 export const isTokenRequired = (url?: string): boolean => {
   if (!url) return true; // URL 없으면 보호 가정
-
   return !excludedPaths.some((path) => url.includes(path));
+};
+
+export const updateHeaderWithToken = (accessToken: string) => {
+  const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    return config;
+  };
+  axiosInstance.interceptors.request.use(requestInterceptor);
 };

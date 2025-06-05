@@ -8,14 +8,15 @@ import {
   PostAuthTokensResultType,
 } from "@/apis/auth/auth.schema";
 import authService from "@/apis/auth/auth.service";
-import { useSetUser } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/authStore";
+import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
 
 /**
  * 로그인 Mutation
  */
 export const usePostAuthLoginMutation = () => {
   const router = useRouter();
-  const setUser = useSetUser();
+  const signIn = useAuthStore((state) => state.signIn);
   return useMutation<
     PostAuthLoginResultType,
     AxiosError<{ message: string }, unknown>,
@@ -24,7 +25,9 @@ export const usePostAuthLoginMutation = () => {
     mutationFn: (payload) =>
       authService.postAuthLogin(payload).then((res) => res.data),
     onSuccess: (result: PostAuthLoginResultType) => {
-      setUser(result.user);
+      const { user, accessToken } = result;
+      signIn(user);
+      updateHeaderWithToken(accessToken);
       router.push("/");
     },
   });
@@ -33,7 +36,12 @@ export const usePostAuthLoginMutation = () => {
 /**
  * 토큰 재발급 Mutation
  */
-export const usePostAuthTokenMutation = () =>
-  useMutation<PostAuthTokensResultType>({
+export const usePostAuthTokenMutation = () => {
+  return useMutation<PostAuthTokensResultType>({
     mutationFn: () => authService.postAuthToken().then((res) => res.data),
+    onSuccess: (result) => {
+      const { accessToken } = result;
+      updateHeaderWithToken(accessToken);
+    },
   });
+};
