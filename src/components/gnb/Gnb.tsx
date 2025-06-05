@@ -8,7 +8,7 @@ import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg";
 function Gnb() {
   const isLoggedIn = true;
   return (
-    <nav className="fixed top-0 left-0 w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center z-9999">
+    <nav className="w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center z-9999 ">
       <div>
         <Link href="/">
           {/* 데스크탑용 로고 (기본) */}
