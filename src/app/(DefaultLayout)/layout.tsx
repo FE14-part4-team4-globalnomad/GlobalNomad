@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer/Footer";
 import Gnb from "@/components/gnb/Gnb";
 
 function Layout({ children }: { children: ReactNode }) {
