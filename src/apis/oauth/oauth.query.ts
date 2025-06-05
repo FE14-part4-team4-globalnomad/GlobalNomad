@@ -1,6 +1,5 @@
 import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 
 import {
   PostOauthAppsPayload,
@@ -65,7 +64,6 @@ export const usePostOauthAppsMutation = () =>
  * 간편 회원가입
  */
 export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
-  const router = useRouter();
   const signIn = useAuthStore((state) => state.signIn);
   return useMutation<
     PostOauthSignupResultType,
@@ -80,7 +78,6 @@ export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
       const { user, accessToken } = result;
       signIn(user);
       updateHeaderWithToken(accessToken);
-      router.push("/");
     },
   });
 };
@@ -89,7 +86,6 @@ export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
  * 간편 로그인
  */
 export const usePostOauthSigninMutation = (provider: "google" | "kakao") => {
-  const router = useRouter();
   const signIn = useAuthStore((state) => state.signIn);
   return useMutation<
     PostOauthSigninResultType,
@@ -104,7 +100,6 @@ export const usePostOauthSigninMutation = (provider: "google" | "kakao") => {
       const { user, accessToken } = result;
       signIn(user);
       updateHeaderWithToken(accessToken);
-      router.push("/");
     },
   });
 };

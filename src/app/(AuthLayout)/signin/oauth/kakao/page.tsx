@@ -21,6 +21,7 @@ export default function OauthSigninPage() {
     kakaoLoginMutation.mutate(
       { redirectUri, token: code },
       {
+        onSuccess: () => router.push("/"),
         onError: (error) => {
           const message =
             error.response?.data.message ||
