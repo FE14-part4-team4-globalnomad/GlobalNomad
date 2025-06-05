@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import Footer from "@/components/Footer";
 import Gnb from "@/components/gnb/Gnb";
 
 function Layout({ children }: { children: ReactNode }) {
@@ -7,7 +8,7 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="w-screen min-h-screen flex flex-col">
       <Gnb />
       <div className="flex flex-col flex-1">{children}</div>
-      <footer className="h-[14rem]">푸터</footer>
+      <Footer />
     </div>
   );
 }
