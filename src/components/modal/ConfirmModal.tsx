@@ -12,7 +12,7 @@ export default function ConfirmModal({ message = "", onConfirm = () => {} }) {
   return (
     <ModalWrapper className="p-[30px] pt-[34px] tablet:p-[40px] tablet:pb-[30px]">
       <div className="grid gap-[16px] tablet:gap-[20px]">
-        <div className="text-16-b tablet:text-18-b">
+        <div className="text-16-b tablet:text-18-b text-center">
           {message.split("\n").map((line, idx) => (
             <p key={`alert-message-${idx}`}>{line}</p>
           ))}
