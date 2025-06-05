@@ -34,8 +34,8 @@ function Gnb() {
         <GnbUserSection />
       ) : (
         <div className="text-14-m flex gap-[3.9rem]">
-          <Link href="/">로그인</Link>
-          <Link href="/">회원가입</Link>
+          <Link href="/login">로그인</Link>
+          <Link href="/signin">회원가입</Link>
         </div>
       )}
     </nav>
