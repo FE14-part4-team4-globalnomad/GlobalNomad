@@ -13,11 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex flex-col">
-        {label && (
-          <label htmlFor={id} className="text-16-m text-gray-950 mb-1">
-            {label}
-          </label>
-        )}
+        {label && <label htmlFor={id} className="text-16-m text-gray-950 mb-1">{label}</label>}
         <div className="relative">
           <input
             id={id}
@@ -45,10 +41,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        {error && <p className="text-red-500 text-12-m mt-[6px]">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-12-m mt-[6px]">{error}</p>
+        )}
       </div>
     );
-  },
+  }
 );
 
 Input.displayName = "Input";
