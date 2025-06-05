@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 
 import { CalendarDay } from "../../components/calendarDate/CalendarDay";
@@ -8,8 +8,14 @@ const meta: Meta<typeof CalendarDay> = {
   component: CalendarDay,
   argTypes: {
     pending: { control: { type: "number", min: 0 }, name: "예약 (pending)" },
-    confirmed: { control: { type: "number", min: 0 }, name: "승인 (confirmed)" },
-    completed: { control: { type: "number", min: 0 }, name: "완료 (completed)" },
+    confirmed: {
+      control: { type: "number", min: 0 },
+      name: "승인 (confirmed)",
+    },
+    completed: {
+      control: { type: "number", min: 0 },
+      name: "완료 (completed)",
+    },
   },
 };
 

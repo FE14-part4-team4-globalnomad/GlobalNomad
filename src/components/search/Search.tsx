@@ -7,7 +7,10 @@ type SearchProps = {
   onSearch: (keyword: string) => void;
 };
 
-export function Search({ placeholder = "내가 원하는 체험은", onSearch }: SearchProps) {
+export function Search({
+  placeholder = "내가 원하는 체험은",
+  onSearch,
+}: SearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = () => {
@@ -24,7 +27,9 @@ export function Search({ placeholder = "내가 원하는 체험은", onSearch }:
 
   return (
     <div className="w-full flex flex-col items-center">
-      <h2 className="text-32-b mb-[36px] text-gray-950">무엇을 체험하고 싶으신가요?</h2>
+      <h2 className="text-32-b mb-[36px] text-gray-950">
+        무엇을 체험하고 싶으신가요?
+      </h2>
       <div className="w-full relative">
         <Input
           ref={inputRef}

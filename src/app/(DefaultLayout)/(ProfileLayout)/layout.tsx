@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import SideMenu from "@/components/sidemenu/SideMenu";
 import { cn } from "@/utils/classNames";
 
 function Layout({ children }: { children: ReactNode }) {
@@ -12,7 +13,7 @@ function Layout({ children }: { children: ReactNode }) {
       )}
     >
       <aside className={cn("hidden", "tablet:block")}>
-        <div>사이드메뉴</div>
+        <SideMenu />
       </aside>
       <main>{children}</main>
     </div>

@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
-import { Search } from '../../components/search/Search';
+import { Search } from "../../components/search/Search";
 
 const meta: Meta<typeof Search> = {
-  title: 'Components/Search',
+  title: "Components/Search",
   component: Search,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
-    placeholder: { control: 'text' },
-    onSearch: { action: 'searched' },
+    placeholder: { control: "text" },
+    onSearch: { action: "searched" },
   },
 };
 
@@ -17,6 +17,6 @@ type Story = StoryObj<typeof Search>;
 
 export const Default: Story = {
   args: {
-    placeholder: '내가 원하는 체험은',
+    placeholder: "내가 원하는 체험은",
   },
 };
