@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import Footer from "@/components/footer/Footer";
+import Footer from "../../components/footer/Footer";
 
 const meta: Meta<typeof Footer> = {
   title: "Components/Footer",
   component: Footer,
-  tags: ["autodocs"],
+  // tags: ["autodocs"],
 };
 
 export default meta;
