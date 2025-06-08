@@ -1,4 +1,8 @@
-const excludedPaths = ["/auth", "/oauth"];
+import { InternalAxiosRequestConfig } from "axios";
+
+import axiosInstance from "@/apis/instance";
+
+const excludedPaths = ["/oauth"];
 
 /**
  * 특정 URL이 토큰 인증이 **필요한** 경로인지 여부를 판단합니다.
@@ -8,6 +12,13 @@ const excludedPaths = ["/auth", "/oauth"];
  */
 export const isTokenRequired = (url?: string): boolean => {
   if (!url) return true; // URL 없으면 보호 가정
-
   return !excludedPaths.some((path) => url.includes(path));
+};
+
+export const updateHeaderWithToken = (accessToken: string) => {
+  const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    return config;
+  };
+  axiosInstance.interceptors.request.use(requestInterceptor);
 };
