@@ -1,31 +1,69 @@
 import Image from "next/image";
+import { createContext, ReactNode, useContext } from "react";
 
 import Button from "../button/Button";
-import { MyReservationType } from "@/types/reservation";
+import { MyReservationType, ReservationStatusType } from "@/types/reservation";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
-type MyReservationCardProps = Omit<
-  MyReservationType,
-  "teamId" | "userId" | "scheduleId" | "createdAt" | "updatedAt"
->;
-/**
- * TODO: 예약 변경/취소 로직 연결
- * TODO: 후기 작성 모달 연결
- */
-function ReviewButtons({
-  status,
-  reviewSubmitted,
-}: {
-  status: MyReservationCardProps["status"];
-  reviewSubmitted: boolean;
-}) {
+interface MyReservationCardProps {
+  reservationInfo: Omit<
+    MyReservationType,
+    "teamId" | "userId" | "scheduleId" | "createdAt" | "updatedAt"
+  >;
+  onChangeReservation?: () => void;
+  onCancelReservation?: () => void;
+  onUpdateReview?: () => void;
+}
+
+const MyReservationCardContext = createContext<MyReservationCardProps | null>(
+  null,
+);
+
+function useMyReservationCard() {
+  const context = useContext(MyReservationCardContext);
+  if (!context)
+    throw new Error(
+      "MyReservationCard components must be used within <MyReservationCardProvider />",
+    );
+  return context;
+}
+
+function MyReservationCardProvider({
+  children,
+  reservationInfo,
+  onChangeReservation = () => {},
+  onCancelReservation = () => {},
+  onUpdateReview = () => {},
+}: { children: ReactNode } & MyReservationCardProps) {
+  return (
+    <MyReservationCardContext.Provider
+      value={{
+        reservationInfo,
+        onChangeReservation,
+        onCancelReservation,
+        onUpdateReview,
+      }}
+    >
+      {reservationInfo ? children : <></>}
+    </MyReservationCardContext.Provider>
+  );
+}
+
+function ReviewButtons() {
+  const {
+    reservationInfo: { status, reviewSubmitted },
+    onChangeReservation,
+    onCancelReservation,
+    onUpdateReview,
+  } = useMyReservationCard();
   return status !== "completed" ? (
     <>
       <Button
         size="reservation"
         variant="outline"
         className="mobile:w-full rounded-[8px]"
+        onClick={onChangeReservation}
       >
         예약 변경
       </Button>
@@ -34,20 +72,26 @@ function ReviewButtons({
         variant="secondary"
         className="mobile:w-full rounded-[8px]"
         disabled={status !== "pending"}
+        onClick={onCancelReservation}
       >
         예약 취소
       </Button>
     </>
   ) : (
     !reviewSubmitted && (
-      <Button size="reservation" className="mobile:w-full rounded-[8px]">
+      <Button
+        size="reservation"
+        className="mobile:w-full rounded-[8px]"
+        onClick={onUpdateReview}
+      >
         후기 작성
       </Button>
     )
   );
 }
+MyReservationCardProvider.ReviewButtons = ReviewButtons;
 
-function Badge({ status }: { status: MyReservationCardProps["status"] }) {
+function Badge({ status }: { status: ReservationStatusType }) {
   const COMMON_BADGE_STYLE = "rounded-[100px] py-[4px] px-[8px] text-13-b";
   const BADGE_STYLES = {
     canceled: "bg-gray-100 text-gray-600",
@@ -72,19 +116,16 @@ function Badge({ status }: { status: MyReservationCardProps["status"] }) {
   );
 }
 
-function ReservationInfo({
-  status,
-  title,
-  date,
-  startTime,
-  endTime,
-}: {
-  status: MyReservationCardProps["status"];
-  title: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-}) {
+function ReservationInfo() {
+  const {
+    reservationInfo: {
+      status,
+      activity: { title },
+      date,
+      startTime,
+      endTime,
+    },
+  } = useMyReservationCard();
   return (
     <div className="grid gap-[4px] tablet:gap-[10px]">
       <div className="grid gap-[8px] tablet:gap-[12px]">
@@ -103,18 +144,12 @@ function ReservationInfo({
     </div>
   );
 }
+MyReservationCardProvider.ReservationInfo = ReservationInfo;
 
-function PriceAndActions({
-  totalPrice,
-  headCount,
-  status,
-  reviewSubmitted,
-}: {
-  totalPrice: number;
-  headCount: number;
-  status: MyReservationCardProps["status"];
-  reviewSubmitted: boolean;
-}) {
+function PriceAndActions() {
+  const {
+    reservationInfo: { totalPrice, headCount, status },
+  } = useMyReservationCard();
   return (
     <div className="flex justify-between">
       <div className="text-12-m font-semibold tablet:text-16-m tablet:font-semibold text-gray-400 flex items-center gap-[4px]">
@@ -125,12 +160,13 @@ function PriceAndActions({
       </div>
       {status !== "declined" && status !== "canceled" && (
         <div className="hidden tablet:flex justify-between items-center gap-[12px]">
-          <ReviewButtons {...{ status, reviewSubmitted }} />
+          <MyReservationCardProvider.ReviewButtons />
         </div>
       )}
     </div>
   );
 }
+MyReservationCardProvider.PriceAndActions = PriceAndActions;
 
 function ReservationCardWrapper({
   children,
@@ -160,40 +196,45 @@ function ReservationCardWrapper({
     </div>
   );
 }
+MyReservationCardProvider.ReservationCardWrapper = ReservationCardWrapper;
+
 /**
  * 예약관리 리스트 아이템
  */
 export default function MyReservationCard({
-  status,
-  activity,
-  date,
-  startTime,
-  endTime,
-  totalPrice,
-  headCount,
-  reviewSubmitted,
+  reservationInfo,
+  onChangeReservation = () => {},
+  onCancelReservation = () => {},
+  onUpdateReview = () => {},
 }: MyReservationCardProps) {
   return (
-    <article className="grid gap-[20px]">
-      <hr className="border-gray-50 tablet:hidden" />
-      <div className="grid gap-[12px]">
-        <div className="text-16-b text-gray-800 pl-[8px] tablet:hidden">
-          {date}
-        </div>
-        <ReservationCardWrapper bannerImageUrl={activity.bannerImageUrl}>
-          <ReservationInfo
-            {...{ status, title: activity.title, date, startTime, endTime }}
-          />
-          <PriceAndActions
-            {...{ totalPrice, headCount, status, reviewSubmitted }}
-          />
-        </ReservationCardWrapper>
-        {status !== "declined" && status !== "canceled" && (
-          <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
-            <ReviewButtons {...{ status, reviewSubmitted }} />
+    <MyReservationCardProvider
+      {...{
+        reservationInfo,
+        onChangeReservation,
+        onCancelReservation,
+        onUpdateReview,
+      }}
+    >
+      <article className="grid gap-[20px]">
+        <hr className="border-gray-50 tablet:hidden" />
+        <div className="grid gap-[12px]">
+          <div className="text-16-b text-gray-800 pl-[8px] tablet:hidden">
+            {reservationInfo.date}
           </div>
-        )}
-      </div>
-    </article>
+          <ReservationCardWrapper
+            bannerImageUrl={reservationInfo.activity.bannerImageUrl}
+          >
+            <MyReservationCardProvider.ReservationInfo />
+            <MyReservationCardProvider.PriceAndActions />
+          </ReservationCardWrapper>
+          {reservationInfo.status !== "declined" && status !== "canceled" && (
+            <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
+              <MyReservationCardProvider.ReviewButtons />
+            </div>
+          )}
+        </div>
+      </article>
+    </MyReservationCardProvider>
   );
 }
