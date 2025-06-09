@@ -78,12 +78,6 @@ export default function SignupPage() {
             );
           }
         },
-        onError: (error) => {
-          const errMsg =
-            error.response?.data?.message ||
-            "회원가입에 실패하였습니다.\n다시 시도해주세요.";
-          overlay(<ConfirmModal message={errMsg} />);
-        },
       },
     );
   };

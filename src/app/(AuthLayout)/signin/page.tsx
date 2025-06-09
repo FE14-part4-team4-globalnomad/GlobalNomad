@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
 import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
-import ConfirmModal from "@/components/modal/ConfirmModal";
-import { useOverlay } from "@/hooks/useOverlay";
 
 const SIGNIN_INITIAL_VALUE = { email: "", password: "" };
 
@@ -25,7 +24,7 @@ const VALIDATION_RULES = {
 };
 
 export default function SigninPage() {
-  const { overlay } = useOverlay();
+  const router = useRouter();
   const loginMutation = usePostAuthLoginMutation();
   const [formValue, setFormValue] = useState(SIGNIN_INITIAL_VALUE);
 
@@ -40,24 +39,15 @@ export default function SigninPage() {
     return validate(value) ? undefined : errorMessage;
   };
 
-  const loginBtnDisabled = useMemo(() => {
-    return Object.entries(formValue).some(
-      ([id, value]) => !value || getErrorMessage(id as keyof typeof formValue),
-    );
-  }, [formValue]);
+  const loginBtnDisabled = Object.entries(formValue).some(
+    ([id, value]) => !value || getErrorMessage(id as keyof typeof formValue),
+  );
 
   const handleSignin = (e: FormEvent) => {
     e.preventDefault();
     loginMutation.mutate(
       { payload: formValue },
-      {
-        onError: (error) => {
-          const errMsg =
-            error.response?.data?.message ||
-            "로그인에 실패하였습니다.\n다시 시도해주세요.";
-          overlay(<ConfirmModal message={errMsg} />);
-        },
-      },
+      { onSuccess: () => router.push("/") },
     );
   };
 

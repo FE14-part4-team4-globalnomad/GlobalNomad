@@ -1,19 +1,33 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ReactNode, useState } from "react";
+import { AxiosError } from "axios";
+import { ReactNode } from "react";
 
-const createQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {},
-  });
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
 
 export default function QueryProvider({ children }: { children: ReactNode }) {
-  const [client] = useState(() => createQueryClient());
+  const { overlay } = useOverlay();
+  const queryClient = new QueryClient({
+    mutationCache: new MutationCache({
+      onError: (error) => {
+        const axiosError = error as AxiosError<{ message: string }>;
+        const message =
+          axiosError?.response?.data?.message ||
+          "문제가 발생했습니다. 다시 시도해주세요.";
+        overlay(<ConfirmModal message={message} />);
+      },
+    }),
+  });
 
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       {children}
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
