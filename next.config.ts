@@ -1,11 +1,13 @@
 import type { NextConfig } from 'next';
 
-/** @type {import('next').NextConfig} */
+/** @type {NextConfig} */
 const nextConfig: NextConfig = {
-  webpack(config) {
+  webpack(config, { isServer }) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.[jt]sx?$/,
+      issuer: {
+        and: [/\.[jt]sx?$/],
+      },
       use: ['@svgr/webpack'],
     });
 
