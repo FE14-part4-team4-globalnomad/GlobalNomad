@@ -6,15 +6,16 @@ export interface MyActivityReservationCountType {
   completed: number;
 }
 
-export interface CalendarDayProps extends Partial<MyActivityReservationCountType> {
+export interface CalendarDayProps
+  extends Partial<MyActivityReservationCountType> {
   children?: ReactNode;
   onUpdateDotClick?: () => void;
 }
 
 const reservationStyles = {
-  예약: 'bg-brand-100 text-brand-500',
-  승인: 'bg-[#FFF8DD] text-[#FFB051]',
-  완료: 'bg-gray-50 text-gray-500',
+  예약: "bg-brand-100 text-brand-500",
+  승인: "bg-[#FFF8DD] text-[#FFB051]",
+  완료: "bg-gray-50 text-gray-500",
 };
 
 export function CalendarDay({
@@ -27,10 +28,10 @@ export function CalendarDay({
   const shouldShowDot = pending > 0 || confirmed > 0 || completed > 0;
 
   const badgeData = [
-    { count: pending, label: '예약', style: reservationStyles.예약 },
-    { count: confirmed, label: '승인', style: reservationStyles.승인 },
-    { count: completed, label: '완료', style: reservationStyles.완료 },
-  ].filter(badge => badge.count > 0);
+    { count: pending, label: "예약", style: reservationStyles.예약 },
+    { count: confirmed, label: "승인", style: reservationStyles.승인 },
+    { count: completed, label: "완료", style: reservationStyles.완료 },
+  ].filter((badge) => badge.count > 0);
 
   return (
     <div className="w-full flex flex-col items-center select-none">
