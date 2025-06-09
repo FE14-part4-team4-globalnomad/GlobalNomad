@@ -32,7 +32,7 @@ export function Search({ placeholder = "내가 원하는 체험은", onSearch }:
           onKeyDown={handleKeyDown}
           onFocus={(e) => (e.target.placeholder = "")}
           onBlur={(e) => (e.target.placeholder = placeholder)}
-          className="pl-[56px] pr-[150px] h-[64px] text-18-m"
+          className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md border-none"
         />
         <img
           src="/src/assets/icons/any/icon_search.svg"
