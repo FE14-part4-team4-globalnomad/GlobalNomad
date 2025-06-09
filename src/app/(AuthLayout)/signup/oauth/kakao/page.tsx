@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 import { usePostOauthSignupMutation } from "@/apis/oauth/oauth.query";
+import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 
@@ -35,10 +36,10 @@ export default function OauthSignupPage() {
     <div className="min-h-screen pt-[65px] pb-[146px] flex flex-col justify-start tablet:justify-center items-center gap-[42px] tablet:gap-[62px]">
       <Logo />
       <form
-        className="grid w-full max-w-[640px] px-[24px] tablet:px-[52px] gap-[24px] tablet:gap-[30px]"
+        className="grid justify-stretch max-w-[640px] gap-[24px] tablet:gap-[30px]"
         onSubmit={handleKakaoSignup}
       >
-        <div className="grid gap-[16px] tablet:gap-[20px]">
+        <div className="grid justify-stretch gap-[16px] tablet:gap-[20px]">
           <Input
             label="닉네임"
             type="text"
@@ -51,9 +52,14 @@ export default function OauthSignupPage() {
             onChange={(e) => setNickname((e.target as HTMLInputElement).value)}
           />
         </div>
-        <button type="submit" disabled={signupBtnDisabled}>
+        <Button
+          fullWidth={true}
+          size="sign"
+          type="submit"
+          disabled={signupBtnDisabled}
+        >
           회원가입하기
-        </button>
+        </Button>
       </form>
     </div>
   );
