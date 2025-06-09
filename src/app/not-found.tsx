@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import WarningIcon from '@/assets/images/warning.svg';
 
 export default function NotFound() {
