@@ -6,17 +6,14 @@ import { FormEvent, useState } from "react";
 import { usePostOauthSignupMutation } from "@/apis/oauth/oauth.query";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
-import ConfirmModal from "@/components/modal/ConfirmModal";
-import { useOverlay } from "@/hooks/useOverlay";
 
 export default function OauthSignupPage() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code") || "";
   const [nickname, setNickname] = useState("");
-  const router = useRouter();
 
+  const router = useRouter();
   const kakaoSignupMutation = usePostOauthSignupMutation("kakao");
-  const { overlay } = useOverlay();
 
   const handleKakaoSignup = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,13 +23,8 @@ export default function OauthSignupPage() {
       { token: code, nickname, redirectUri },
       {
         onSuccess: () => router.push("/"),
-        onError: (error) => {
-          const message =
-            error.response?.data.message ||
-            "카카오 회원가입에 실패하였습니다.\n다시 시도해 주세요.";
-          overlay(<ConfirmModal message={message} />);
-          router.push("/signup");
-        },
+        onError: (error) =>
+          router.push(error.response?.status === 400 ? "/signin" : "/signup"),
       },
     );
   };

@@ -9,8 +9,8 @@ export default function ProviderLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <OverlayProvider>{children}</OverlayProvider>
-    </QueryProvider>
+    <OverlayProvider>
+      <QueryProvider>{children}</QueryProvider>
+    </OverlayProvider>
   );
 }
