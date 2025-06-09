@@ -20,7 +20,10 @@ export default function WarningModal({
     <ModalWrapper className="p-[30px] pb-[24px] tablet:p-[30px] tablet:pb-[30px]">
       <div className="grid gap-[20px] tablet:gap-[24px]">
         <div className="grid gap-[2px]">
-          <div className="" aria-label="image wrapper">
+          <div
+            className="aspect-square w-[49px] tablet:w-[88px]"
+            aria-label="image wrapper"
+          >
             <Image src={WarningImg} alt="얼럿 메세지창 이미지" fill />
           </div>
           <div className="text-16-b tablet:text-18-b">
