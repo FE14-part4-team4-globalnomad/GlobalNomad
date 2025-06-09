@@ -18,7 +18,7 @@ export default function NotFound() {
 
       <div className="text-center">
         <h1 className="text-32-b mobile:text-16-b text-gray-800">현재 찾을 수 없는 페이지를 요청했어요!</h1>
-        <h2 className="text-18-m mobile:text-11-m text-gray-600 my-2 mobile:my-1">요청하신 페이지가 사라졌거나 존재하지 않아요. 돌아가는 건 어떨까요?</h2>
+        <h2 className="text-20-m mobile:text-11-m text-gray-600 my-2 mobile:my-1">요청하신 페이지가 사라졌거나 존재하지 않아요. 돌아가는건 어떨까요?</h2>
         <div className="font-semibold flex gap-2 justify-center mobile:flex-col">
           <button
             onClick={() => router.push('/')}
