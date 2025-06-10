@@ -6,6 +6,14 @@ import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
+interface MyExperienceCardProps
+  extends Pick<
+    ActivityType,
+    "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
+  > {
+  onUpdateActivity?: () => void;
+  onDeleteActivity?: () => void;
+}
 /**
  * 냐 체험 관리 리스트 아이템
  */
@@ -15,10 +23,9 @@ export default function MyExperienceCard({
   reviewCount,
   price,
   bannerImageUrl,
-}: Pick<
-  ActivityType,
-  "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
->) {
+  onUpdateActivity = () => {},
+  onDeleteActivity = () => {},
+}: MyExperienceCardProps) {
   return (
     <article
       className={cn(
@@ -53,6 +60,7 @@ export default function MyExperienceCard({
             size="reservation"
             variant="outline"
             className="rounded-[8px]"
+            onClick={onUpdateActivity}
           >
             수정하기
           </Button>
@@ -60,6 +68,7 @@ export default function MyExperienceCard({
             size="reservation"
             variant="secondary"
             className="rounded-[8px]"
+            onClick={onDeleteActivity}
           >
             삭제하기
           </Button>
