@@ -3,8 +3,6 @@ import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
 
 type SortOptionType = (typeof ACTIVITY_SORT_FILTER)[0];
 interface SortDropdownProps<T> {
-  label?: string;
-  placeholder?: string;
   selectedItem: T;
   onSelect?: (value: T) => void;
 }
@@ -16,14 +14,14 @@ export default function SortDropdown({
     <div className="w-[150px]">
       <Dropdown variant="no-outline">
         <div className="relative">
-          <Dropdown.Selected selected={selectedItem.text} />
+          <Dropdown.Selected selected={selectedItem.title} />
           <Dropdown.SelectArea>
-            {ACTIVITY_SORT_FILTER.map(({ value, text }) => (
+            {ACTIVITY_SORT_FILTER.map(({ id, title }) => (
               <Dropdown.Item
-                key={value}
-                onSelect={() => onSelect?.({ value, text })}
+                key={id}
+                onSelect={() => onSelect?.({ id, title })}
               >
-                {text}
+                {title}
               </Dropdown.Item>
             ))}
           </Dropdown.SelectArea>
