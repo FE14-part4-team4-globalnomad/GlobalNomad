@@ -1,36 +1,37 @@
 import { Dropdown } from "@/components/dropdown/Dropdown";
 
-export interface DropdownProps<T> {
+export interface DropdownProps<
+  OptionType extends Array<{ id: string | number; title: string }>,
+> {
   label?: string;
   placeholder?: string;
-  selectedItem?: T;
-  optionList?: Array<T>;
-  onSelect?: (value: T) => void;
-  getKey?: (item: T) => string | number;
-  getLabel?: (item: T) => string;
+  selectedItem?: OptionType[number];
+  optionList?: OptionType;
+  onSelect?: (value: OptionType[number]) => void;
 }
-export default function DefaultDropdown<T extends string | object>({
+export default function DefaultDropdown<
+  OptionType extends Array<{ id: string | number; title: string }>,
+>({
   label,
   placeholder = "옵션을 선택해 주세요",
   selectedItem,
-  optionList = [],
+  optionList,
   onSelect,
-  getKey = (item: T) => String(item),
-  getLabel = (item: T) => String(item),
-}: DropdownProps<T>) {
+}: DropdownProps<OptionType>) {
+  // TODO: 모바일 대응 (select 태그 사용)
   return (
     <Dropdown>
       <Dropdown.Label label={label} />
       <div className="relative">
         <Dropdown.Selected
           placeholder={placeholder}
-          selected={selectedItem ? getLabel(selectedItem) : ""}
-          disabled={optionList.length === 0}
+          selected={selectedItem?.title}
+          disabled={!optionList}
         />
         <Dropdown.SelectArea>
-          {optionList.map((el) => (
-            <Dropdown.Item key={getKey(el)} onSelect={() => onSelect?.(el)}>
-              {getLabel(el)}
+          {optionList?.map((el: OptionType[number]) => (
+            <Dropdown.Item key={el.id} onSelect={() => onSelect?.(el)}>
+              {el.title}
             </Dropdown.Item>
           ))}
         </Dropdown.SelectArea>

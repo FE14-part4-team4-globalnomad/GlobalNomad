@@ -3,18 +3,17 @@
 import Image from "next/image";
 import {
   createContext,
+  ReactNode,
   useContext,
+  useEffect,
   useRef,
   useState,
-  ReactNode,
-  useEffect,
 } from "react";
 
 import IconChevron from "@/assets/icons/arrow/icon_alt arrow_down_black.svg";
-import { cn } from "@/utils/classNames";
+import { cn, cond } from "@/utils/classNames";
 
 interface DropdownContextType {
-  variant?: "default" | "no-outline";
   isOpen: boolean;
   toggle: () => void;
   close: () => void;
@@ -29,13 +28,7 @@ function useDropdown() {
   return context;
 }
 
-export function Dropdown({
-  variant = "default",
-  children,
-}: {
-  variant?: "default" | "no-outline";
-  children: ReactNode;
-}) {
+export function Dropdown({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -56,7 +49,7 @@ export function Dropdown({
   }, []);
 
   return (
-    <DropdownContext.Provider value={{ variant, isOpen, toggle, close }}>
+    <DropdownContext.Provider value={{ isOpen, toggle, close }}>
       <div className="text-16-m flex flex-col" ref={triggerRef}>
         {children}
       </div>
@@ -69,31 +62,38 @@ function DropdownLabel({ label }: { label?: string }) {
 }
 Dropdown.Label = DropdownLabel;
 
-function DropdownSelectedArea({
+const SelectedVariants = {
+  default: "default",
+  "no-outline": "no-outline",
+} as const;
+function DropdownSelected({
+  variant = "default",
   placeholder,
   selected,
   disabled = false,
 }: {
+  variant?: (typeof SelectedVariants)[keyof typeof SelectedVariants];
   placeholder?: string;
   selected?: string;
   disabled?: boolean;
 }) {
-  const { variant, isOpen, toggle } = useDropdown();
+  const { isOpen, toggle } = useDropdown();
   return (
     <button
       className={cn(
         "h-[54px] w-full border-gray-100 rounded-[16px] text-16-m",
-        variant === "default"
-          ? `px-2 border border-gray-100 ${disabled ? "" : "focus:border-brand-500"}`
+        variant === SelectedVariants.default
+          ? "px-2 border border-gray-100"
           : "px-1 pl-[1.4rem]",
-        !!selected ? "text-gray-950" : "text-gray-400",
+        cond(!disabled, "focus:border-brand-500"),
+        selected ? "text-gray-950" : "text-gray-400",
         "flex justify-between items-center",
       )}
       onClick={disabled ? undefined : toggle}
     >
       {selected || placeholder}
       <Image
-        className={cn(isOpen ? "rotate-180" : "", disabled ? "opacity-50" : "")}
+        className={cn(cond(isOpen, "rotate-180"), cond(disabled, "opacity-50"))}
         src={IconChevron}
         width={24}
         height={24}
@@ -102,32 +102,21 @@ function DropdownSelectedArea({
     </button>
   );
 }
-Dropdown.Selected = DropdownSelectedArea;
+Dropdown.Selected = DropdownSelected;
 
-function DropdownSelectModal({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+function DropdownSelectAreaModal({ children }: { children: ReactNode }) {
   const { isOpen } = useDropdown();
   return (
     <div id="dropdown-items-wrapper">
       {isOpen && (
-        <div
-          className={cn(
-            "absolute z-10 left-0 right-0 max-h-[243px] overflow-y-auto mt-2 rounded-[16px] bg-white border border-gray-100",
-            className,
-          )}
-        >
+        <div className="absolute z-10 left-0 right-0 max-h-[243px] overflow-y-auto mt-2 rounded-[16px] bg-white border border-gray-100">
           {children}
         </div>
       )}
     </div>
   );
 }
-Dropdown.SelectArea = DropdownSelectModal;
+Dropdown.SelectArea = DropdownSelectAreaModal;
 
 function DropdownSelectItem({
   children,

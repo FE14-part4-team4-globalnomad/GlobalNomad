@@ -10,11 +10,15 @@ export default function SortDropdown({
   selectedItem,
   onSelect,
 }: SortDropdownProps<SortOptionType>) {
+  // TODO: 모바일 대응 (select 태그 사용)
   return (
     <div className="w-[150px]">
-      <Dropdown variant="no-outline">
+      <Dropdown>
         <div className="relative">
-          <Dropdown.Selected selected={selectedItem.title} />
+          <Dropdown.Selected
+            variant="no-outline"
+            selected={selectedItem.title}
+          />
           <Dropdown.SelectArea>
             {ACTIVITY_SORT_FILTER.map(({ id, title }) => (
               <Dropdown.Item
