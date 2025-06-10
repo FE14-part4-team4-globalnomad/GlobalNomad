@@ -7,6 +7,8 @@ import { usePostOauthSignupMutation } from "@/apis/oauth/oauth.query";
 import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
 
 export default function OauthSignupPage() {
   const searchParams = useSearchParams();
@@ -14,6 +16,7 @@ export default function OauthSignupPage() {
   const [nickname, setNickname] = useState("");
 
   const router = useRouter();
+  const { overlay } = useOverlay();
   const kakaoSignupMutation = usePostOauthSignupMutation("kakao");
 
   const handleKakaoSignup = async (e: FormEvent) => {
@@ -23,7 +26,13 @@ export default function OauthSignupPage() {
     kakaoSignupMutation.mutate(
       { token: code, nickname, redirectUri },
       {
-        onSuccess: () => router.push("/"),
+        onSuccess: () =>
+          overlay(
+            <ConfirmModal
+              message="가입이 완료되었습니다"
+              onConfirm={() => router.push("/signin")}
+            />,
+          ),
         onError: (error) =>
           router.push(error.response?.status === 400 ? "/signin" : "/signup"),
       },

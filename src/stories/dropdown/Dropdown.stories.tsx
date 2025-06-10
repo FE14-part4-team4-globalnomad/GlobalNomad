@@ -1,67 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
 
-import { Dropdown } from "@/components/dropdown/Dropdown";
+import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
+import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
 import "../../styles/globals.css";
 
-interface DropdownExampleProps<T> {
-  label?: string;
-  placeholder?: string;
-  selectedItem?: T;
-  optionList?: Array<T>;
-  onSelect?: (value: T) => void;
-}
-function DropdownExample({
-  label,
-  placeholder = "옵션을 선택해 주세요",
-  selectedItem,
-  optionList = [],
-  onSelect,
-}: DropdownExampleProps<string>) {
-  return (
-    <Dropdown>
-      <Dropdown.Label label={label} />
-      <div className="relative">
-        <Dropdown.Selected
-          placeholder={placeholder}
-          selected={selectedItem}
-          disabled={optionList.length === 0}
-        />
-        <Dropdown.SelectArea>
-          {optionList.map((el) => (
-            <Dropdown.Item key={el} onSelect={() => onSelect?.(el)}>
-              {el}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.SelectArea>
-      </div>
-    </Dropdown>
-  );
-}
-
 const meta = {
-  title: "Components/Dropdown",
-  component: DropdownExample,
+  title: "Components/Dropdown/Default Dropdown",
+  component: DefaultDropdown,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof DropdownExample>;
+} satisfies Meta<typeof DefaultDropdown>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ExampleDropdown: Story = {
-  args: { label: "예제", optionList: ["A", "B", "C", "D", "E", "F", "G"] },
-  render: (args) => {
-    const [item, setItem] = useState<string>();
+type filterType = typeof ACTIVITY_SORT_FILTER;
+
+export const DefaultDropdownExample: Story = {
+  render: () => {
+    const [item, setItem] = useState<filterType[number]>();
     return (
       <div className="w-[80vw] tablet:w-64">
-        <DropdownExample
-          label={args.label}
-          optionList={args.optionList}
+        <DefaultDropdown<filterType>
+          label="예제"
+          optionList={ACTIVITY_SORT_FILTER}
           selectedItem={item}
-          onSelect={setItem}
+          onSelect={(value: filterType[number]) => setItem(value)}
         />
       </div>
     );
