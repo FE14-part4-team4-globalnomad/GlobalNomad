@@ -14,6 +14,7 @@ import IconChevron from "@/assets/icons/arrow/icon_alt arrow_down_black.svg";
 import { cn } from "@/utils/classNames";
 
 interface DropdownContextType {
+  variant?: "default" | "no-outline";
   isOpen: boolean;
   toggle: () => void;
   close: () => void;
@@ -28,14 +29,19 @@ function useDropdown() {
   return context;
 }
 
-export function Dropdown({ children }: { children: ReactNode }) {
+export function Dropdown({
+  variant = "default",
+  children,
+}: {
+  variant?: "default" | "no-outline";
+  children: ReactNode;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
 
   const toggle = () => setIsOpen((prev) => !prev);
   const close = () => setIsOpen(false);
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -50,7 +56,7 @@ export function Dropdown({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <DropdownContext.Provider value={{ isOpen, toggle, close }}>
+    <DropdownContext.Provider value={{ variant, isOpen, toggle, close }}>
       <div className="text-16-m flex flex-col" ref={triggerRef}>
         {children}
       </div>
@@ -66,20 +72,22 @@ Dropdown.Label = DropdownLabel;
 function DropdownSelectedArea({
   placeholder,
   selected,
-  disabled,
+  disabled = false,
 }: {
-  placeholder: string;
+  placeholder?: string;
   selected?: string;
-  disabled: boolean;
+  disabled?: boolean;
 }) {
-  const { isOpen, toggle } = useDropdown();
+  const { variant, isOpen, toggle } = useDropdown();
   return (
     <button
       className={cn(
-        "h-[54px] w-full border-gray-100 rounded-[16px] px-2 text-16-m",
-        `border border-gray-100 ${disabled ? "" : "focus:border-brand-500"}`,
+        "h-[54px] w-full border-gray-100 rounded-[16px] text-16-m",
+        variant === "default"
+          ? `px-2 border border-gray-100 ${disabled ? "" : "focus:border-brand-500"}`
+          : "px-1 pl-[1.4rem]",
         !!selected ? "text-gray-950" : "text-gray-400",
-        "flex justify-between items-center gap-[8px]",
+        "flex justify-between items-center",
       )}
       onClick={disabled ? undefined : toggle}
     >
@@ -109,7 +117,7 @@ function DropdownSelectModal({
       {isOpen && (
         <div
           className={cn(
-            "absolute w-full max-h-[243px] overflow-y-auto mt-2 rounded-[16px] bg-white shadow-lg z-50 border border-gray-100",
+            "absolute z-10 left-0 right-0 max-h-[243px] overflow-y-auto mt-2 rounded-[16px] bg-white border border-gray-100",
             className,
           )}
         >
