@@ -1,56 +1,31 @@
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
-import WarningModal from "@/components/modal/WarningModal";
-import { useOverlay } from "@/hooks/useOverlay";
+import Button from "@/components/button/Button";
+import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
-// TODO: type 정의 반영
-interface MyExperienceCardProps {
-  id?: number;
-  title: string;
-  price: number;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  onDelete?: (id: number) => void;
+interface MyExperienceCardProps
+  extends Pick<
+    ActivityType,
+    "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
+  > {
+  onUpdateActivity?: () => void;
+  onDeleteActivity?: () => void;
 }
-
 /**
  * 냐 체험 관리 리스트 아이템
  */
 export default function MyExperienceCard({
-  id,
   title,
   rating,
   reviewCount,
   price,
   bannerImageUrl,
-  onDelete,
+  onUpdateActivity = () => {},
+  onDeleteActivity = () => {},
 }: MyExperienceCardProps) {
-  const { overlay } = useOverlay();
-  const router = useRouter();
-
-  const handleDelete = () => {
-    if (id === undefined) return;
-
-    overlay(
-      <WarningModal
-        message="삭제하시겠습니까?"
-        confirmText="예"
-        onConfirm={() => {
-          onDelete?.(id);
-        }}
-      />,
-    );
-  };
-
-  const handleEdit = () => {
-    if (id === undefined) return;
-    router.push(`/experience/update/${id}`); // ✅ 수정 페이지로 이동
-  };
   return (
     <article
       className={cn(
@@ -81,18 +56,22 @@ export default function MyExperienceCard({
           </div>
         </div>
         <div className="flex justify-start items-center gap-[8px]">
-          <button
-            onClick={handleEdit}
-            className="border border-gray-50 rounded-[8px] px-[1rem] py-[0.6rem] text-14-m"
+          <Button
+            size="reservation"
+            variant="outline"
+            className="rounded-[8px]"
+            onClick={onUpdateActivity}
           >
             수정하기
-          </button>
-          <button
-            onClick={handleDelete}
-            className="bg-gray-50 rounded-[8px] px-[1rem] py-[0.6rem] text-14-m"
+          </Button>
+          <Button
+            size="reservation"
+            variant="secondary"
+            className="rounded-[8px]"
+            onClick={onDeleteActivity}
           >
             삭제하기
-          </button>
+          </Button>
         </div>
       </div>
       <div className="relative w-[82px] tablet:w-[142px] aspect-square overflow-hidden rounded-[18px] tablet:rounded-[20px]">

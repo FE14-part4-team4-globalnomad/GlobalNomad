@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 
 import {
   PostAuthLoginPayloadType,
@@ -15,7 +14,6 @@ import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
  * 로그인 Mutation
  */
 export const usePostAuthLoginMutation = () => {
-  const router = useRouter();
   const signIn = useAuthStore((state) => state.signIn);
   return useMutation<
     PostAuthLoginResultType,
@@ -26,9 +24,8 @@ export const usePostAuthLoginMutation = () => {
       authService.postAuthLogin(payload).then((res) => res.data),
     onSuccess: (result: PostAuthLoginResultType) => {
       const { user, accessToken } = result;
-      signIn(user);
       updateHeaderWithToken(accessToken);
-      router.push("/");
+      signIn(user);
     },
   });
 };

@@ -7,6 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostUserMutation } from "@/apis/user/user.query";
 import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
+import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 import ConfirmModal from "@/components/modal/ConfirmModal";
@@ -78,12 +79,6 @@ export default function SignupPage() {
             );
           }
         },
-        onError: (error) => {
-          const errMsg =
-            error.response?.data?.message ||
-            "회원가입에 실패하였습니다.\n다시 시도해주세요.";
-          overlay(<ConfirmModal message={errMsg} />);
-        },
       },
     );
   };
@@ -102,9 +97,9 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen pt-[65px] pb-[146px] flex flex-col justify-start tablet:justify-center items-center gap-[42px] tablet:gap-[62px]">
       <Logo />
-      <div className="grid w-full max-w-[640px] px-[24px] tablet:px-[52px] gap-[20px]">
+      <div className="grid justify-stretch max-w-[640px] gap-[20px] tablet:gap-[30px]">
         <form
-          className="grid gap-[24px] tablet:gap-[30px]"
+          className="grid justify-stretch gap-[24px] tablet:gap-[30px]"
           onChange={onChangeFormValue}
           onSubmit={handleSignup}
         >
@@ -138,9 +133,14 @@ export default function SignupPage() {
               error={getErrorMessage("passwordConfirm")}
             />
           </div>
-          <button type="submit" disabled={signupBtnDisabled}>
+          <Button
+            size="sign"
+            type="submit"
+            fullWidth={true}
+            disabled={signupBtnDisabled}
+          >
             회원가입하기
-          </button>
+          </Button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">
           <div className="flex justify-stretch items-center gap-[14px] text-16-m text-[#79747E]">
@@ -150,7 +150,11 @@ export default function SignupPage() {
           </div>
           <div className="grid justify-stretch gap-[24px] tablet:gap-[30px]">
             <Link href={getKakaoSignupUrl()} className="flex justify-center">
-              <button className="flex justify-center items-center gap-[4px] text-16-m text-gray-600">
+              <Button
+                size="sign"
+                variant="outline"
+                className="flex justify-center items-center gap-[4px] text-16-m text-gray-600"
+              >
                 <Image
                   src={KakaoIcon}
                   alt="카카오 회원가입 아이콘 이미지"
@@ -158,7 +162,7 @@ export default function SignupPage() {
                   height={24}
                 />
                 카카오 회원가입
-              </button>
+              </Button>
             </Link>
             <div className="flex justify-center gap-[4px] text-16-m text-gray-400">
               회원이신가요?

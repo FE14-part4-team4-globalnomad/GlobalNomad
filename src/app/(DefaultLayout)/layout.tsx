@@ -5,7 +5,7 @@ import Gnb from "@/components/gnb/Gnb";
 
 function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="w-screen min-h-screen flex flex-col">
+    <div className="w-screen min-h-screen flex flex-col gap-[4rem]">
       <Gnb />
       <div className="flex flex-col flex-1">{children}</div>
       <Footer />
