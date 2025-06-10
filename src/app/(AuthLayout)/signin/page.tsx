@@ -7,6 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
 import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
+import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 
@@ -65,12 +66,12 @@ export default function SigninPage() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center gap-[42px] tablet:gap-[62px]">
       <Logo />
-      <div className="grid w-full max-w-[640px] px-[24px] tablet:px-[52px] gap-[20px]">
+      <div className="grid justify-stretch max-w-[640px] gap-[20px] tablet:gap-[30px]">
         <form
           className="grid gap-[24px] tablet:gap-[30px]"
           onSubmit={handleSignin}
         >
-          <div className="grid gap-[16px] tablet:gap-[20px]">
+          <div className="grid justify-stretch gap-[16px] tablet:gap-[20px]">
             <Input
               label="이메일"
               type="email"
@@ -88,9 +89,14 @@ export default function SigninPage() {
               onChange={handleChange}
             />
           </div>
-          <button type="submit" disabled={loginBtnDisabled}>
+          <Button
+            size="sign"
+            type="submit"
+            fullWidth={true}
+            disabled={loginBtnDisabled}
+          >
             로그인하기
-          </button>
+          </Button>
         </form>
         <div className="grid gap-[20px] tablet:gap-[30px]">
           <div className="flex items-center gap-[14px] text-16-m text-[#79747E]">
@@ -99,17 +105,20 @@ export default function SigninPage() {
             <hr className="w-full border-gray-100" />
           </div>
           <div className="grid justify-stretch gap-[24px] tablet:gap-[30px] text-center">
-            <Link
-              href={getKakaoLoginUrl()}
-              className="flex justify-center items-center gap-[4px] text-16-m text-gray-600"
-            >
-              <Image
-                src={KakaoIcon}
-                alt="카카오 로그인 아이콘 이미지"
-                width={24}
-                height={24}
-              />
-              카카오 로그인
+            <Link href={getKakaoLoginUrl()}>
+              <Button
+                size="sign"
+                variant="outline"
+                className="flex justify-center items-center gap-[4px] text-16-m text-gray-600"
+              >
+                <Image
+                  src={KakaoIcon}
+                  alt="카카오 로그인 아이콘 이미지"
+                  width={24}
+                  height={24}
+                />
+                카카오 로그인
+              </Button>
             </Link>
             <div className="flex justify-center gap-[4px] text-16-m text-gray-400">
               회원이 아니신가요?
