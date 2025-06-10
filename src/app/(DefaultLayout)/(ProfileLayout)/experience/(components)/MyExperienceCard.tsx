@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import Button from "../button/Button";
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
+import Button from "@/components/button/Button";
 import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";

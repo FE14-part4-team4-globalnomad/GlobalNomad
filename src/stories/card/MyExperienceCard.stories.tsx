@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import MyExperienceCard from "@/components/card/MyExperienceCard";
+import MyExperienceCard from "@/app/(DefaultLayout)/(ProfileLayout)/experience/(components)/MyExperienceCard";
 import "../../styles/globals.css";
 
 const meta = {
