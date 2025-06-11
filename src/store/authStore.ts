@@ -6,9 +6,12 @@ import { deleteCookie, setCookie } from "@/utils/next-cookie";
 
 interface AuthState {
   user?: UserType;
+  accessToken?: string;
+  refreshToken?: string;
   isLoggedIn: boolean;
-  setUser: (user?: UserType) => void; // 유저 정보 업데이트 (ex. 내 정보 수정)
-  signIn: (user: UserType) => void; // 로그인
+  setUser: (user: UserType) => void; // 유저 정보 업데이트 (ex. 내 정보 수정)
+  setToken: (accessToken: string, refreshToken?: string) => void; // 토큰 업데이트
+  signIn: (user: UserType, accessToken: string) => void; // 로그인
   signOut: () => void; // 로그아웃
 }
 const INITIAL_AUTH_STORE_VALUE = {
@@ -22,9 +25,11 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       isLoggedIn: false,
       setUser: (user) => set({ user }),
-      signIn: async (user) => {
+      setToken: (accessToken, refreshToken) =>
+        set({ accessToken, refreshToken }),
+      signIn: async (user, accessToken) => {
         await setCookie("loggedIn", new Date().getTime().toString());
-        set({ user, isLoggedIn: true });
+        set({ user, accessToken, isLoggedIn: true });
       },
       signOut: async () => {
         await deleteCookie("loggedIn");

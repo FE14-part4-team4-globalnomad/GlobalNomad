@@ -36,6 +36,11 @@ export const updateHeaderWithToken = (accessToken: string) => {
 export const responseInterceptorForError = async (error: AxiosError) => {
   if (error.response?.status !== 401 || typeof window === "undefined")
     return Promise.reject(error);
+  const accessToken = useAuthStore.getState().accessToken;
+  if (accessToken) {
+    updateHeaderWithToken(accessToken);
+    return Promise.reject(error);
+  }
   const requestInterceptor = (config: InternalAxiosRequestConfig) => {
     config.headers.set("Authorization", "");
     useAuthStore.getState().signOut();

@@ -24,8 +24,8 @@ export const usePostAuthLoginMutation = () => {
       authService.postAuthLogin(payload).then((res) => res.data),
     onSuccess: (result: PostAuthLoginResultType) => {
       const { user, accessToken } = result;
+      signIn(user, accessToken);
       updateHeaderWithToken(accessToken);
-      signIn(user);
     },
   });
 };
@@ -34,10 +34,12 @@ export const usePostAuthLoginMutation = () => {
  * 토큰 재발급 Mutation
  */
 export const usePostAuthTokenMutation = () => {
+  const setToken = useAuthStore((state) => state.setToken);
   return useMutation<PostAuthTokensResultType>({
     mutationFn: () => authService.postAuthToken().then((res) => res.data),
     onSuccess: (result) => {
-      const { accessToken } = result;
+      const { accessToken, refreshToken } = result;
+      setToken(accessToken, refreshToken);
       updateHeaderWithToken(accessToken);
     },
   });
