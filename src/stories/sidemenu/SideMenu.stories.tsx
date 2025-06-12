@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import SideMenu from "@/components/sidemenu/SideMenu";
 import { useAuthStore } from "@/store/authStore";
-import "../../styles/globals.css";
 
 const meta: Meta<typeof SideMenu> = {
   title: "Components/SideMenu",
