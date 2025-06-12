@@ -4,6 +4,7 @@ import { ChangeEvent, useRef } from "react";
 import { usePostUserImageMutation } from "@/apis/user/user.query";
 import EditIcon from "@/assets/icons/any/edit/icon_edit_white.svg";
 import DefaultProfile from "@/assets/images/profile/normal_profile_lg.svg";
+import { useAuthStore } from "@/store/authStore";
 import { cn } from "@/utils/classNames";
 
 function ProfileImageWrapper({
@@ -15,7 +16,8 @@ function ProfileImageWrapper({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const profileImageMutation = usePostUserImageMutation();
-  const ProfileImage = imgSrc || DefaultProfile;
+  const tempImageSrc = useAuthStore((state) => state.tempProfileImageUrl);
+  const ProfileImage = tempImageSrc || imgSrc || DefaultProfile;
 
   function handleChangeFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {

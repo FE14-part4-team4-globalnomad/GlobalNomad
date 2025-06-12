@@ -6,6 +6,7 @@ import { usePatchUserMutation, useUserQuery } from "@/apis/user/user.query";
 import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import { SIGNUP_VALIDATION_RULES } from "@/constants/auth";
+import { useAuthStore } from "@/store/authStore";
 
 const PROFILE_INITIAL_VALUE = {
   nickname: "",
@@ -18,6 +19,9 @@ function ProfilePage() {
   const updateProfileMutation = usePatchUserMutation();
   const { data, isSuccess } = useUserQuery();
   const [formValue, setFormValue] = useState(PROFILE_INITIAL_VALUE);
+
+  const profileImageUrl = useAuthStore((state) => state.tempProfileImageUrl);
+  const updateProfileImage = useAuthStore((state) => state.setTempProfileImage);
 
   useEffect(() => {
     if (isSuccess && !!data) {
@@ -44,8 +48,14 @@ function ProfilePage() {
 
   const handleUpdateProfile = (e: FormEvent) => {
     e.preventDefault();
-    updateProfileMutation.mutate({ payload: formValue });
+    updateProfileMutation.mutate({
+      payload: { ...formValue, profileImageUrl },
+    });
   };
+
+  useEffect(() => {
+    return () => updateProfileImage();
+  }, []);
 
   return (
     <form

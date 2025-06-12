@@ -74,8 +74,8 @@ export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
         .postOauthSignup({ provider, payload })
         .then((res) => res.data),
     onSuccess: (result: PostOauthSigninResultType) => {
-      const { user, accessToken } = result;
-      signIn(user, accessToken);
+      const { user, accessToken, refreshToken } = result;
+      signIn(user, accessToken, refreshToken);
     },
   });
 };
@@ -95,8 +95,8 @@ export const usePostOauthSigninMutation = (provider: "google" | "kakao") => {
         .postOauthSignin({ provider, payload })
         .then((res) => res.data),
     onSuccess: (result: PostOauthSigninResultType) => {
-      const { user, accessToken } = result;
-      signIn(user, accessToken);
+      const { user, accessToken, refreshToken } = result;
+      signIn(user, accessToken, refreshToken);
     },
   });
 };
