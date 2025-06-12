@@ -1,19 +1,19 @@
 import Image from "next/image";
 
 import StarIcon from "@/assets/icons/star/icon_star_active.svg";
+import Button from "@/components/button/Button";
+import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
-// TODO: type 정의 반영
-interface MyExperienceCardProps {
-  id?: number;
-  title: string;
-  price: number;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
+interface MyExperienceCardProps
+  extends Pick<
+    ActivityType,
+    "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
+  > {
+  onUpdateActivity?: () => void;
+  onDeleteActivity?: () => void;
 }
-
 /**
  * 냐 체험 관리 리스트 아이템
  */
@@ -23,6 +23,8 @@ export default function MyExperienceCard({
   reviewCount,
   price,
   bannerImageUrl,
+  onUpdateActivity = () => {},
+  onDeleteActivity = () => {},
 }: MyExperienceCardProps) {
   return (
     <article
@@ -54,9 +56,22 @@ export default function MyExperienceCard({
           </div>
         </div>
         <div className="flex justify-start items-center gap-[8px]">
-          {/* TODO: Button component 반영 */}
-          <button>수정하기</button>
-          <button>삭제하기</button>
+          <Button
+            size="reservation"
+            variant="outline"
+            className="rounded-[8px]"
+            onClick={onUpdateActivity}
+          >
+            수정하기
+          </Button>
+          <Button
+            size="reservation"
+            variant="secondary"
+            className="rounded-[8px]"
+            onClick={onDeleteActivity}
+          >
+            삭제하기
+          </Button>
         </div>
       </div>
       <div className="relative w-[82px] tablet:w-[142px] aspect-square overflow-hidden rounded-[18px] tablet:rounded-[20px]">

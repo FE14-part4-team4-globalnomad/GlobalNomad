@@ -79,7 +79,7 @@ export default function Reservation(props: ReservationProps) {
           <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
         </div>
 
-        <Button size="calendar" variant="primary" fullWidth rounded>
+        <Button size="calendar" variant="primary" rounded className="!w-13">
           예약하기
         </Button>
       </div>
