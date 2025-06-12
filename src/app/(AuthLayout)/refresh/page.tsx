@@ -13,16 +13,20 @@ export default function RefreshPage() {
   const { overlay } = useOverlay();
   const updateTokenMutation = usePostAuthTokenMutation();
   const signOut = useAuthStore((state) => state.signOut);
-  useEffect(() => {
+
+  const handleRefresh = () => {
     updateTokenMutation.mutate(undefined, {
       onSuccess: () => router.back(),
       onError: () => {
         const modalMsg = "토큰 재발급에 실패하였습니다.\n다시 로그인해 주세요.";
-        overlay(<ConfirmModal message={modalMsg} />);
+        const onConfirm = () => router.push("/signin");
+        overlay(<ConfirmModal message={modalMsg} onConfirm={onConfirm} />);
         signOut();
-        router.push("/signin");
       },
     });
+  };
+  useEffect(() => {
+    handleRefresh();
   }, []);
   return <></>;
 }

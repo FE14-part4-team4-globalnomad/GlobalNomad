@@ -38,7 +38,10 @@ export const responseInterceptorForError = async (error: AxiosError) => {
     const accessToken = useAuthStore.getState().accessToken;
     if (!accessToken)
       useAuthStore.getState().signOut(); // 로그아웃 처리
-    else if (typeof window !== "undefined") {
+    else if (
+      typeof window !== "undefined" &&
+      !window.location.pathname.includes("/refresh")
+    ) {
       window.location.href = "/refresh"; // 재발급 처리
     }
   }
