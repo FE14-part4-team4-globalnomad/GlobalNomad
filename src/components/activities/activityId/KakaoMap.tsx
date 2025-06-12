@@ -62,27 +62,91 @@ export default function KakaoMap({ address }: MapProps) {
               window.open(`https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`);
             });
 
+            const isMobile = window.innerWidth <= 768;
+
+            // 삼각형 크기나 말풍선 스타일을 모바일/PC 구분
+            const bubbleStyle = isMobile
+              ? `
+                position: relative;
+                right: 15px;
+                top: 2px;
+                display: inline-flex;
+                align-items: center;
+                background: white;
+                border: 1.5px solid #2D8CFF;
+                border-radius: 999px;
+                padding: 4px 8px;
+                font-weight: bold;
+                font-size: 12px;
+                color: #333333;
+                box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+              `
+              : `
+                position: relative;
+                right: 25px;
+                top: 2px;
+                display: inline-flex;
+                align-items: center;
+                background: white;
+                border: 2px solid #2D8CFF;
+                border-radius: 999px;
+                padding: 6px 12px;
+                font-weight: bold;
+                font-size: 14px;
+                color: #333333;
+                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+              `;
+
+            const tailOuter = isMobile
+              ? `
+                position: absolute;
+                bottom: -8px;
+                left: 0px;
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 8px solid #2D8CFF;
+              `
+              : `
+                position: absolute;
+                bottom: -11px;
+                left: 0px;
+                width: 0;
+                height: 0;
+                border-left: 11px solid transparent;
+                border-right: 11px solid transparent;
+                border-top: 10px solid #2D8CFF;
+              `;
+
+            const tailInner = isMobile
+              ? `
+                position: absolute;
+                top: -8px;
+                left: -5px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 7px solid white;
+              `
+              : `
+                position: absolute;
+                top: -12px;
+                left: -8px;
+                width: 0;
+                height: 0;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 10px solid white;
+              `;
+
             const overlay = new window.kakao.maps.CustomOverlay({
               position: coords,
               yAnchor: 1,
               content: `
                 <div style="position: relative;">
-                  <!-- 말풍선 본체 -->
-                  <div style="
-                    position: relative;
-                    right: 25px;
-                    top: 2px;
-                    display: inline-flex;
-                    align-items: center;
-                    background: white;
-                    border: 2px solid #2D8CFF;
-                    border-radius: 999px;
-                    padding: 6px 12px;
-                    font-weight: bold;
-                    font-size: 14px;
-                    color: #333333;
-                    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-                  ">
+                  <div style="${bubbleStyle}">
                     <div style="
                       width: 24px;
                       height: 24px;
@@ -98,34 +162,13 @@ export default function KakaoMap({ address }: MapProps) {
                     <div>${address}</div>
                   </div>
 
-                  <!-- 꼬리 -->
-                  <div style="
-                    position: absolute;
-                    bottom: -12px;
-                    left: 0px;
-                    width: 0;
-                    height: 0;
-                    border-left: 9px solid transparent;
-                    border-right: 9px solid transparent;
-                    border-top: 12px solid #2D8CFF;
-                  ">
-                    <!-- 안쪽 흰색 삼각형 -->
-                    <div style="
-                      position: absolute;
-                      top: -12px;
-                      left: -8px;
-                      width: 0;
-                      height: 0;
-                      border-left: 8px solid transparent;
-                      border-right: 8px solid transparent;
-                      border-top: 10px solid white;
-                    "></div>
+                  <div style="${tailOuter}">
+                    <div style="${tailInner}"></div>
                   </div>
                 </div>
               `
             });
             overlay.setMap(map);
-
             map.setCenter(coords);
 
             const handleResizeMap = () => {
@@ -160,7 +203,7 @@ export default function KakaoMap({ address }: MapProps) {
     <div className="">
       <h1 className="text-18-b text-gray-950 mb-1">오시는 길</h1>
       <p className="text-14-m mb-1">{address}</p>
-      <div id="map" className="w-[670px] h-[450px] rounded-3xl" />
+      <div id="map" className="w-67 h-45 rounded-3xl mobile:w-33 mobile:h-18" />
     </div>
   );
 }

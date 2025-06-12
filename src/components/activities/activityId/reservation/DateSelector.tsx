@@ -11,7 +11,7 @@ type DateSelectorProps = {
   currentMonth: number;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
-  selectedDate: Date;
+  selectedDate: Date | null;
   setSelectedDate: (date: Date) => void;
   daysInMonth: number;
   startDay: number;
@@ -35,8 +35,8 @@ export default function DateSelector({
 }: DateSelectorProps) {
   return (
     <div className="mb-[24px]">
-      <div className="text-16-b text-gray-950">날짜</div>
-      <div className="mt-1">
+      <div className="text-gray-950 desktop:text-16-b tablet:text-20-b">날짜</div>
+      <div className="mt-1 desktop:h-35 tablet:w-36 tablet:h-49">
         <div className="flex justify-between items-center mb-2">
           <div className="text-16-m text-gray-950">
             {format(new Date(currentYear, currentMonth), 'MMMM yyyy')}
@@ -75,7 +75,9 @@ export default function DateSelector({
             }
 
             const dateStr = format(date, 'yyyy-MM-dd');
-            const isSelected = dateStr === format(selectedDate, 'yyyy-MM-dd');
+            const isSelected = selectedDate
+              ? dateStr === format(selectedDate, 'yyyy-MM-dd')
+              : false;
             const isDateAvailable = isCurrentMonth && isAvailable(date!);
 
             return (

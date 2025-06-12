@@ -8,25 +8,44 @@ type UseReservationProps = {
   availableDates: Record<string, string[]>;
 };
 
+function isDateAvailable(date: Date, availableDates: Record<string, string[]>) {
+  const dateKey = format(date, 'yyyy-MM-dd');
+  return dateKey in availableDates;
+}
+
+function findFirstAvailableDate(availableDates: Record<string, string[]>): Date | null {
+  const sortedKeys = Object.keys(availableDates).sort();
+  return sortedKeys.length > 0 ? new Date(sortedKeys[0]) : null;
+}
+
 export default function useReservation({
   pricePerPerson,
   initialGuestCount = 1,
   initialDate = new Date(),
   availableDates,
 }: UseReservationProps) {
-  const [selectedDate, setSelectedDate] = useState(initialDate);
+  // 초기에는 선택된 날짜 없음 (null)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [guestCount, setGuestCount] = useState(initialGuestCount);
   const [selectedTime, setSelectedTime] = useState('');
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth()); // 0-based
+  const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
 
   const [availableTimesForSelectedDate, setAvailableTimesForSelectedDate] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!selectedDate) {
+      // 날짜가 선택되지 않은 경우 예약 가능한 시간 비우기 및 선택 시간 초기화
+      setAvailableTimesForSelectedDate([]);
+      setSelectedTime('');
+      return;
+    }
+
     const dateKey = format(selectedDate, 'yyyy-MM-dd');
     const times = availableDates[dateKey] || [];
     setAvailableTimesForSelectedDate(times);
 
+    // 현재 선택된 시간이 없거나 해당 날짜에 없는 경우 첫 번째 시간 또는 빈 문자열로 설정
     if (!times.includes(selectedTime)) {
       setSelectedTime(times[0] || '');
     }

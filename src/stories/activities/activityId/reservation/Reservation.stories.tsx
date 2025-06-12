@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import Reservation from '@/components/activities/activityId/reservation/Reservation';
 
 const meta: Meta<typeof Reservation> = {
-  title: 'Components/Reservation',
+  title: 'Reservation/Reservation',
   component: Reservation,
   tags: ['autodocs'],
   argTypes: {

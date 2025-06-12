@@ -17,9 +17,10 @@ export default function GuestCountSelector({
   handleIncrease,
 }: GuestCountSelectorProps) {
   return (
-    <div className="mb-[24px] flex justify-between items-center">
+    <div className="desktop:flex desktop:justify-between desktop:items-center desktop:mb-[24px] tablet:block tablet:items-start tablet:justify-start tablet:mb-4">
       <div className="text-16-b text-gray-950">참여 인원 수</div>
-      <div className="flex items-center justify-between w-14 h-4 border border-gray-100 rounded-full px-1 py-2">
+      <div className={`flex items-center justify-between border border-gray-100 px-1 py-2
+        desktop:rounded-full desktop:mt-0 desktop:w-14 desktop:h-4 tablet:rounded-3xl tablet:mt-2 tablet:w-full h-5 mobile:rounded-3xl`}>
         <button
           onClick={handleDecrease}
           disabled={guestCount === 1}

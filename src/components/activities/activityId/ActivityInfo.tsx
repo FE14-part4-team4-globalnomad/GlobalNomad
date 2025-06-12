@@ -28,7 +28,7 @@ export default function ActivityInfo({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <section className="relative bg-white mb-7 w-41">
+    <section className="relative bg-white mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
       {/* Title + More Icon Row */}
       <div className="flex justify-between items-start mb-[17px]">
         <div>
