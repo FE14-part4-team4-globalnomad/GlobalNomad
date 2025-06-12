@@ -63,8 +63,17 @@ export const usePatchUserMutation = () => {
 /**
  * 프로필 이미지 업로드
  */
-export const usePostUserImageMutation = () =>
-  useMutation<PostUserImageResultType, unknown, { payload: FormData }>({
+export const usePostUserImageMutation = () => {
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  return useMutation<
+    PostUserImageResultType,
+    unknown,
+    { payload: { image: File } }
+  >({
     mutationFn: (payload) =>
       userService.postUserImage(payload).then((res) => res.data),
+    onSuccess: ({ profileImageUrl }) =>
+      user?.id && setUser({ ...user, profileImageUrl }),
   });
+};

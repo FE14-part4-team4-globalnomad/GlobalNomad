@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { ChangeEvent, useRef } from "react";
 
+import { usePostUserImageMutation } from "@/apis/user/user.query";
 import EditIcon from "@/assets/icons/any/edit/icon_edit_white.svg";
 import DefaultProfile from "@/assets/images/profile/normal_profile_lg.svg";
 import { cn } from "@/utils/classNames";
@@ -7,44 +9,69 @@ import { cn } from "@/utils/classNames";
 function ProfileImageWrapper({
   imgSrc = undefined,
   isClickable,
-  onClick,
 }: {
   imgSrc?: string;
   isClickable: boolean;
-  onClick?: () => void;
 }) {
-  const WrapperTag = isClickable ? "button" : "div";
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const profileImageMutation = usePostUserImageMutation();
   const ProfileImage = imgSrc || DefaultProfile;
 
+  function handleChangeFile(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      if (!!file) profileImageMutation.mutate({ payload: { image: file } });
+    }
+  }
+
+  function handleClickEditButton() {
+    fileInputRef.current?.click(); // input 클릭 트리거
+  }
+
   return (
-    <WrapperTag
-      onClick={isClickable ? onClick : undefined}
+    <div
       className={cn(
         "relative aspect-square rounded-full",
         "tablet:w-[7rem]",
         "desktop:w-[12rem]",
-        { "cursor-pointer": isClickable },
       )}
     >
-      <Image width={120} height={120} src={ProfileImage} alt="프로필 이미지" />
+      <div className="relative w-full aspect-square rounded-full overflow-hidden">
+        <Image
+          className="absolute object-cover"
+          src={ProfileImage}
+          alt="프로필 이미지"
+          fill
+        />
+      </div>
       {isClickable && (
-        <div
-          className={cn(
-            "absolute bottom-0 right-0 flex items-center justify-center bg-gray-300 rounded-full",
-            "tablet:p-[0.5rem]",
-            "desktop:p-[0.7rem]",
-          )}
-        >
-          <Image
-            width={24}
-            height={24}
-            src={EditIcon}
-            alt="프로필 편집 버튼"
-            className={cn("tablet:w-[1.2rem]", "desktop:w-[2.4rem]")}
+        <>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="absolute z-1 inset-0 rounded-full cursor-pointer opacity-0"
+            onChange={handleChangeFile}
           />
-        </div>
+          <button
+            className={cn(
+              "absolute bottom-0 right-0 flex items-center justify-center bg-gray-300 rounded-full",
+              "tablet:p-[0.5rem]",
+              "desktop:p-[0.7rem]",
+            )}
+            onClick={handleClickEditButton}
+          >
+            <Image
+              width={24}
+              height={24}
+              src={EditIcon}
+              alt="프로필 편집 버튼"
+              className={cn("tablet:w-[1.2rem]", "desktop:w-[2.4rem]")}
+            />
+          </button>
+        </>
       )}
-    </WrapperTag>
+    </div>
   );
 }
 
