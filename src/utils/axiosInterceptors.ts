@@ -38,9 +38,9 @@ export const responseInterceptorForError = async (error: AxiosError) => {
     const accessToken = useAuthStore.getState().accessToken;
     if (!accessToken)
       useAuthStore.getState().signOut(); // 로그아웃 처리
-    else if (typeof window !== "undefined")
-      // TODO: 토큰 재발급 페이지 생성
+    else if (typeof window !== "undefined") {
       window.location.href = "/refresh"; // 재발급 처리
+    }
   }
   return Promise.reject(error);
 };
