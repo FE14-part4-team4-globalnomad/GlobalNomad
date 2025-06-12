@@ -8,7 +8,6 @@ import {
 } from "@/apis/auth/auth.schema";
 import authService from "@/apis/auth/auth.service";
 import { useAuthStore } from "@/store/authStore";
-import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
 
 /**
  * 로그인 Mutation
@@ -25,7 +24,6 @@ export const usePostAuthLoginMutation = () => {
     onSuccess: (result: PostAuthLoginResultType) => {
       const { user, accessToken } = result;
       signIn(user, accessToken);
-      updateHeaderWithToken(accessToken);
     },
   });
 };
@@ -40,7 +38,6 @@ export const usePostAuthTokenMutation = () => {
     onSuccess: (result) => {
       const { accessToken, refreshToken } = result;
       setToken(accessToken, refreshToken);
-      updateHeaderWithToken(accessToken);
     },
   });
 };

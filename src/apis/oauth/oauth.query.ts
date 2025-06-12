@@ -11,7 +11,6 @@ import {
 } from "@/apis/oauth/oauth.schema";
 import oauthService from "@/apis/oauth/oauth.service";
 import { useAuthStore } from "@/store/authStore";
-import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
 
 const oauthQuery = {
   all: () => ["kakao"],
@@ -77,7 +76,6 @@ export const usePostOauthSignupMutation = (provider: "google" | "kakao") => {
     onSuccess: (result: PostOauthSigninResultType) => {
       const { user, accessToken } = result;
       signIn(user, accessToken);
-      updateHeaderWithToken(accessToken);
     },
   });
 };
@@ -99,7 +97,6 @@ export const usePostOauthSigninMutation = (provider: "google" | "kakao") => {
     onSuccess: (result: PostOauthSigninResultType) => {
       const { user, accessToken } = result;
       signIn(user, accessToken);
-      updateHeaderWithToken(accessToken);
     },
   });
 };
