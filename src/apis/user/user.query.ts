@@ -13,6 +13,7 @@ import {
   PostUserResultType,
 } from "@/apis/user/user.schema";
 import userService from "@/apis/user/user.service";
+import { useAuthStore } from "@/store/authStore";
 
 const usersQuery = {
   all: () => ["user"],
@@ -48,11 +49,13 @@ export const usePostUserMutation = () =>
  */
 export const usePatchUserMutation = () => {
   const queryClient = useQueryClient();
+  const setUser = useAuthStore((state) => state.setUser);
   return useMutation({
     mutationFn: (payload: PatchUserPayloadType) =>
       userService.patchUser(payload).then((res) => res.data),
-    onSuccess: () => {
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: usersQuery.me() });
+      setUser(res);
     },
   });
 };
