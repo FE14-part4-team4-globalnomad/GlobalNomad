@@ -1,36 +1,79 @@
 'use client';
 
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 interface ImageGalleryProps {
   images: string[];
 }
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const openLightbox = (index: number) => {
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <div className="flex gap-[1.2rem] overflow-hidden">
-      <div className="overflow-hidden rounded-tl-3xl rounded-bl-3xl tablet:w-33 tablet:h-40 mobile:w-16 mobile:h-25">
-        <img
-          src={images[0]}
-          alt="소개 이미지1"
-          className="object-cover w-full h-full"
-        />
+    <>
+      <div className="relative w-full max-w-screen-lg mx-auto mobile:w-[327px]">
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={12}
+          slidesPerView={1.2}
+          navigation
+          pagination={{ clickable: true }}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            1024: { slidesPerView: 1 },
+          }}
+          className="!pb-4"
+        >
+          {images.map((src, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="w-full overflow-hidden cursor-pointer h-[400px] mobile:h-[245px]"
+                onClick={() => openLightbox(index)}
+              >
+                <img
+                  src={src}
+                  alt={`소개 이미지 ${index + 1}`}
+                  className="w-full h-full object-cover rounded-3xl mobile:h-[245px]"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
 
-      <div className="flex flex-col gap-[1.2rem]">
-        <div className="overflow-hidden rounded-tr-3xl tablet:w-33 tablet:h-[194px] mobile:w-16 mobile:h-12">
-          <img
-            src={images[1]}
-            alt="소개 이미지2"
-            className="object-cover w-full h-full"
-          />
+      {isOpen && (
+        <div
+          className="fixed inset-0 flex justify-center items-center z-90"
+          style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+          onClick={closeLightbox}
+        >
+          <div
+            className="relative max-w-[90vw] max-h-[90vh]"
+            onClick={e => e.stopPropagation()} // 클릭 이벤트 버블링 방지
+          >
+            <img
+              src={images[currentIndex]}
+              alt={`확대 이미지 ${currentIndex + 1}`}
+              className="w-[800px] h-[534px] shadow-lg tablet:w-[684px] tablet:h-[400px] mobile:w-[327px] mobile:h-[245px]"
+            />
+          </div>
         </div>
-        <div className="overflow-hidden rounded-br-3xl tablet:w-33 tablet:h-[194px] mobile:w-16 mobile:h-12">
-          <img
-            src={images[2]}
-            alt="소개 이미지3"
-            className="object-cover w-full h-full"
-          />
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
