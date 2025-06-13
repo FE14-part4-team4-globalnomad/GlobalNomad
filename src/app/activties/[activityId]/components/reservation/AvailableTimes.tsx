@@ -1,3 +1,5 @@
+// 예약 가능한 시간 컴포넌트(예약 컴포넌트에서 사용)
+
 'use client'
 
 type AvailableTimesProps = {

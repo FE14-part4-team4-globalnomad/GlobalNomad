@@ -7,6 +7,10 @@ import yellowStar from "@/assets/icons/star/icon_star_active.svg";
 import mapIcon from "@/assets/icons/any/icon_map.svg";
 import moreIcon from "@/assets/icons/any/icon_more.svg";
 
+import { useOverlay } from "@/hooks/useOverlay";
+
+import WarningModal from "@/components/modal/WarningModal";
+
 interface ActivityInfoProps {
   category: string;
   title: string;
@@ -26,6 +30,7 @@ export default function ActivityInfo({
   description,
 }: ActivityInfoProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { overlay } = useOverlay();
 
   return (
     <section className="relative bg-white mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
@@ -46,7 +51,24 @@ export default function ActivityInfo({
           {isDropdownOpen && (
             <div className="absolute right-full top-1/2 -translate-y-[25%] z-10 bg-white rounded-3xl border border-gray-100 text-16-m text-gray-950">
               <button className="block w-full p-2 whitespace-nowrap">수정하기</button>
-              <button className="block w-full p-2 whitespace-nowrap">삭제하기</button>
+              <button
+                className="block w-full p-2 whitespace-nowrap"
+                onClick={() =>
+                  overlay(
+                    <WarningModal
+                      message="정말 삭제하시겠습니까?"
+                      confirmText="삭제"
+                      onConfirm={() => {
+                        // 삭제 로직 넣기
+                        console.log("삭제 확정");
+                        // 모달 닫기 등 필요한 후처리 가능
+                      }}
+                    />
+                  )
+                }
+              >
+                삭제하기
+              </button>
             </div>
           )}
         </div>

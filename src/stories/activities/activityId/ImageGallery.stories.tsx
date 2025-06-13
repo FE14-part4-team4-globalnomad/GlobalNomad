@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import ImageGallery from '../../../components/activities/activityId/ImageGallery';
+import ImageGallery from '../../../app/activties/[activityId]/components/ImageGallery';
 
 const meta: Meta<typeof ImageGallery> = {
   title: 'Components/ImageGallery',

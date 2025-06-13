@@ -1,3 +1,5 @@
+// 모바일 예약 부속 컴포넌트
+
 'use client'
 
 import Image from 'next/image';
@@ -16,7 +18,7 @@ type ReservationProps = {
   initialGuestCount?: number;
   initialDate?: Date;
   availableDates: Record<string, string[]>;
-  onNext: () => void;
+  onBack: () => void;
 };
 
 export default function ReservationMobileCnt(props: ReservationProps) {
@@ -42,9 +44,9 @@ export default function ReservationMobileCnt(props: ReservationProps) {
   } = useReservation(props);
 
   return (
-    <div className="w-[375px] min-h-[243px] p-[24px] pb-2 rounded-tl-3xl rounded-tr-3xl bg-white">
+    <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
       <div className="flex items-center gap-1 mb-1">
-        <button className="">
+        <button className="" onClick={props.onBack}>
           <Image src={arrowBackIcon} alt="이전" />
         </button>
         <span className="text-18-b text-gray-950">인원</span>

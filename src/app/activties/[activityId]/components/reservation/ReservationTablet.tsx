@@ -1,3 +1,5 @@
+// 태블릿 예약 컴포넌트
+
 'use client'
 
 import useReservation from '@/hooks/useReservation';
@@ -12,10 +14,9 @@ type ReservationProps = {
   initialGuestCount?: number;
   initialDate?: Date;
   availableDates: Record<string, string[]>;
-  onBack: () => void;
 };
 
-export default function ReservationMobile(props: ReservationProps) {
+export default function ReservationTablet(props: ReservationProps) {
   const {
     selectedDate,
     setSelectedDate,
@@ -38,8 +39,8 @@ export default function ReservationMobile(props: ReservationProps) {
   } = useReservation(props);
 
   return (
-    <div className="w-[375px] min-h-[605px] p-[24px] pb-2 rounded-tl-3xl rounded-tr-3xl bg-white">
-      <div className="mb-4">
+    <div className="w-full h-full overflow-y-auto px-3 py-[24px] rounded-t-3xl bg-white">
+      <div className="flex justify-center gap-2 mb-4">
         <DateSelector
           currentYear={currentYear}
           currentMonth={currentMonth}
@@ -54,11 +55,27 @@ export default function ReservationMobile(props: ReservationProps) {
           isAvailable={isAvailable}
         />
 
-        <AvailableTimes
-          availableTimesForSelectedDate={availableTimesForSelectedDate}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-        />
+        <div className="w-30 rounded-3xl shadow-lg bg-white p-[24px] mt-5">
+          <AvailableTimes
+            availableTimesForSelectedDate={availableTimesForSelectedDate}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+
+          <GuestCountSelector
+            guestCount={guestCount}
+            handleDecrease={handleDecrease}
+            handleIncrease={handleIncrease}
+          />
+          
+          {/* 총 합계 */}
+          <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
+            <div>
+              <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
+              <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Button size="calendar" variant="primary" rounded>

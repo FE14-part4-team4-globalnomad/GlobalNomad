@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import ReservationMobile from '@/components/activities/activityId/reservation/ReservationMobile';
+import ReservationMobile from '@/app/activties/[activityId]/components/reservation/ReservationMobile';
 
 const meta: Meta<typeof ReservationMobile> = {
   title: 'Reservation/ReservationMobile',

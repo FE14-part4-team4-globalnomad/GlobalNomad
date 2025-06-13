@@ -1,12 +1,17 @@
+// 데스크탑 예약 컴포넌트
+
 'use client'
 
 import useReservation from '@/hooks/useReservation';
+import { useOverlay } from "@/hooks/useOverlay";
 
 import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
 import AvailableTimes from './AvailableTimes';
 
 import Button from '@/components/button/Button';
+
+import ConfirmModal from "@/components/modal/ConfirmModal";
 
 type ReservationProps = {
   pricePerPerson: number;
@@ -36,6 +41,8 @@ export default function Reservation(props: ReservationProps) {
     totalCells,
     availableTimesForSelectedDate,
   } = useReservation(props);
+
+  const { overlay } = useOverlay();
 
   return (
     <div className="w-41 p-3 rounded-3xl shadow-lg bg-white border border-gray-100">
@@ -79,7 +86,20 @@ export default function Reservation(props: ReservationProps) {
           <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
         </div>
 
-        <Button size="calendar" variant="primary" rounded className="!w-13">
+        <Button
+          size="calendar" variant="primary" rounded className="!w-13"
+          onClick={() =>
+            overlay(
+              <ConfirmModal
+                message="예약이 완료되었습니다."
+                onConfirm={() => {
+                  // 실제 예약 처리 로직
+                  console.log("예약 확정");
+                }}
+              />
+            )
+          }
+        >
           예약하기
         </Button>
       </div>

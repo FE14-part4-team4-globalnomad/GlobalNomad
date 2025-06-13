@@ -1,23 +1,30 @@
 'use client';
 
 import { useState, useEffect } from "react";
+
 import Gnb from "@/components/gnb/Gnb";
 import Footer from "@/components/footer/Footer";
-import ImageGallery from "@/components/activities/activityId/ImageGallery";
-import Description from "@/components/activities/activityId/Description";
-import KakaoMap from "@/components/activities/activityId/KakaoMap";
-import ReviewList from "@/components/activities/activityId/ReviewList";
+import ImageGallery from "@/app/activties/[activityId]/components/ImageGallery";
+import Description from "@/app/activties/[activityId]/components/Description";
+import KakaoMap from "@/app/activties/[activityId]/components/KakaoMap";
+import ReviewList from "@/app/activties/[activityId]/components/ReviewList";
 import Pagination from "@/components/pagination/Pagination";
-import ActivityInfo from "@/components/activities/activityId/ActivityInfo";
-import Reservation from "@/components/activities/activityId/reservation/Reservation";
-import ReservationTablet from "@/components/activities/activityId/reservation/ReservationTablet";
-import ReservationMobile from "@/components/activities/activityId/reservation/ReservationMobile";
-import ReservationBtn from "@/components/activities/activityId/reservation/ReservationBtn";
+import ActivityInfo from "@/app/activties/[activityId]/components/ActivityInfo";
+
+import Reservation from "@/app/activties/[activityId]/components/reservation/Reservation";
+import ReservationTablet from "@/app/activties/[activityId]/components/reservation/ReservationTablet";
+import ReservationMobile from "@/app/activties/[activityId]/components/reservation/ReservationMobile";
+import ReservationMobileCnt from "@/app/activties/[activityId]/components/reservation/ReservationMobileCnt";
+import ReservationBtn from "@/app/activties/[activityId]/components/reservation/ReservationBtn";
+import SlidePanel from "@/app/activties/[activityId]/components/reservation/SlidePanel";
 
 export default function ActivityDetailPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isTablet, setIsTablet] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
 
   useEffect(() => {
     const handleResize = () => {
@@ -137,10 +144,37 @@ export default function ActivityDetailPage() {
           <ReservationBtn
             pricePerPerson={pricePerPerson}
             isReady={true}
-            onReserve={() => console.log('예약하기 클릭됨')}
+            onReserve={() => setIsReservationOpen(true)}
+            onDateClick={() => setIsPanelOpen(true)}
           />
         </div>
       )}
+
+      <SlidePanel isOpen={isPanelOpen} onClose={() => {
+          setIsPanelOpen(false);
+          setReservationStep("date");
+        }}>
+        {isMobile ? (
+          reservationStep === "date" ? (
+            <ReservationMobile
+              pricePerPerson={pricePerPerson}
+              availableDates={availableDates}
+              onNext={() => setReservationStep("guest")}
+            />
+          ) : (
+            <ReservationMobileCnt
+              pricePerPerson={pricePerPerson}
+              availableDates={availableDates}
+              onBack={() => setReservationStep("date")}
+            />
+          )
+        ) : (
+          <ReservationTablet
+            pricePerPerson={pricePerPerson}
+            availableDates={availableDates}
+          />
+        )}
+      </SlidePanel>
       
       <Footer />
     </div>

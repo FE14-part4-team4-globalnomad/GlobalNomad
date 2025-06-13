@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import ActivityInfo from '@/components/activities/activityId/ActivityInfo';
+import ActivityInfo from '@/app/activties/[activityId]/components/ActivityInfo';
 
 const meta: Meta<typeof ActivityInfo> = {
   title: 'Components/ActivityInfo',

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 
-import ReviewList from "../../../components/activities/activityId/ReviewList";
+import ReviewList from "../../../app/activties/[activityId]/components/ReviewList";
 
 const meta: Meta<typeof ReviewList> = {
   title: "Components/ReviewList",
