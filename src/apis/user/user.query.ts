@@ -13,6 +13,7 @@ import {
   PostUserResultType,
 } from "@/apis/user/user.schema";
 import userService from "@/apis/user/user.service";
+import { useAuthStore } from "@/store/authStore";
 
 const usersQuery = {
   all: () => ["user"],
@@ -48,11 +49,13 @@ export const usePostUserMutation = () =>
  */
 export const usePatchUserMutation = () => {
   const queryClient = useQueryClient();
+  const setUser = useAuthStore((state) => state.setUser);
   return useMutation({
     mutationFn: (payload: PatchUserPayloadType) =>
       userService.patchUser(payload).then((res) => res.data),
-    onSuccess: () => {
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: usersQuery.me() });
+      setUser(res);
     },
   });
 };
@@ -60,8 +63,15 @@ export const usePatchUserMutation = () => {
 /**
  * 프로필 이미지 업로드
  */
-export const usePostUserImageMutation = () =>
-  useMutation<PostUserImageResultType, unknown, { payload: FormData }>({
+export const usePostUserImageMutation = () => {
+  const setImage = useAuthStore((state) => state.setTempProfileImage);
+  return useMutation<
+    PostUserImageResultType,
+    unknown,
+    { payload: { image: File } }
+  >({
     mutationFn: (payload) =>
       userService.postUserImage(payload).then((res) => res.data),
+    onSuccess: ({ profileImageUrl }) => setImage(profileImageUrl),
   });
+};

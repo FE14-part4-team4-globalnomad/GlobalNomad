@@ -11,34 +11,11 @@ import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 import ConfirmModal from "@/components/modal/ConfirmModal";
+import {
+  SIGNUP_INITIAL_VALUE,
+  SIGNUP_VALIDATION_RULES,
+} from "@/constants/auth";
 import { useOverlay } from "@/hooks/useOverlay";
-
-const SIGNUP_INITIAL_VALUE = {
-  nickname: "",
-  email: "",
-  password: "",
-  passwordConfirm: "",
-};
-
-const VALIDATION_RULES = {
-  email: {
-    validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-    errorMessage: "잘못된 이메일입니다.",
-  },
-  nickname: {
-    validate: (value: string) => value.length <= 10,
-    errorMessage: "10 자 이하로 작성해주세요.",
-  },
-  password: {
-    validate: (value: string) => value.length >= 8,
-    errorMessage: "8자 이상 입력해주세요.",
-  },
-  passwordConfirm: {
-    validate: (value: string, form: typeof SIGNUP_INITIAL_VALUE) =>
-      value === form.password,
-    errorMessage: "비밀번호가 일치하지 않습니다.",
-  },
-};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -51,15 +28,16 @@ export default function SignupPage() {
     setFormValue((prev) => ({ ...prev, [id]: value }));
   };
 
-  const getErrorMessage = (id: keyof typeof SIGNUP_INITIAL_VALUE) => {
-    const { validate, errorMessage } = VALIDATION_RULES[id];
+  const getSignupErrorMessage = (id: keyof typeof SIGNUP_INITIAL_VALUE) => {
+    const { validate, errorMessage } = SIGNUP_VALIDATION_RULES[id];
     const value = formValue[id];
     return validate(value, formValue) ? undefined : errorMessage;
   };
 
   const signupBtnDisabled = Object.entries(formValue).some(
     ([id, value]) =>
-      !value || getErrorMessage(id as keyof typeof formValue) !== undefined,
+      !value ||
+      getSignupErrorMessage(id as keyof typeof formValue) !== undefined,
   );
 
   const handleSignup = (e: FormEvent) => {
@@ -109,28 +87,28 @@ export default function SignupPage() {
               type="email"
               id="email"
               placeholder="이메일을 입력해 주세요"
-              error={getErrorMessage("email")}
+              error={getSignupErrorMessage("email")}
             />
             <Input
               label="닉네임"
               type="text"
               id="nickname"
               placeholder="닉네임을 입력해 주세요"
-              error={getErrorMessage("nickname")}
+              error={getSignupErrorMessage("nickname")}
             />
             <Input
               label="비밀번호"
               type="password"
               id="password"
               placeholder="8자 이상 입력해 주세요"
-              error={getErrorMessage("password")}
+              error={getSignupErrorMessage("password")}
             />
             <Input
               label="비밀번호 확인"
               type="password"
               id="passwordConfirm"
               placeholder="비밀번호를 한 번 더 입력해 주세요"
-              error={getErrorMessage("passwordConfirm")}
+              error={getSignupErrorMessage("passwordConfirm")}
             />
           </div>
           <Button

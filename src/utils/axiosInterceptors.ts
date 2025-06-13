@@ -1,6 +1,5 @@
 import { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-import axiosInstance from "@/apis/instance";
 import { useAuthStore } from "@/store/authStore";
 
 const excludedPaths = ["/oauth"];
@@ -20,12 +19,13 @@ export const isTokenRequired = (url?: string): boolean => {
  * 로그인 및 토큰 재발급 시 axios header 업데이트
  * @param accessToken
  */
-export const updateHeaderWithToken = (accessToken: string) => {
-  const requestInterceptor = async (config: InternalAxiosRequestConfig) => {
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
-    return config;
-  };
-  axiosInstance.interceptors.request.use(requestInterceptor);
+export const updateHeaderWithToken = async (
+  config: InternalAxiosRequestConfig,
+) => {
+  const accessToken = useAuthStore.getState().accessToken;
+  if (!!accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
+  else config.headers.set("Authorization", "");
+  return config;
 };
 
 /**
@@ -34,13 +34,16 @@ export const updateHeaderWithToken = (accessToken: string) => {
  * @returns
  */
 export const responseInterceptorForError = async (error: AxiosError) => {
-  if (error.response?.status !== 401 || typeof window === "undefined")
-    return Promise.reject(error);
-  const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-    config.headers.set("Authorization", "");
-    useAuthStore.getState().signOut();
-    return config;
-  };
-  axiosInstance.interceptors.request.use(requestInterceptor);
+  if (error.response?.status === 401) {
+    const accessToken = useAuthStore.getState().accessToken;
+    if (!accessToken)
+      useAuthStore.getState().signOut(); // 로그아웃 처리
+    else if (
+      typeof window !== "undefined" &&
+      !window.location.pathname.includes("/refresh")
+    ) {
+      window.location.href = "/refresh"; // 재발급 처리
+    }
+  }
   return Promise.reject(error);
 };
