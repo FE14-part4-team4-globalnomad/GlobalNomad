@@ -15,7 +15,7 @@ function Layout({ children }: { children: ReactNode }) {
       <aside className={cn("hidden", "tablet:block")}>
         <SideMenu />
       </aside>
-      <main>{children}</main>
+      <main className="grow-1">{children}</main>
     </div>
   );
 }

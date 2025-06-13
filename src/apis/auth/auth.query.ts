@@ -8,7 +8,6 @@ import {
 } from "@/apis/auth/auth.schema";
 import authService from "@/apis/auth/auth.service";
 import { useAuthStore } from "@/store/authStore";
-import { updateHeaderWithToken } from "@/utils/axiosInterceptors";
 
 /**
  * 로그인 Mutation
@@ -23,9 +22,8 @@ export const usePostAuthLoginMutation = () => {
     mutationFn: (payload) =>
       authService.postAuthLogin(payload).then((res) => res.data),
     onSuccess: (result: PostAuthLoginResultType) => {
-      const { user, accessToken } = result;
-      updateHeaderWithToken(accessToken);
-      signIn(user);
+      const { user, accessToken, refreshToken } = result;
+      signIn(user, accessToken, refreshToken);
     },
   });
 };
@@ -34,11 +32,18 @@ export const usePostAuthLoginMutation = () => {
  * 토큰 재발급 Mutation
  */
 export const usePostAuthTokenMutation = () => {
+  const setToken = useAuthStore((state) => state.setToken);
+  const refreshToken = useAuthStore((state) => state.refreshToken);
   return useMutation<PostAuthTokensResultType>({
-    mutationFn: () => authService.postAuthToken().then((res) => res.data),
+    mutationFn: () =>
+      authService
+        .postAuthToken({
+          options: { headers: { Authorization: `Bearer ${refreshToken}` } },
+        })
+        .then((res) => res.data),
     onSuccess: (result) => {
-      const { accessToken } = result;
-      updateHeaderWithToken(accessToken);
+      const { accessToken, refreshToken } = result;
+      setToken(accessToken, refreshToken);
     },
   });
 };
