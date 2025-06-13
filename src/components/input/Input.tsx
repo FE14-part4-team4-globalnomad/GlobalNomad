@@ -20,14 +20,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <div className="relative">
+        <div className="relative text-14-m">
                     <input
             id={id}
             ref={ref}
             type={isPasswordType ? (showPassword ? "text" : "password") : type}
             className={cn(
-              "h-[54px] w-full rounded-[16px] border px-2 py-[17.5px]",
-              "text-14-m placeholder:text-gray-400",
+              "h-[54px] w-full rounded-[16px] border px-2 py-[17.5px] placeholder:text-gray-400",
               "focus:outline-none focus:ring-2 focus:ring-brand-500",
               error ? "border-red-500" : "border-gray-100",
               disabled
