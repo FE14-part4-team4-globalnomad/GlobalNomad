@@ -1,1 +1,5 @@
+echo "▶ Lint-staged: ESLint & Prettier"
 npx lint-staged
+
+echo "▶ Type checking via tsc --noEmit"
+npx tsc --noEmit
