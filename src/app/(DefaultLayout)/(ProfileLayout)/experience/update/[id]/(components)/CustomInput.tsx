@@ -27,9 +27,11 @@ export default function CustomInput({
     : type;
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-[1rem]">
       {label && (
-        <label className="text-sm font-medium text-gray-900">{label}</label>
+        <label className="text-sm font-medium text-gray-900 mt-[2.4rem] ">
+          {label}
+        </label>
       )}
       <div className="relative">
         <input
@@ -38,9 +40,9 @@ export default function CustomInput({
           onChange={onChange}
           placeholder={placeholder}
           className={`
-            w-full h-[48px] px-3 py-2
-            border ${error ? "border-red-500" : "border-gray-300"}
-            rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500
+            w-full h-[5.4rem] px-[2rem] py-[1.6rem]
+            border ${error ? "border-red-500" : "border-gray-100"}
+            rounded-[1.6rem] text-16-m focus:outline-none focus:ring-2 focus:ring-brand-500
           `}
         />
         {isPasswordType && (

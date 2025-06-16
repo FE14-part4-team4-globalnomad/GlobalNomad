@@ -59,11 +59,15 @@ class UserService {
   /**
    * 프로필 이미지 url 생성
    */
-  postUserImage({ payload, options }: ApiRequestParams<{ payload: FormData }>) {
+  postUserImage({
+    payload,
+    options,
+  }: ApiRequestParams<{ payload: { image: File } }>) {
     return this.fetcher<PostUserImageResultType>({
       url: "/users/me/image",
       method: HTTP_METHODS.POST,
       data: payload,
+      headers: { "Content-Type": "multipart/form-data" },
       ...options,
     });
   }

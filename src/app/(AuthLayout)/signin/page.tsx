@@ -10,19 +10,10 @@ import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
 import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
-
-const SIGNIN_INITIAL_VALUE = { email: "", password: "" };
-
-const VALIDATION_RULES = {
-  email: {
-    validate: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-    errorMessage: "이메일 형식으로 작성해주세요.",
-  },
-  password: {
-    validate: (value: string) => value.length >= 8,
-    errorMessage: "8자 이상 입력해주세요.",
-  },
-};
+import {
+  SIGNIN_INITIAL_VALUE,
+  SIGNIN_VALIDATION_RULES,
+} from "@/constants/auth";
 
 export default function SigninPage() {
   const router = useRouter();
@@ -35,7 +26,7 @@ export default function SigninPage() {
   };
 
   const getErrorMessage = (id: keyof typeof formValue) => {
-    const { validate, errorMessage } = VALIDATION_RULES[id];
+    const { validate, errorMessage } = SIGNIN_VALIDATION_RULES[id];
     const value = formValue[id];
     return validate(value) ? undefined : errorMessage;
   };

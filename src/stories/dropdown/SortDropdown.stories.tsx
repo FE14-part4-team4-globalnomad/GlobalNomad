@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
-import "../../styles/globals.css";
 
 const meta = {
   title: "Components/Dropdown/Sort Filter Dropdown",

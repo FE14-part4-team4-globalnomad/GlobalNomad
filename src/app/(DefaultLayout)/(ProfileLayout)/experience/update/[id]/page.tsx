@@ -1,4 +1,5 @@
 "use client";
+import TextField from "@mui/material/TextField";
 import {
   LocalizationProvider,
   DatePicker as MUIDatePicker,
@@ -190,7 +191,7 @@ function ActivityUpdatePage() {
   };
 
   return (
-    <div>
+    <div className="w-[70rem]">
       <h1>{isNew ? "내 체험 등록하기" : "내 체험 수정하기"}</h1>
       <CustomInput
         label="제목"
@@ -198,19 +199,20 @@ function ActivityUpdatePage() {
         value={formData.title}
         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
       />
-
-      <DefaultDropdown
-        label="카테고리"
-        placeholder="카테고리를 선택하세요"
-        selectedItem={
-          CATEGORY_OPTIONS.find((opt) => opt.title === formData.category) ||
-          undefined
-        }
-        optionList={filteredCategoryOptions}
-        onSelect={(selected) => {
-          setFormData({ ...formData, category: selected.title });
-        }}
-      />
+      <div className="mt-[2.4rem]">
+        <DefaultDropdown
+          label="카테고리"
+          placeholder="카테고리를 선택하세요"
+          selectedItem={
+            CATEGORY_OPTIONS.find((opt) => opt.title === formData.category) ||
+            undefined
+          }
+          optionList={filteredCategoryOptions}
+          onSelect={(selected) => {
+            setFormData({ ...formData, category: selected.title });
+          }}
+        />
+      </div>
 
       <CustomTextarea
         label="설명"
@@ -234,67 +236,70 @@ function ActivityUpdatePage() {
         value={formData.address}
         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
       />
-      <div className="grid grid-cols-[1fr_1fr_1fr_42px] items-center border border-blue-400 rounded-[8px] overflow-hidden">
-        <div className="border-r border-blue-400 py-2 px-3 text-14-m text-center">
-          날짜
-        </div>
-        <div className="border-r border-blue-400 py-2 px-3 text-14-m text-center">
-          시작 시간
-        </div>
-        <div className="border-r border-blue-400 py-2 px-3 text-14-m text-center">
-          종료 시간
-        </div>
-        <div className="text-center py-2 px-2"></div>
-      </div>
 
       {/* 예약 가능 시간대 입력 줄 */}
-      <div className="grid grid-cols-[1fr_1fr_1fr_42px] items-center gap-2 mt-6">
+      <div className="grid grid-cols-[36rem_27rem_auto] items-center gap-[1.4rem] mt-6">
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <MUIDatePicker
-            label="날짜 선택"
             value={tempDate}
             onChange={(newValue) => setTempDate(newValue)}
             format="yy/MM/dd"
+            enableAccessibleFieldDOMStructure={false}
             slots={{
               openPickerIcon: CustomCalendarIcon,
-            }}
-            slotProps={{
-              textField: {
-                size: "small",
-                fullWidth: true,
-                placeholder: "yy/mm/dd",
-              },
+              textField: (params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  size="small"
+                  className="w-full"
+                  InputProps={{
+                    ...params.InputProps,
+                    className:
+                      "h-[5.4rem] border border-gray-100 !rounded-[1.6rem] !text-16-m",
+                  }}
+                />
+              ),
             }}
           />
         </LocalizationProvider>
-        <TimeSelectDropdown value={tempStart} onChange={setTempStart} />
-        <TimeSelectDropdown value={tempEnd} onChange={setTempEnd} />
-        <Image
-          src={PlusIcon}
-          alt="추가"
-          width={42}
-          height={42}
-          onClick={handleAddTime}
-          className="cursor-pointer border border-blue-400 rounded-lg hover:bg-blue-50"
-        />
+        <div className="grid grid-cols-[1fr_1fr_auto] items-center">
+          <TimeSelectDropdown value={tempStart} onChange={setTempStart} />
+          <p className="text-center">-</p>
+          <TimeSelectDropdown value={tempEnd} onChange={setTempEnd} />
+        </div>
+        <div className="relative w-[4.2rem] h-[4.2rem]">
+          <Image
+            src={PlusIcon}
+            alt="추가"
+            fill
+            onClick={handleAddTime}
+            className="cursor-pointer border border-blue-400 rounded-lg hover:bg-blue-50"
+          />
+        </div>
       </div>
 
       {/* 추가된 시간대 리스트 */}
-      <div className="mt-4 flex flex-col gap-2">
+      <div className="mt-4 flex flex-col gap-2 mb-[3rem]">
         {availableTimes.map((slot, index) => (
           <div
             key={index}
-            className="grid grid-cols-[1fr_1fr_1fr_42px] items-center gap-2"
+            className="grid grid-cols-[36rem_27rem_auto] items-center gap-[1.4rem]"
           >
-            <div className="bg-white rounded-full px-4 py-2 border text-sm text-gray-800">
+            <div className=" rounded-[1.6rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950 w-full">
               {slot.date ? format(slot.date, "yy/MM/dd") : ""}
             </div>
-            <div className="bg-white rounded-full px-4 py-2 border text-sm text-gray-800">
-              {slot.startTime}
+
+            <div className="grid grid-cols-[1fr_1fr_auto] items-center ">
+              <div className="rounded-[1.6rem] w-[12.1rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950">
+                {slot.startTime}
+              </div>
+              <p className="text-center w-[2.8rem]">-</p>
+              <div className="rounded-[1.6rem] w-[12.1rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950">
+                {slot.endTime}
+              </div>
             </div>
-            <div className="bg-white rounded-full px-4 py-2 border text-sm text-gray-800">
-              {slot.endTime}
-            </div>
+
             <Image
               src={MinusIcon}
               alt="삭제"
@@ -308,12 +313,12 @@ function ActivityUpdatePage() {
       </div>
 
       {/* 배너 이미지 */}
-      <label className="block text-sm font-semibold mb-2">
+      <label className="block text-16-m font-semibold mb-2">
         배너 이미지 등록
       </label>
       <div className="flex gap-2 items-center">
         {bannerImageUrl ? (
-          <div className="relative w-[120px] h-[120px] rounded overflow-hidden">
+          <div className="relative w-[12.8rem] h-[12.8rem] rounded-[1.6rem] border-gray-100 overflow-hidden">
             <Image
               src={bannerImageUrl}
               alt="배너 이미지 등록"
@@ -328,29 +333,29 @@ function ActivityUpdatePage() {
             </button>
           </div>
         ) : (
-          <label className="cursor-pointer w-[120px] h-[120px] border rounded flex items-center justify-center">
+          <label className="cursor-pointer w-[12.8rem] h-[12.8rem] border-gray-100 border rounded-[1.6rem] flex items-center justify-center">
             <input
               type="file"
               accept="image/*"
               className="hidden"
               onChange={handleBannerUpload}
             />
-            <span className="text-gray-400 text-sm">0/1</span>
+            <span className="text-gray-600 text-14-m">0/1</span>
           </label>
         )}
       </div>
 
       {/* 소개 이미지 */}
-      <label className="block text-sm font-semibold mt-6 mb-2">
+      <label className="block text-16-m font-semibold mb-2">
         소개 이미지 등록
       </label>
       <div className="flex gap-2 flex-wrap">
         {introImageUrls.map((url, index) => (
           <div
             key={index}
-            className="relative w-[100px] h-[100px] rounded overflow-hidden"
+            className="relative w-[12.8rem] h-[12.8rem] rounded-[1.6rem]  overflow-hidden"
           >
-            <Image src={url} alt="소개 이미지" width={128} height={128} />{" "}
+            <Image src={url} alt="소개 이미지" fill />
             <button
               className="absolute top-0 right-0 bg-black bg-opacity-60 text-white rounded-full w-6 h-6"
               onClick={() => removeIntroImage(index)}
@@ -361,7 +366,7 @@ function ActivityUpdatePage() {
         ))}
 
         {introImages.length < 4 && (
-          <label className="cursor-pointer w-[100px] h-[100px] border rounded flex items-center justify-center">
+          <label className="cursor-pointer border-gray-100 w-[12.8rem] h-[12.8rem] border rounded-[1.6rem] flex items-center justify-center">
             <input
               type="file"
               accept="image/*"
@@ -375,9 +380,11 @@ function ActivityUpdatePage() {
         )}
       </div>
 
-      <Button size="experienceRegister2" onClick={handleSubmit}>
-        {isNew ? "등록하기" : "수정하기"}
-      </Button>
+      <div className="flex justify-center mt-10">
+        <Button size="experienceRegister2" onClick={handleSubmit}>
+          {isNew ? "등록하기" : "수정하기"}
+        </Button>
+      </div>
     </div>
   );
 }

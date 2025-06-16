@@ -14,9 +14,9 @@ export default function CustomTextarea({
   error,
 }: CustomTextareaProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-[1rem]">
       {label && (
-        <label className="text-sm font-medium text-gray-900">{label}</label>
+        <label className="text-16-m text-gray-950 mt-[2.4rem] ">{label}</label>
       )}
       <textarea
         value={value}
@@ -25,8 +25,8 @@ export default function CustomTextarea({
         rows={4}
         className={`
           w-full px-3 py-2
-          border ${error ? "border-red-500" : "border-gray-300"}
-          rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500
+          border ${error ? "border-red-500" : "border-gray-100"}
+          rounded-[1.6rem] text-16-m focus:outline-none focus:ring-2 focus:ring-brand-500
           resize-none
         `}
       />

@@ -36,7 +36,7 @@ export default function TimeSelectDropdown({
   }, []);
 
   return (
-    <div className="flex flex-col gap-[6px] w-[150px]">
+    <div className="flex flex-col gap-[0.6rem] w-[12.1rem] border border-gray-100 rounded-[1.6rem]">
       {label && <label className="text-14-m text-gray-800">{label}</label>}
       <Dropdown>
         <div className="relative">
