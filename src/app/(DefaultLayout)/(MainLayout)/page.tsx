@@ -3,8 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import ArrowButton from "./components/ArrowButton";
+import CategoryFilter from "./components/CategoryFilter";
 import activityService from "@/apis/activity/activity.service";
 import Card from "@/components/card/Card";
+import SortDropdown from "@/components/dropdown/SortDropdown";
 import Pagination from "@/components/pagination/Pagination";
 import { Search } from "@/components/search/Search";
 import { ActivityType } from "@/types/activity";
@@ -12,6 +15,8 @@ import { ActivityType } from "@/types/activity";
 function HomePage() {
   const [activities, setActivities] = useState<ActivityType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -104,38 +109,61 @@ function HomePage() {
       </section>
 
       {/* 인기 체험 */}
-      <section className="flex flex-col gap-[2rem] ">
+      <section className="flex flex-col gap-[2rem]">
         <h2 className="text-24-b">🔥 인기 체험</h2>
-        <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
-          {activities?.map((activity) => (
-            <Card
-              key={activity.id}
-              title={activity.title}
-              price={activity.price}
-              bannerImageUrl={activity.bannerImageUrl}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
+        <div className="relative">
+          <div>
+            <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
+              {activities
+                ?.slice(slideIndex * 4, slideIndex * 4 + 4)
+                .map((activity) => (
+                  <Card
+                    key={activity.id}
+                    title={activity.title}
+                    price={activity.price}
+                    bannerImageUrl={activity.bannerImageUrl}
+                    rating={activity.rating}
+                    reviewCount={activity.reviewCount}
+                  />
+                ))}
+            </div>
+          </div>
+          <div className="absolute right-[-40px] top-1/2 -translate-y-1/2">
+            <ArrowButton
+              onClick={() =>
+                setSlideIndex(
+                  (prev) => (prev + 1) % Math.ceil(activities.length / 4),
+                )
+              }
             />
-          ))}
+          </div>
         </div>
       </section>
 
       {/* 모든 체험 */}
       <section className="flex flex-col gap-[2rem] ">
-        <h2 className="text-24-b">📌 모든 체험</h2>
+        <h2 className="text-24-b">🛼 모든 체험</h2>
         {/* 필터, 태그 */}
-        <div className="flex gap-2">{/* 필터 버튼들 */}</div>
+        <div className="flex justify-between">
+          <CategoryFilter
+            selectedId={selectedCategory}
+            onSelect={(id: string) => setSelectedCategory(id)}
+          />
+          <SortDropdown selectedItem={{ id: "latest", title: "최신순" }} />
+        </div>
         <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
-          {activities?.map((activity) => (
-            <Card
-              key={activity.id}
-              title={activity.title}
-              price={activity.price}
-              bannerImageUrl={activity.bannerImageUrl}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-            />
-          ))}
+          {activities
+            ?.slice(0, 8)
+            .map((activity) => (
+              <Card
+                key={activity.id}
+                title={activity.title}
+                price={activity.price}
+                bannerImageUrl={activity.bannerImageUrl}
+                rating={activity.rating}
+                reviewCount={activity.reviewCount}
+              />
+            ))}
         </div>
         <Pagination
           currentPage={0}
