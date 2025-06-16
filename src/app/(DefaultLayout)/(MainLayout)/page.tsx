@@ -8,6 +8,7 @@ import CategoryFilter from "./components/CategoryFilter";
 import activityService from "@/apis/activity/activity.service";
 import Card from "@/components/card/Card";
 import SortDropdown from "@/components/dropdown/SortDropdown";
+import type { SortOptionType } from "@/components/dropdown/SortDropdown";
 import Pagination from "@/components/pagination/Pagination";
 import { Search } from "@/components/search/Search";
 import type { ActivityCategoryType } from "@/types/activity";
@@ -25,6 +26,10 @@ function HomePage() {
   >("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [sortOption, setSortOption] = useState<SortOptionType>({
+    id: "latest",
+    title: "최신순",
+  });
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -33,6 +38,7 @@ function HomePage() {
           query: {
             method: "offset",
             category: selectedCategory || undefined,
+            sort: sortOption.id,
             page: currentPage,
             size: 8,
           },
@@ -44,7 +50,7 @@ function HomePage() {
       }
     };
     fetchActivities();
-  }, [selectedCategory, currentPage]);
+  }, [selectedCategory, currentPage, sortOption]);
 
   useEffect(() => {
     const fetchPopularActivities = async () => {
@@ -188,7 +194,10 @@ function HomePage() {
               setSelectedCategory(labelMap[id]);
             }}
           />
-          <SortDropdown selectedItem={{ id: "latest", title: "최신순" }} />
+          <SortDropdown
+            selectedItem={sortOption}
+            onSelect={(option) => setSortOption(option)}
+          />
         </div>
         <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
           {activities?.map((activity) => (

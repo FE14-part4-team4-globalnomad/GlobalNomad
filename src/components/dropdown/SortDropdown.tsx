@@ -1,7 +1,7 @@
 import { Dropdown } from "./Dropdown";
-import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
+import { ACTIVITY_SORT_FILTER, type SortOption } from "@/constants/activity";
 
-type SortOptionType = (typeof ACTIVITY_SORT_FILTER)[0];
+export type SortOptionType = SortOption;
 interface SortDropdownProps<T> {
   selectedItem: T;
   onSelect?: (value: T) => void;
@@ -23,7 +23,7 @@ export default function SortDropdown({
             {ACTIVITY_SORT_FILTER.map(({ id, title }) => (
               <Dropdown.Item
                 key={id}
-                onSelect={() => onSelect?.({ id, title })}
+                onSelect={() => onSelect?.({ id, title } as SortOptionType)}
               >
                 {title}
               </Dropdown.Item>

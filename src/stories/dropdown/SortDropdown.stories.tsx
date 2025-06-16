@@ -20,7 +20,7 @@ type filterType = (typeof ACTIVITY_SORT_FILTER)[0];
 
 export const ExampleSortDropdown: Story = {
   args: {
-    selectedItem: { id: "latest", title: "최신 등록 순" },
+    selectedItem: { id: "latest", title: "최신순" },
   },
   render: (args) => {
     const [item, setItem] = useState<filterType>(args.selectedItem);
