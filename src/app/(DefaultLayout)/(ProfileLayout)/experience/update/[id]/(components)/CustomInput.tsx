@@ -29,9 +29,7 @@ export default function CustomInput({
   return (
     <div className="flex flex-col gap-[1rem]">
       {label && (
-        <label className="text-sm font-medium text-gray-900 mt-[2.4rem] ">
-          {label}
-        </label>
+        <label className="text-16-b text-gray-950 mt-[2.4rem] ">{label}</label>
       )}
       <div className="relative">
         <input

@@ -16,7 +16,7 @@ export default function CustomTextarea({
   return (
     <div className="flex flex-col gap-[1rem]">
       {label && (
-        <label className="text-16-m text-gray-950 mt-[2.4rem] ">{label}</label>
+        <label className="text-16-b text-gray-950 mt-[2.4rem] ">{label}</label>
       )}
       <textarea
         value={value}

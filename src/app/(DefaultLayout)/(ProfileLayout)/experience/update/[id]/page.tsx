@@ -191,8 +191,10 @@ function ActivityUpdatePage() {
   };
 
   return (
-    <div className="w-[70rem]">
-      <h1>{isNew ? "내 체험 등록하기" : "내 체험 수정하기"}</h1>
+    <div className="desktop:w-[70rem] tablet:w-[68.4rem] mobile:w-[32.7rem] ">
+      <h1 className="text-gray-950 text-18-b">
+        {isNew ? "내 체험 등록하기" : "내 체험 수정하기"}
+      </h1>
       <CustomInput
         label="제목"
         placeholder="제목을 입력해 주세요"
@@ -216,7 +218,7 @@ function ActivityUpdatePage() {
 
       <CustomTextarea
         label="설명"
-        placeholder="설명을 입력해 주세요"
+        placeholder="체험에 대한 설명을 입력해 주세요"
         value={formData.description}
         onChange={(e) =>
           setFormData({ ...formData, description: e.target.value })
@@ -238,44 +240,80 @@ function ActivityUpdatePage() {
       />
 
       {/* 예약 가능 시간대 입력 줄 */}
-      <div className="grid grid-cols-[36rem_27rem_auto] items-center gap-[1.4rem] mt-6">
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MUIDatePicker
-            value={tempDate}
-            onChange={(newValue) => setTempDate(newValue)}
-            format="yy/MM/dd"
-            enableAccessibleFieldDOMStructure={false}
-            slots={{
-              openPickerIcon: CustomCalendarIcon,
-              textField: (params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  size="small"
-                  className="w-full"
-                  InputProps={{
-                    ...params.InputProps,
-                    className:
-                      "h-[5.4rem] border border-gray-100 !rounded-[1.6rem] !text-16-m",
-                  }}
-                />
-              ),
-            }}
-          />
-        </LocalizationProvider>
-        <div className="grid grid-cols-[1fr_1fr_auto] items-center">
-          <TimeSelectDropdown value={tempStart} onChange={setTempStart} />
-          <p className="text-center">-</p>
-          <TimeSelectDropdown value={tempEnd} onChange={setTempEnd} />
+      <div className="text-16-b text-gray-950 mt-6 mb-[1.8rem]">
+        <label>예약 가능한 날짜</label>
+      </div>
+      <div
+        className="grid gap-[1.4rem] border-b border-gray-100 pb-[2rem]
+  tablet:grid-cols-[36rem_27rem_auto]
+  mobile:grid-cols-1"
+      >
+        {/* 날짜 */}
+        <div className="flex flex-col">
+          <label className="text-16-m text-gray-950 mb-[1rem]">날짜</label>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MUIDatePicker
+              value={tempDate}
+              onChange={(newValue) => setTempDate(newValue)}
+              format="yy/MM/dd"
+              enableAccessibleFieldDOMStructure={false}
+              slots={{
+                openPickerIcon: CustomCalendarIcon,
+                textField: (params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    size="small"
+                    className="w-full"
+                    InputProps={{
+                      ...params.InputProps,
+                      className:
+                        "h-[5.4rem] border border-gray-100 !rounded-[1.6rem] !text-16-m",
+                    }}
+                  />
+                ),
+              }}
+            />
+          </LocalizationProvider>
         </div>
-        <div className="relative w-[4.2rem] h-[4.2rem]">
-          <Image
-            src={PlusIcon}
-            alt="추가"
-            fill
-            onClick={handleAddTime}
-            className="cursor-pointer border border-blue-400 rounded-lg hover:bg-blue-50"
-          />
+
+        {/* 시간 + 버튼 묶음 */}
+        <div className="flex flex-col">
+          <div className="grid tablet:grid-cols-[1fr_auto_1fr_auto] mobile:grid-cols-[1fr_auto_1fr_auto] items-end gap-[0.5rem]">
+            {/* 시작 시간 */}
+            <div className="flex flex-col">
+              <label className="text-16-m text-gray-950 mb-[1rem]">
+                시작 시간
+              </label>
+              <TimeSelectDropdown value={tempStart} onChange={setTempStart} />
+            </div>
+
+            {/* 구분 기호 */}
+            <div className="flex items-end pb-[1.9rem]">
+              <p className="text-center w-[2.8rem]">-</p>
+            </div>
+
+            {/* 종료 시간 */}
+            <div className="flex flex-col">
+              <label className="text-16-m text-gray-950 mb-[1rem]">
+                종료 시간
+              </label>
+              <TimeSelectDropdown value={tempEnd} onChange={setTempEnd} />
+            </div>
+
+            {/* + 버튼 */}
+            <div className="flex items-end pb-[0.6rem]">
+              <div className="relative w-[4.2rem] h-[4.2rem]">
+                <Image
+                  src={PlusIcon}
+                  alt="추가"
+                  fill
+                  onClick={handleAddTime}
+                  className="cursor-pointer border border-blue-400 rounded-lg hover:bg-blue-50"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -284,30 +322,68 @@ function ActivityUpdatePage() {
         {availableTimes.map((slot, index) => (
           <div
             key={index}
-            className="grid grid-cols-[36rem_27rem_auto] items-center gap-[1.4rem]"
+            className="grid gap-[1.4rem]
+      tablet:grid-cols-[36rem_27rem_auto]
+      mobile:grid-cols-1"
           >
-            <div className=" rounded-[1.6rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950 w-full">
-              {slot.date ? format(slot.date, "yy/MM/dd") : ""}
-            </div>
-
-            <div className="grid grid-cols-[1fr_1fr_auto] items-center ">
-              <div className="rounded-[1.6rem] w-[12.1rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950">
-                {slot.startTime}
-              </div>
-              <p className="text-center w-[2.8rem]">-</p>
-              <div className="rounded-[1.6rem] w-[12.1rem] px-[2rem] py-[1.6rem] border border-gray-100 text-16-m text-gray-950">
-                {slot.endTime}
+            {/* 날짜 */}
+            <div className="flex flex-col">
+              <label className="text-16-m text-gray-950 mb-[1rem]">날짜</label>
+              <div className="h-[5.4rem] border border-gray-100 rounded-[1.6rem] px-[2rem] py-[1.6rem] text-16-m text-gray-950 flex items-center">
+                {slot.date ? format(slot.date, "yy/MM/dd") : ""}
               </div>
             </div>
 
-            <Image
-              src={MinusIcon}
-              alt="삭제"
-              width={42}
-              height={42}
-              onClick={() => handleRemoveTime(index)}
-              className="cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300"
-            />
+            {/* 시간 + 버튼 묶음 */}
+            <div className="grid mobile:grid-cols-[1fr_auto_1fr_auto] tablet:grid-cols-[1fr_auto_1fr_auto] items-end gap-[0.5rem]">
+              {/* 시작 시간 */}
+              <div className="flex flex-col">
+                <label className="text-16-m text-gray-950 mb-[1rem]">
+                  시작 시간
+                </label>
+                <TimeSelectDropdown
+                  value={slot.startTime}
+                  onChange={(newStartTime) => {
+                    const newTimes = [...availableTimes];
+                    newTimes[index].startTime = newStartTime;
+                    setAvailableTimes(newTimes);
+                  }}
+                />
+              </div>
+
+              {/* 구분 기호 */}
+              <div className="flex items-end pb-[1.9rem]">
+                <p className="text-center w-[2.8rem]">-</p>
+              </div>
+
+              {/* 종료 시간 */}
+              <div className="flex flex-col">
+                <label className="text-16-m text-gray-950 mb-[1rem]">
+                  종료 시간
+                </label>
+                <TimeSelectDropdown
+                  value={slot.endTime}
+                  onChange={(newEndTime) => {
+                    const newTimes = [...availableTimes];
+                    newTimes[index].endTime = newEndTime;
+                    setAvailableTimes(newTimes);
+                  }}
+                />
+              </div>
+
+              {/* 삭제 버튼 */}
+              <div className="flex items-end pb-[0.6rem] justify-center">
+                <div className="relative w-[4.2rem] h-[4.2rem]">
+                  <Image
+                    src={MinusIcon}
+                    alt="삭제"
+                    fill
+                    onClick={() => handleRemoveTime(index)}
+                    className="cursor-pointer bg-gray-200 rounded-full hover:bg-gray-300"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -346,10 +422,10 @@ function ActivityUpdatePage() {
       </div>
 
       {/* 소개 이미지 */}
-      <label className="block text-16-m font-semibold mb-2">
+      <label className="block text-16-m font-semibold mt-[3rem] mb-[1rem]">
         소개 이미지 등록
       </label>
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 flex-wrap mb-[2.4rem]">
         {introImageUrls.map((url, index) => (
           <div
             key={index}
@@ -373,14 +449,14 @@ function ActivityUpdatePage() {
               className="hidden"
               onChange={handleIntroUpload}
             />
-            <span className="text-gray-400 text-sm">
+            <span className="text-gray-600 text-14-m">
               {introImages.length}/4
             </span>
           </label>
         )}
       </div>
 
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center">
         <Button size="experienceRegister2" onClick={handleSubmit}>
           {isNew ? "등록하기" : "수정하기"}
         </Button>
