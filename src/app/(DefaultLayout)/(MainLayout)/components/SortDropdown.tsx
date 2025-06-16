@@ -1,4 +1,4 @@
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "../../../../components/dropdown/Dropdown";
 import { ACTIVITY_SORT_FILTER, type SortOption } from "@/constants/activity";
 
 export type SortOptionType = SortOption;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
 
-import SortDropdown from "@/components/dropdown/SortDropdown";
+import SortDropdown from "@/app/(DefaultLayout)/(MainLayout)/components/SortDropdown";
 import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
 
 const meta = {
