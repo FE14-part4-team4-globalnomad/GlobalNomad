@@ -10,13 +10,21 @@ import Card from "@/components/card/Card";
 import SortDropdown from "@/components/dropdown/SortDropdown";
 import Pagination from "@/components/pagination/Pagination";
 import { Search } from "@/components/search/Search";
+import type { ActivityCategoryType } from "@/types/activity";
 import { ActivityType } from "@/types/activity";
 
 function HomePage() {
   const [activities, setActivities] = useState<ActivityType[]>([]);
+  const [popularActivities, setPopularActivities] = useState<ActivityType[]>(
+    [],
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<
+    ActivityCategoryType | ""
+  >("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -24,14 +32,35 @@ function HomePage() {
         const response = await activityService.getActivities({
           query: {
             method: "offset",
+            category: selectedCategory || undefined,
+            page: currentPage,
+            size: 8,
           },
         });
         setActivities(response.data.activities);
+        setTotalPages(Math.ceil(response.data.totalCount / 8));
       } catch (error) {
         console.error("Error fetching activities:", error);
       }
     };
     fetchActivities();
+  }, [selectedCategory, currentPage]);
+
+  useEffect(() => {
+    const fetchPopularActivities = async () => {
+      try {
+        const response = await activityService.getActivities({
+          query: {
+            method: "offset",
+            sort: "most_reviewed",
+          },
+        });
+        setPopularActivities(response.data.activities);
+      } catch (error) {
+        console.error("Error fetching popular activities:", error);
+      }
+    };
+    fetchPopularActivities();
   }, []);
 
   useEffect(() => {
@@ -114,7 +143,7 @@ function HomePage() {
         <div className="relative">
           <div>
             <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
-              {activities
+              {popularActivities
                 ?.slice(slideIndex * 4, slideIndex * 4 + 4)
                 .map((activity) => (
                   <Card
@@ -132,7 +161,8 @@ function HomePage() {
             <ArrowButton
               onClick={() =>
                 setSlideIndex(
-                  (prev) => (prev + 1) % Math.ceil(activities.length / 4),
+                  (prev) =>
+                    (prev + 1) % Math.ceil(popularActivities.length / 4),
                 )
               }
             />
@@ -147,31 +177,35 @@ function HomePage() {
         <div className="flex justify-between">
           <CategoryFilter
             selectedId={selectedCategory}
-            onSelect={(id: string) => setSelectedCategory(id)}
+            onSelect={(id: string) => {
+              const labelMap: Record<string, ActivityCategoryType> = {
+                culture: "문화 · 예술",
+                food: "식음료",
+                tour: "투어",
+                sightseeing: "관광",
+                wellbeing: "웰빙",
+              };
+              setSelectedCategory(labelMap[id]);
+            }}
           />
           <SortDropdown selectedItem={{ id: "latest", title: "최신순" }} />
         </div>
         <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-4">
-          {activities
-            ?.slice(0, 8)
-            .map((activity) => (
-              <Card
-                key={activity.id}
-                title={activity.title}
-                price={activity.price}
-                bannerImageUrl={activity.bannerImageUrl}
-                rating={activity.rating}
-                reviewCount={activity.reviewCount}
-              />
-            ))}
+          {activities?.map((activity) => (
+            <Card
+              key={activity.id}
+              title={activity.title}
+              price={activity.price}
+              bannerImageUrl={activity.bannerImageUrl}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+            />
+          ))}
         </div>
         <Pagination
-          currentPage={0}
-          totalPages={0}
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          onPageChange={function (page: number): void {
-            throw new Error("Function not implemented.");
-          }}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </section>
     </div>

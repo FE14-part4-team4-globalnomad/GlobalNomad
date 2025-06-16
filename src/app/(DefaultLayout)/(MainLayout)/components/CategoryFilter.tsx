@@ -10,7 +10,7 @@ import { Category, CategoryFilterProps as Props } from "@/types/category";
 const categories: Category[] = [
   {
     id: "culture",
-    label: "문화·예술",
+    label: "문화 · 예술",
     icon: <Image src={music} alt="문화·예술" width={20} height={20} />,
   },
   {
