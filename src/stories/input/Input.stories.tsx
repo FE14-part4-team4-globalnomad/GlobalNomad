@@ -33,3 +33,11 @@ export const WithError: Story = {
     placeholder: "이메일을 입력해주세요",
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    label: "닉네임",
+    placeholder: "입력할 수 없습니다",
+    disabled: true,
+  },
+};
