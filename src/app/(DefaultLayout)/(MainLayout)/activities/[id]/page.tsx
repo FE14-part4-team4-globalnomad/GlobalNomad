@@ -254,3 +254,9 @@ function ActivityDetailPage({ params }: PageProps) {
 }
 
 export default ActivityDetailPage;
+
+export async function generateStaticParams() {
+  return [];
+}
+
+export const dynamic = 'force-dynamic';
