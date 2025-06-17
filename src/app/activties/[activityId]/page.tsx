@@ -1,7 +1,7 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { notFound } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import {
   useActivityAvailableScheduleQuery,
@@ -25,15 +25,14 @@ import Gnb from '@/components/gnb/Gnb';
 import Pagination from '@/components/pagination/Pagination';
 import { useAuthStore } from '@/store/authStore';
 
-export default function ActivityDetailPage() {
-  const params = useParams();
-  const activityId = Number(params?.activityId);
+export default function ActivityDetailPage({ params }: { params: { activityId: string } }) {
+  const activityId = Number(params.activityId);
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-
-  const [currentPage, setCurrentPage] = useState(1);
 
   const [isTablet, setIsTablet] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -42,7 +41,7 @@ export default function ActivityDetailPage() {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
+  const [reservationStep, setReservationStep] = useState<'date' | 'guest'>('date');
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -50,21 +49,10 @@ export default function ActivityDetailPage() {
 
   const { user } = useAuthStore();
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setIsTablet(width >= 769 && width < 1280);
-      setIsMobile(width < 769);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const {
     data: activity,
     isLoading: isActivityLoading,
+    isError: isActivityError,
   } = useActivityQuery(activityId, !!activityId);
 
   const {
@@ -76,7 +64,7 @@ export default function ActivityDetailPage() {
       activityId,
       query: {
         year: String(currentYear),
-        month: String(currentMonth + 1).padStart(2, "0"),
+        month: String(currentMonth + 1).padStart(2, '0'),
       },
     },
     !!activityId
@@ -94,6 +82,24 @@ export default function ActivityDetailPage() {
   );
 
   useEffect(() => {
+    if (!isActivityLoading && (isActivityError || !activity)) {
+      notFound();
+    }
+  }, [isActivityLoading, isActivityError, activity]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsTablet(width >= 769 && width < 1280);
+      setIsMobile(width < 769);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     if (selectedDate) {
       setCurrentYear(selectedDate.getFullYear());
       setCurrentMonth(selectedDate.getMonth());
@@ -101,31 +107,33 @@ export default function ActivityDetailPage() {
     }
   }, [selectedDate, refetchSchedule]);
 
-  const bannerImageUrl = activity?.bannerImageUrl ?? "";
-  const subImageUrls = activity?.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
-
-  const content = activity?.description ?? "";
-  const pricePerPerson = activity?.price ?? 0;
-  const address = activity?.address ?? "";
-  const averageRating = reviewData?.averageRating ?? 0;
-  const totalReviews = reviewData?.totalCount ?? 0;
-
-  const reviews = (reviewData?.reviews ?? []).map((review) => ({
-    name: review.user.nickname,
-    date: new Date(review.createdAt).toLocaleDateString("ko-KR"),
-    rating: review.rating,
-    content: review.content,
-  }));
-  
   if (isActivityLoading || isReviewLoading || isScheduleLoading) {
     return (
-      <div>
+      <>
         <Gnb />
         <ActivitySkeleton />
         <Footer />
-      </div>
+      </>
     );
   }
+
+  if (!activity) return null;
+
+  const bannerImageUrl = activity.bannerImageUrl ?? '';
+  const subImageUrls = activity.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
+
+  const content = activity.description ?? '';
+  const pricePerPerson = activity.price ?? 0;
+  const address = activity.address ?? '';
+  const averageRating = reviewData?.averageRating ?? 0;
+  const totalReviews = reviewData?.totalCount ?? 0;
+
+  const reviews = (reviewData?.reviews ?? []).map(review => ({
+    name: review.user.nickname,
+    date: new Date(review.createdAt).toLocaleDateString('ko-KR'),
+    rating: review.rating,
+    content: review.content,
+  }));
 
   return (
     <div>
@@ -134,16 +142,14 @@ export default function ActivityDetailPage() {
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
             <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
-            {activity && (
-              <ActivityInfo
-                category={activity.category}
-                title={activity.title}
-                rating={{ average: averageRating, count: totalReviews }}
-                location={address}
-                description={activity.description}
-                isMine={user?.id === activity.userId}
-              />
-            )}
+            <ActivityInfo
+              category={activity.category}
+              title={activity.title}
+              rating={{ average: averageRating, count: totalReviews }}
+              location={address}
+              description={activity.description}
+              isMine={user?.id === activity.userId}
+            />
             <Description content={content} />
             <KakaoMap address={address} />
             <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
@@ -173,18 +179,20 @@ export default function ActivityDetailPage() {
               />
             </div>
             <div>
-              {activity && (
-                <ActivityInfo
-                  category={activity.category}
-                  title={activity.title}
-                  rating={{ average: averageRating, count: totalReviews }}
-                  location={address}
-                  description={activity.description}
-                  isMine={user?.id === activity.userId}
-                  activityId={activity.id}
-                />
-              )}
-              <Reservation pricePerPerson={pricePerPerson} activityId={activityId} isMine={user?.id !== activity?.userId} />
+              <ActivityInfo
+                category={activity.category}
+                title={activity.title}
+                rating={{ average: averageRating, count: totalReviews }}
+                location={address}
+                description={activity.description}
+                isMine={user?.id === activity.userId}
+                activityId={activity.id}
+              />
+              <Reservation
+                pricePerPerson={pricePerPerson}
+                activityId={activityId}
+                isMine={user?.id !== activity.userId}
+              />
             </div>
           </div>
         )}
@@ -197,7 +205,7 @@ export default function ActivityDetailPage() {
             isReady={selectedDate !== null && selectedTime !== null}
             onReserve={() => setIsReservationOpen(true)}
             onDateClick={() => setIsPanelOpen(true)}
-            isMine={user?.id !== activity?.userId}
+            isMine={user?.id !== activity.userId}
             activityId={activityId}
             selectedDate={selectedDate}
             selectedTime={selectedTime}
@@ -211,25 +219,25 @@ export default function ActivityDetailPage() {
         isOpen={isPanelOpen}
         onClose={() => {
           setIsPanelOpen(false);
-          setReservationStep("date");
+          setReservationStep('date');
         }}
       >
         {isMobile ? (
-          reservationStep === "date" ? (
+          reservationStep === 'date' ? (
             <ReservationMobile
               pricePerPerson={pricePerPerson}
               activityId={activityId}
               onNext={(date, time) => {
                 setSelectedDate(date);
                 setSelectedTime(time);
-                setReservationStep("guest");
+                setReservationStep('guest');
               }}
             />
           ) : (
             <ReservationMobileCnt
               pricePerPerson={pricePerPerson}
               activityId={activityId}
-              onBack={() => setReservationStep("date")}
+              onBack={() => setReservationStep('date')}
               onConfirm={(guestCount) => {
                 setGuestCount(guestCount);
                 setIsPanelOpen(false);
