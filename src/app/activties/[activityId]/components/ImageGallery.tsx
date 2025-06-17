@@ -8,12 +8,15 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 interface ImageGalleryProps {
-  images: string[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
 }
 
-export default function ImageGallery({ images }: ImageGalleryProps) {
+export default function ImageGallery({ bannerImageUrl, subImageUrls }: ImageGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = [bannerImageUrl, ...subImageUrls];
 
   const openLightbox = (index: number) => {
     setCurrentIndex(index);
@@ -25,7 +28,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
   };
 
   return (
-    <>
+    <div>
       <div className="relative w-full max-w-screen-lg mx-auto mobile:w-[327px]">
         <Swiper
           modules={[Navigation, Pagination]}
@@ -58,13 +61,13 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
       {isOpen && (
         <div
-          className="fixed inset-0 flex justify-center items-center z-90"
+          className="fixed inset-0 flex justify-center items-center z-[9999]"
           style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
           onClick={closeLightbox}
         >
           <div
             className="relative max-w-[90vw] max-h-[90vh]"
-            onClick={e => e.stopPropagation()} // 클릭 이벤트 버블링 방지
+            onClick={(e) => e.stopPropagation()}
           >
             <img
               src={images[currentIndex]}
@@ -74,6 +77,6 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

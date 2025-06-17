@@ -1,5 +1,3 @@
-// 달력 컴포넌트(예약 컴포넌트에서 사용)
-
 'use client'
 
 import Image from 'next/image';
@@ -19,7 +17,7 @@ type DateSelectorProps = {
   startDay: number;
   prevMonthDays: number;
   totalCells: number;
-  isAvailable: (date: Date) => boolean;
+  availableDates: Record<string, string[]>;
 };
 
 export default function DateSelector({
@@ -33,10 +31,15 @@ export default function DateSelector({
   startDay,
   prevMonthDays,
   totalCells,
-  isAvailable,
+  availableDates,
 }: DateSelectorProps) {
+  const isAvailable = (date: Date, availableDates: Record<string, string[]>) => {
+    const formatted = format(date, 'yyyy-MM-dd');
+    return !!availableDates[formatted];
+  };
+
   return (
-    <div className="mb-[24px]">
+    <div className="mb-5">
       <div className="text-gray-950 desktop:text-16-b tablet:text-20-b">날짜</div>
       <div className="mt-1 desktop:h-35 tablet:w-36 tablet:h-49">
         <div className="flex justify-between items-center mb-2">
@@ -53,8 +56,8 @@ export default function DateSelector({
           </div>
         </div>
         <div className="grid grid-cols-7 gap-1 text-16-m w-full">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d) => (
-            <div key={d} className="text-center text-gray-800">
+          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, index) => (
+            <div key={`${d}-${index}`} className="text-center text-gray-800">
               {d}
             </div>
           ))}
@@ -80,7 +83,7 @@ export default function DateSelector({
             const isSelected = selectedDate
               ? dateStr === format(selectedDate, 'yyyy-MM-dd')
               : false;
-            const isDateAvailable = isCurrentMonth && isAvailable(date!);
+            const isDateAvailable = isCurrentMonth && isAvailable(date!, availableDates);
 
             return (
               <div

@@ -11,12 +11,12 @@ import Button from '@/components/button/Button';
 
 type ReservationProps = {
   pricePerPerson: number;
+  activityId: number;
   initialGuestCount?: number;
   initialDate?: Date;
-  availableDates: Record<string, string[]>;
 };
 
-export default function ReservationTablet(props: ReservationProps) {
+export default function ReservationTablet({ pricePerPerson, activityId }: ReservationProps) {
   const {
     selectedDate,
     setSelectedDate,
@@ -29,14 +29,14 @@ export default function ReservationTablet(props: ReservationProps) {
     currentMonth,
     handlePrevMonth,
     handleNextMonth,
-    isAvailable,
     total,
     daysInMonth,
     startDay,
     prevMonthDays,
     totalCells,
+    availableDates,
     availableTimesForSelectedDate,
-  } = useReservation(props);
+  } = useReservation({ pricePerPerson, activityId });
 
   return (
     <div className="w-full h-full overflow-y-auto px-3 py-[24px] rounded-t-3xl bg-white">
@@ -52,7 +52,7 @@ export default function ReservationTablet(props: ReservationProps) {
           startDay={startDay}
           prevMonthDays={prevMonthDays}
           totalCells={totalCells}
-          isAvailable={isAvailable}
+          availableDates={availableDates}
         />
 
         <div className="w-30 rounded-3xl shadow-lg bg-white p-[24px] mt-5">
@@ -78,7 +78,7 @@ export default function ReservationTablet(props: ReservationProps) {
         </div>
       </div>
 
-      <Button size="calendar" variant="primary" rounded>
+      <Button size="calendar" variant={selectedTime ? "primary" : "secondary"} rounded>
         확인
       </Button>
     </div>

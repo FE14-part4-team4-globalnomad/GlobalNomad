@@ -1,43 +1,44 @@
-// 모바일 예약 컴포넌트
-
-'use client'
+'use client';
 
 import useReservation from '@/hooks/useReservation';
 
 import DateSelector from './DateSelector';
-import GuestCountSelector from './GuestCountSelector';
 import AvailableTimes from './AvailableTimes';
 import Button from '@/components/button/Button';
 
-type ReservationProps = {
+type ReservationMobileProps = {
   pricePerPerson: number;
+  activityId: number;
   initialGuestCount?: number;
   initialDate?: Date;
-  availableDates: Record<string, string[]>;
   onNext: () => void;
 };
 
-export default function ReservationMobile(props: ReservationProps) {
+export default function ReservationMobile({
+  pricePerPerson,
+  activityId,
+  initialGuestCount,
+  initialDate,
+  onNext,
+}: ReservationMobileProps) {
   const {
     selectedDate,
     setSelectedDate,
-    guestCount,
-    handleDecrease,
-    handleIncrease,
     selectedTime,
     setSelectedTime,
     currentYear,
     currentMonth,
     handlePrevMonth,
     handleNextMonth,
-    isAvailable,
-    total,
     daysInMonth,
     startDay,
     prevMonthDays,
     totalCells,
+    availableDates,
     availableTimesForSelectedDate,
-  } = useReservation(props);
+  } = useReservation({ pricePerPerson, initialGuestCount, initialDate, activityId });
+
+  const isSelectable = selectedDate !== null && selectedTime !== '';
 
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] pb-2 rounded-tl-3xl rounded-tr-3xl bg-white">
@@ -53,7 +54,7 @@ export default function ReservationMobile(props: ReservationProps) {
           startDay={startDay}
           prevMonthDays={prevMonthDays}
           totalCells={totalCells}
-          isAvailable={isAvailable}
+          availableDates={availableDates}
         />
 
         <AvailableTimes
@@ -63,7 +64,13 @@ export default function ReservationMobile(props: ReservationProps) {
         />
       </div>
 
-      <Button size="calendar" variant="primary" rounded onClick={props.onNext}>
+      <Button
+        size="calendar"
+        variant={isSelectable ? 'primary' : 'secondary'}
+        rounded
+        onClick={onNext}
+        disabled={!isSelectable}
+      >
         확인
       </Button>
     </div>

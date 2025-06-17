@@ -1,26 +1,26 @@
-// 데스크탑 예약 컴포넌트
+'use client';
 
-'use client'
-
+import { useOverlay } from '@/hooks/useOverlay';
 import useReservation from '@/hooks/useReservation';
-import { useOverlay } from "@/hooks/useOverlay";
+
+import { useActivityReservationMutation } from '@/apis/activity/activity.query';
 
 import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
 import AvailableTimes from './AvailableTimes';
 
 import Button from '@/components/button/Button';
-
-import ConfirmModal from "@/components/modal/ConfirmModal";
+import ConfirmModal from '@/components/modal/ConfirmModal';
 
 type ReservationProps = {
   pricePerPerson: number;
-  initialGuestCount?: number;
-  initialDate?: Date;
-  availableDates: Record<string, string[]>;
+  activityId: number;
+  isMine?: boolean;
 };
 
-export default function Reservation(props: ReservationProps) {
+export default function Reservation({ pricePerPerson, activityId, isMine = false }: ReservationProps) {
+  if (!isMine) return null;
+
   const {
     selectedDate,
     setSelectedDate,
@@ -33,23 +33,25 @@ export default function Reservation(props: ReservationProps) {
     currentMonth,
     handlePrevMonth,
     handleNextMonth,
-    isAvailable,
     total,
     daysInMonth,
     startDay,
     prevMonthDays,
     totalCells,
+    availableDates,
     availableTimesForSelectedDate,
-  } = useReservation(props);
+    selectedScheduleId,
+  } = useReservation({ pricePerPerson, activityId });
 
   const { overlay } = useOverlay();
+  const { mutate: reserveActivity } = useActivityReservationMutation();
+
+  const isReadyToReserve = selectedDate && selectedTime && setSelectedTime;
 
   return (
     <div className="w-41 p-3 rounded-3xl shadow-lg bg-white border border-gray-100">
       <div className="mb-[24px]">
-        <span className="text-24-b text-gray-950">
-          ₩ {props.pricePerPerson.toLocaleString()}{' '}
-        </span>
+        <span className="text-24-b text-gray-950">₩ {pricePerPerson.toLocaleString()} </span>
         <span className="text-20-m text-gray-500">/ 인</span>
       </div>
 
@@ -64,7 +66,7 @@ export default function Reservation(props: ReservationProps) {
         startDay={startDay}
         prevMonthDays={prevMonthDays}
         totalCells={totalCells}
-        isAvailable={isAvailable}
+        availableDates={availableDates}
       />
 
       <GuestCountSelector
@@ -79,7 +81,6 @@ export default function Reservation(props: ReservationProps) {
         setSelectedTime={setSelectedTime}
       />
 
-      {/* 총 합계 */}
       <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
         <div>
           <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
@@ -87,18 +88,42 @@ export default function Reservation(props: ReservationProps) {
         </div>
 
         <Button
-          size="calendar" variant="primary" rounded className="!w-13"
-          onClick={() =>
-            overlay(
-              <ConfirmModal
-                message="예약이 완료되었습니다."
-                onConfirm={() => {
-                  // 실제 예약 처리 로직
-                  console.log("예약 확정");
-                }}
-              />
-            )
-          }
+          size="calendar"
+          variant={isReadyToReserve ? 'primary' : 'secondary'}
+          rounded
+          className="!w-13"
+          onClick={() => {
+            if (!isReadyToReserve || !selectedScheduleId) return;
+
+            reserveActivity(
+              {
+                activityId,
+                payload: {
+                  scheduleId: selectedScheduleId,
+                  headCount: guestCount,
+                },
+              },
+              {
+                onSuccess: () => {
+                  overlay(
+                    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+                      <ConfirmModal
+                        message="예약이 완료되었습니다."
+                        onConfirm={() => {
+                          console.log('예약 확정');
+                        }}
+                      />
+                    </div>
+                  );
+                },
+                onError: (error) => {
+                  alert("예약에 실패했습니다. 다시 시도해주세요.");
+                  console.error(error);
+                },
+              }
+            );
+          }}
+          disabled={!isReadyToReserve}
         >
           예약하기
         </Button>

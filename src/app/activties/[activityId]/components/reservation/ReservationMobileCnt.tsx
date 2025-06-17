@@ -1,52 +1,39 @@
-// 모바일 예약 부속 컴포넌트
-
-'use client'
+'use client';
 
 import Image from 'next/image';
 
 import useReservation from '@/hooks/useReservation';
-
-import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
-import AvailableTimes from './AvailableTimes';
 import Button from '@/components/button/Button';
 
 import arrowBackIcon from '@/assets/icons/arrow/icon_arrow_back.svg';
 
-type ReservationProps = {
+type ReservationMobileCntProps = {
   pricePerPerson: number;
+  activityId: number;
   initialGuestCount?: number;
   initialDate?: Date;
-  availableDates: Record<string, string[]>;
   onBack: () => void;
 };
 
-export default function ReservationMobileCnt(props: ReservationProps) {
+export default function ReservationMobileCnt({
+  pricePerPerson,
+  activityId,
+  initialGuestCount,
+  initialDate,
+  onBack,
+}: ReservationMobileCntProps) {
   const {
-    selectedDate,
-    setSelectedDate,
     guestCount,
     handleDecrease,
     handleIncrease,
-    selectedTime,
-    setSelectedTime,
-    currentYear,
-    currentMonth,
-    handlePrevMonth,
-    handleNextMonth,
-    isAvailable,
     total,
-    daysInMonth,
-    startDay,
-    prevMonthDays,
-    totalCells,
-    availableTimesForSelectedDate,
-  } = useReservation(props);
+  } = useReservation({ pricePerPerson, initialGuestCount, initialDate, activityId });
 
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
       <div className="flex items-center gap-1 mb-1">
-        <button className="" onClick={props.onBack}>
+        <button onClick={onBack}>
           <Image src={arrowBackIcon} alt="이전" />
         </button>
         <span className="text-18-b text-gray-950">인원</span>
@@ -58,8 +45,7 @@ export default function ReservationMobileCnt(props: ReservationProps) {
           handleDecrease={handleDecrease}
           handleIncrease={handleIncrease}
         />
-          
-        {/* 총 합계 */}
+
         <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
           <div>
             <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>

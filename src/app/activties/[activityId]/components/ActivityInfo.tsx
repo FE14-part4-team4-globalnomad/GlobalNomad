@@ -2,13 +2,15 @@
 
 import React, { useState } from "react";
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
+
+import { useMyActivityDeleteMutation } from "@/apis/activity/activity.query";
 
 import yellowStar from "@/assets/icons/star/icon_star_active.svg";
 import mapIcon from "@/assets/icons/any/icon_map.svg";
 import moreIcon from "@/assets/icons/any/icon_more.svg";
 
 import { useOverlay } from "@/hooks/useOverlay";
-
 import WarningModal from "@/components/modal/WarningModal";
 
 interface ActivityInfoProps {
@@ -20,6 +22,8 @@ interface ActivityInfoProps {
   };
   location: string;
   description: string;
+  isMine?: boolean;
+  activityId?: number;
 }
 
 export default function ActivityInfo({
@@ -28,12 +32,17 @@ export default function ActivityInfo({
   rating,
   location,
   description,
+  isMine = false,
+  activityId,
 }: ActivityInfoProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { overlay } = useOverlay();
+  
+  const { mutate: deleteActivity } = useMyActivityDeleteMutation();
+  const router = useRouter();
 
   return (
-    <section className="relative bg-white mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
+    <section className="relative bg-white desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
       {/* Title + More Icon Row */}
       <div className="flex justify-between items-start mb-[17px]">
         <div>
@@ -41,37 +50,53 @@ export default function ActivityInfo({
           <h1 className="text-24-b text-gray-900">{title}</h1>
         </div>
 
-        <div className="relative">
-          <button
-            onClick={() => setIsDropdownOpen(prev => !prev)}
-          >
-            <Image src={moreIcon} alt="더보기" />
-          </button>
+        {isMine && (
+          <div className="relative">
+            <button onClick={() => setIsDropdownOpen(prev => !prev)}>
+              <Image src={moreIcon} alt="더보기" />
+            </button>
 
-          {isDropdownOpen && (
-            <div className="absolute right-full top-1/2 -translate-y-[25%] z-10 bg-white rounded-3xl border border-gray-100 text-16-m text-gray-950">
-              <button className="block w-full p-2 whitespace-nowrap">수정하기</button>
-              <button
-                className="block w-full p-2 whitespace-nowrap"
-                onClick={() =>
-                  overlay(
-                    <WarningModal
-                      message="정말 삭제하시겠습니까?"
-                      confirmText="삭제"
-                      onConfirm={() => {
-                        // 삭제 로직 넣기
-                        console.log("삭제 확정");
-                        // 모달 닫기 등 필요한 후처리 가능
-                      }}
-                    />
-                  )
-                }
-              >
-                삭제하기
-              </button>
-            </div>
-          )}
-        </div>
+            {isDropdownOpen && (
+              <div className="absolute right-full top-1/2 -translate-y-[25%] z-10 bg-white rounded-3xl border border-gray-100 text-16-m text-gray-950 shadow-lg">
+                <button
+                  type="button"
+                  className="block w-full p-2 whitespace-nowrap"
+                  onClick={() => {
+                    if (activityId !== undefined) {
+                      router.push(`/experience/update/${activityId}`);
+                    }
+                  }}
+                >
+                  수정하기
+                </button>
+                <button
+                  className="block w-full p-2 whitespace-nowrap text-red-500"
+                  onClick={() =>
+                    overlay(
+                      <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+                        <WarningModal
+                          message="정말 삭제하시겠습니까?"
+                          confirmText="삭제"
+                          onConfirm={() => {
+                            if (activityId !== undefined) {
+                              deleteActivity({ activityId }, {
+                                onSuccess: () => {
+                                  router.push("/"); // 삭제 후 홈으로 이동
+                                },
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    )
+                  }
+                >
+                  삭제하기
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Rating */}

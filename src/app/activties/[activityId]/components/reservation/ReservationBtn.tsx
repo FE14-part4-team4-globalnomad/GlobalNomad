@@ -14,9 +14,12 @@ type ReservationBtnProps = {
   onReserve?: () => void;
   isReady: boolean;
   onDateClick?: () => void;
+  isMine?: boolean;
 };
 
-export default function ReservationBtn({ pricePerPerson, onReserve, isReady, onDateClick }: ReservationBtnProps) {
+export default function ReservationBtn({ pricePerPerson, onReserve, isReady, onDateClick, isMine = false }: ReservationBtnProps) {
+  if (!isMine) return null;
+  
   const { overlay } = useOverlay();
   
   return (
