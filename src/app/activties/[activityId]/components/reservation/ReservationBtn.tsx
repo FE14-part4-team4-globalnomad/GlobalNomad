@@ -2,11 +2,10 @@
 
 import { format } from 'date-fns';
 
-import { useOverlay } from '@/hooks/useOverlay';
-import { useActivityReservationMutation } from '@/apis/activity/activity.query';
-
 import Button from '@/components/button/Button';
 import ConfirmModal from '@/components/modal/ConfirmModal';
+import { useOverlay } from '@/hooks/useOverlay';
+import { useActivityReservationMutation } from '@/apis/activity/activity.query';
 
 type ReservationBtnProps = {
   pricePerPerson: number;
@@ -27,22 +26,23 @@ type ReservationBtnProps = {
   }[];
 };
 
-export default function ReservationBtn({
-  pricePerPerson,
-  onReserve,
-  isReady,
-  onDateClick,
-  isMine = false,
-  activityId,
-  selectedDate,
-  selectedTime,
-  guestCount,
-  availableSchedule,
-}: ReservationBtnProps) {
-  if (!isMine) return null;
+export default function ReservationBtn(props: ReservationBtnProps) {
+  const {
+    pricePerPerson,
+    isReady,
+    onDateClick,
+    isMine = false,
+    activityId,
+    selectedDate,
+    selectedTime,
+    guestCount,
+    availableSchedule,
+  } = props;
 
   const { overlay } = useOverlay();
   const { mutate: reserveActivity } = useActivityReservationMutation();
+
+  if (!isMine) return null;
 
   const handleReserve = () => {
   const scheduleId = findScheduleId(selectedDate, selectedTime, availableSchedule);

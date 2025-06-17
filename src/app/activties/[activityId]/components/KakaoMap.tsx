@@ -34,7 +34,7 @@ export default function KakaoMap({ address }: MapProps) {
     const existingScript = document.getElementById('kakao-map-script');
 
     function loadMap() {
-      if (!window.kakao) return;
+      if (typeof window === 'undefined' || !window.kakao) return;
 
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');

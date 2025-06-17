@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { useMyActivityDeleteMutation } from '@/apis/activity/activity.query';
 import { useOverlay } from '@/hooks/useOverlay';
-
 import WarningModal from '@/components/modal/WarningModal';
 
 import yellowStar from '@/assets/icons/star/icon_star_active.svg';
