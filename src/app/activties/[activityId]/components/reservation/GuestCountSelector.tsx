@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import Image from 'next/image';
 
-import plusIcon from '@/assets/icons/plus_minus/icon_plus.svg';
 import minusIcon from '@/assets/icons/plus_minus/icon_minus.svg';
+import plusIcon from '@/assets/icons/plus_minus/icon_plus.svg';
 
 type GuestCountSelectorProps = {
   guestCount: number;

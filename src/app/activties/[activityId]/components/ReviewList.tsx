@@ -1,10 +1,10 @@
 'use client';
 
-import React from "react";
+import React from 'react';
 import Image from 'next/image';
 
-import yellowStar from "@/assets/icons/star/icon_star_active.svg";
-import grayStar from "@/assets/icons/star/icon_star_inactive.svg";
+import yellowStar from '@/assets/icons/star/icon_star_active.svg';
+import grayStar from '@/assets/icons/star/icon_star_inactive.svg';
 
 type ReviewItemData = {
   name: string;

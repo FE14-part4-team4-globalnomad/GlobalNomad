@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { format, parseISO } from 'date-fns';
 
 import { useActivityAvailableScheduleQuery } from '@/apis/activity/activity.query';
-import { ActivityScheduleTimeType } from '@/types/activity';
 
 type UseReservationProps = {
   pricePerPerson: number;
@@ -23,7 +22,6 @@ export default function useReservation({
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
 
-  // 🔁 예약 가능 일정 불러오기 (달력에서 보고 있는 달 기준)
   const { data: schedule } = useActivityAvailableScheduleQuery({
     activityId,
     query: {

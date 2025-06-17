@@ -1,11 +1,12 @@
 'use client';
 
 import { format } from 'date-fns';
-import { useOverlay } from "@/hooks/useOverlay";
+
+import { useOverlay } from '@/hooks/useOverlay';
 import { useActivityReservationMutation } from '@/apis/activity/activity.query';
 
 import Button from '@/components/button/Button';
-import ConfirmModal from "@/components/modal/ConfirmModal";
+import ConfirmModal from '@/components/modal/ConfirmModal';
 
 type ReservationBtnProps = {
   pricePerPerson: number;

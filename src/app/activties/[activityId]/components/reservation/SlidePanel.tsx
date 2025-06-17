@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 
-import styles from "@/styles/slideuppanel.module.css";
+import styles from '@/styles/slideuppanel.module.css';
 
 type SlidePanelProps = {
   isOpen: boolean;
