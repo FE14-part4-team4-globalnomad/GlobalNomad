@@ -2,9 +2,8 @@
 
 import { useEffect } from 'react';
 
-import useReservation from '@/hooks/useReservation';
 import Button from '@/components/button/Button';
-
+import useReservation from '@/hooks/useReservation';
 import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
 import AvailableTimes from './AvailableTimes';
@@ -28,7 +27,6 @@ export default function ReservationTablet({
   setSelectedDate: setExternalSelectedDate,
   selectedTime: externalSelectedTime,
   setSelectedTime: setExternalSelectedTime,
-  guestCount: externalGuestCount,
   setGuestCount: setExternalGuestCount,
   onConfirm,
 }: ReservationTabletProps) {

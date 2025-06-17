@@ -2,11 +2,9 @@
 
 import Image from 'next/image';
 
-import useReservation from '@/hooks/useReservation';
 import Button from '@/components/button/Button';
-
+import useReservation from '@/hooks/useReservation';
 import arrowBackIcon from '@/assets/icons/arrow/icon_arrow_back.svg';
-
 import GuestCountSelector from './GuestCountSelector';
 
 type ReservationMobileCntProps = {

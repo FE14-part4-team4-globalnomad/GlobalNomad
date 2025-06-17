@@ -2,10 +2,10 @@
 
 import { format } from 'date-fns';
 
+import { useActivityReservationMutation } from '@/apis/activity/activity.query';
 import Button from '@/components/button/Button';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import { useOverlay } from '@/hooks/useOverlay';
-import { useActivityReservationMutation } from '@/apis/activity/activity.query';
 
 type ReservationBtnProps = {
   pricePerPerson: number;

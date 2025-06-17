@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { format } from 'date-fns';
+import Image from 'next/image';
 
 import arrowLeftIcon from '@/assets/icons/arrow/icon_alt arrow_left.svg';
 import arrowRightIcon from '@/assets/icons/arrow/icon_alt arrow_right.svg';
