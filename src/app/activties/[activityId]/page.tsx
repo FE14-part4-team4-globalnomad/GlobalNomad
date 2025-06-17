@@ -1,5 +1,11 @@
 import ClientActivityDetail from './components/ClientActivityDetail';
 
-export default function Page({ params }: { params: { activityId: string } }) {
-  return <ClientActivityDetail activityId={Number(params.activityId)} />;
+interface PageProps {
+  params: { activityId: string };
+}
+
+export default function Page({ params }: PageProps) {
+  const activityId = Number(params.activityId);
+
+  return <ClientActivityDetail activityId={activityId} />;
 }
