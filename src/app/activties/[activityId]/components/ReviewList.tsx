@@ -8,8 +8,8 @@ import grayStar from "@/assets/icons/star/icon_star_inactive.svg";
 
 type ReviewItemData = {
   name: string;
-  date: string; // "yyyy.mm.dd"
-  rating: number; // 0~5
+  date: string;
+  rating: number;
   content: string;
 }
 
@@ -33,21 +33,16 @@ export default function ReviewList({ totalReviews, averageRating, reviews }: Rev
 
   return (
     <div className="mt-4 py-4 w-67 text-gray-950 border-t border-gray-200 mobile:w-33">
-      {/* 제목 및 총 후기 수 */}
       <div className="text-18-b mb-1">
         체험후기 <span className="text-16-b text-gray-400 ml-1 mobile:ml-0">{formattedTotal}개</span>
       </div>
 
       <div className="px-28 mb-3 mobile:px-0">
         <div className="mb-[15px] text-center">
-          {/* 평균 별점 */}
           <div className="text-32-b mobile:text-24-b">{averageRating.toFixed(1)}</div>
-
-          {/* 만족도 라벨 */}
           <div className="text-16-b">{ratingLabel}</div>
         </div>
 
-        {/* 별 아이콘 + 후기 수 */}
         <div className="flex justify-center items-center gap-[2px]">
           <Image src={yellowStar} alt="별 아이콘" className="w-[16px] h-[16px] mr-[3.2px]" />
           <span className="text-14-m text-gray-400">{formattedTotal}개 후기</span>
@@ -57,13 +52,11 @@ export default function ReviewList({ totalReviews, averageRating, reviews }: Rev
       <div className="flex flex-col gap-2">
         {reviews.map((review, index) => (
           <div key={index} className="bg-white shadow-md rounded-[24px] p-2">
-            {/* 이름과 날짜 */}
             <div>
               <span className="font-16-b text-gray-950 mr-1">{review.name}</span>
               <span className="font-14-m text-gray-400">{review.date}</span>
             </div>
 
-            {/* 별점 */}
             <div className="flex mt-[4px] mb-[12px]">
               {Array.from({ length: 5 }, (_, i) => (
                 <Image
@@ -75,7 +68,6 @@ export default function ReviewList({ totalReviews, averageRating, reviews }: Rev
               ))}
             </div>
 
-            {/* 리뷰 내용 */}
             <p className="font-16-body-m text-gray-950 whitespace-pre-wrap">{review.content}</p>
           </div>
         ))}

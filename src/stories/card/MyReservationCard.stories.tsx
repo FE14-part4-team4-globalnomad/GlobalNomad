@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import MyReservationCard from "@/components/card/MyReservationCard";
-import "../../styles/globals.css";
 
 const meta = {
   title: "Components/Card/My Reservation",

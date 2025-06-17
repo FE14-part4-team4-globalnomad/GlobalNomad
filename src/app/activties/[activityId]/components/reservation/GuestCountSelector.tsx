@@ -1,5 +1,3 @@
-// 사람 수 컴포넌트(예약 컴포넌트에서 사용)
-
 'use client'
 
 import Image from 'next/image';

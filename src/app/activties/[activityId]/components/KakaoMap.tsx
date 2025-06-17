@@ -13,7 +13,6 @@ interface MapProps {
 }
 
 export default function KakaoMap({ address }: MapProps) {
-  // SVG를 문자열로 선언 (JSX 아님!)
   const whiteMarkerSvg = `
     <svg
       width="14"
@@ -64,7 +63,6 @@ export default function KakaoMap({ address }: MapProps) {
 
             const isMobile = window.innerWidth <= 768;
 
-            // 삼각형 크기나 말풍선 스타일을 모바일/PC 구분
             const bubbleStyle = isMobile
               ? `
                 position: relative;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 
@@ -36,14 +36,32 @@ export default function ActivityInfo({
   activityId,
 }: ActivityInfoProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { overlay } = useOverlay();
+  const dropdownRef = useRef<HTMLDivElement>(null);
   
+  const { overlay } = useOverlay();
   const { mutate: deleteActivity } = useMyActivityDeleteMutation();
+
   const router = useRouter();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   return (
     <section className="relative bg-white desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
-      {/* Title + More Icon Row */}
       <div className="flex justify-between items-start mb-[17px]">
         <div>
           <div className="mb-1 text-14-m text-gray-950">{category}</div>
@@ -51,7 +69,7 @@ export default function ActivityInfo({
         </div>
 
         {isMine && (
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen(prev => !prev)}>
               <Image src={moreIcon} alt="더보기" />
             </button>
@@ -74,6 +92,17 @@ export default function ActivityInfo({
                   onClick={() =>
                     overlay(
                       <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+                        <style>
+                          {`
+                            [aria-label="image wrapper"] {
+                              position: relative !important;
+                              width: 88px !important;
+                              height: 88px !important;
+                              margin-left: auto !important;
+                              margin-right: auto !important;
+                            }
+                          `}
+                        </style>
                         <WarningModal
                           message="정말 삭제하시겠습니까?"
                           confirmText="삭제"
@@ -81,7 +110,7 @@ export default function ActivityInfo({
                             if (activityId !== undefined) {
                               deleteActivity({ activityId }, {
                                 onSuccess: () => {
-                                  router.push("/"); // 삭제 후 홈으로 이동
+                                  router.push("/");
                                 },
                               });
                             }
@@ -99,7 +128,6 @@ export default function ActivityInfo({
         )}
       </div>
 
-      {/* Rating */}
       <div className="flex items-center mb-1">
         <Image src={yellowStar} alt="별점" className="inline-block" />
         <div className="ml-[6px] text-14-m text-gray-700">
@@ -108,13 +136,11 @@ export default function ActivityInfo({
         </div>
       </div>
 
-      {/* Location */}
       <div className="mb-2 flex items-center">
         <Image src={mapIcon} alt="지도아이콘" className="inline-block mr-[4.7px]" />
         <span className="text-14-m text-gray-700">{location}</span>
       </div>
 
-      {/* Description */}
       <p className="text-14-body-m text-gray-800">{description}</p>
     </section>
   );

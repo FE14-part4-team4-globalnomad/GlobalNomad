@@ -1,5 +1,3 @@
-// 예약 가능한 시간 컴포넌트(예약 컴포넌트에서 사용)
-
 'use client'
 
 type AvailableTimesProps = {
@@ -24,7 +22,7 @@ export default function AvailableTimes({
             <button
               key={time}
               onClick={() => setSelectedTime(time)}
-              className={`w-full rounded-3xl px-[128px] py-[16px] tablet:px-[86.5px] tablet:py-[14px] 
+              className={`w-full flex justify-center items-center rounded-3xl py-[16px] tablet:py-[14px] 
                 ${
                   selectedTime === time 
                       ? 'border-2 border-brand-500 text-brand-500 bg-brand-100' 

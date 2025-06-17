@@ -109,16 +109,9 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
                     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
                       <ConfirmModal
                         message="예약이 완료되었습니다."
-                        onConfirm={() => {
-                          console.log('예약 확정');
-                        }}
                       />
                     </div>
                   );
-                },
-                onError: (error) => {
-                  alert("예약에 실패했습니다. 다시 시도해주세요.");
-                  console.error(error);
                 },
               }
             );

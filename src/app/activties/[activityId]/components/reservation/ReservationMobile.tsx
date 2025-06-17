@@ -11,7 +11,7 @@ type ReservationMobileProps = {
   activityId: number;
   initialGuestCount?: number;
   initialDate?: Date;
-  onNext: () => void;
+  onNext: (selectedDate: Date, selectedTime: string) => void;
 };
 
 export default function ReservationMobile({
@@ -68,7 +68,11 @@ export default function ReservationMobile({
         size="calendar"
         variant={isSelectable ? 'primary' : 'secondary'}
         rounded
-        onClick={onNext}
+        onClick={() => {
+          if (selectedDate && selectedTime) {
+            onNext(selectedDate, selectedTime);
+          }
+        }}
         disabled={!isSelectable}
       >
         확인

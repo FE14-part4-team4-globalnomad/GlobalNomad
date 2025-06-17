@@ -1,6 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import axios from "axios";
+import { useQuery, useMutation } from "@tanstack/react-query";
+
 
 import {
   GetActivityAvailableSchedulePayloadType,
@@ -58,7 +57,7 @@ export const useActivityReservationMutation = () =>
       activityService.postActivityReservation(params).then((res) => res.data),
   });
 
-// ✅ 내 체험 삭제
+// 내 체험 삭제
 export const useMyActivityDeleteMutation = () =>
   useMutation({
     mutationFn: (params: { activityId: number }) =>

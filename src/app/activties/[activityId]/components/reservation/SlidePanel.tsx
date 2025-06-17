@@ -1,5 +1,3 @@
-// 태블릿, 모바일 예약 컴포넌트 보여주는 컴포넌트
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -15,14 +13,11 @@ type SlidePanelProps = {
 export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProps) {
   useEffect(() => {
     if (isOpen) {
-      // 스크롤 막기
       document.body.style.overflow = 'hidden';
     } else {
-      // 원래대로
       document.body.style.overflow = '';
     }
 
-    // 컴포넌트 unmount 시 복원 (혹시 몰라서)
     return () => {
       document.body.style.overflow = '';
     };
@@ -32,13 +27,11 @@ export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProp
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-center items-end mobile:px-2 tablet:px-4">
-      {/* 배경 오버레이 */}
       <div
         className="absolute inset-0 bg-dimmed"
         onClick={onClose}
       />
 
-      {/* 슬라이드 패널 */}
       <div
         className={`
           relative z-50 w-full bg-white rounded-t-3xl shadow-xl transition-transform duration-300 ease-in-out

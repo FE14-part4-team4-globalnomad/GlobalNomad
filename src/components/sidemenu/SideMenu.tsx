@@ -12,6 +12,7 @@ import BlueSettingIcon from "@/assets/icons/any/setting/icon_setting_blue.svg";
 import GraySettingIcon from "@/assets/icons/any/setting/icon_setting_gray.svg";
 import BlueProfileIcon from "@/assets/icons/any/user/icon_user_blue.svg";
 import GrayProfileIcon from "@/assets/icons/any/user/icon_user_gray.svg";
+import { useAuthStore } from "@/store/authStore";
 import { cn } from "@/utils/classNames";
 
 const sideMenuRoutes: SideMenuItemType[] = [
@@ -44,12 +45,7 @@ const sideMenuRoutes: SideMenuItemType[] = [
 function SideMenu() {
   const pathname = usePathname() ?? "";
   const isProfilePage = pathname.startsWith("/profile");
-
-  const onClickChangeProfile = () => {
-    if (isProfilePage) {
-      console.log("profile clicked");
-    }
-  };
+  const user = useAuthStore((state) => state.user);
 
   return (
     <div
@@ -60,9 +56,8 @@ function SideMenu() {
       )}
     >
       <ProfileImageWrapper
-        imgSrc={undefined}
+        imgSrc={user?.profileImageUrl}
         isClickable={isProfilePage}
-        onClick={onClickChangeProfile}
       />
       <ul className="flex flex-col gap-[1.4rem] w-full">
         {sideMenuRoutes.map((routeData) => (

@@ -22,6 +22,8 @@ import ReservationMobileCnt from "@/app/activties/[activityId]/components/reserv
 import ReservationBtn from "@/app/activties/[activityId]/components/reservation/ReservationBtn";
 import SlidePanel from "@/app/activties/[activityId]/components/reservation/SlidePanel";
 
+import ActivitySkeleton from "@/app/activties/[activityId]/components/ActivitySkeleton";
+
 import {
   useActivityQuery,
   useActivityAvailableScheduleQuery,
@@ -33,15 +35,21 @@ export default function ActivityDetailPage() {
   const activityId = Number(params?.activityId);
 
   const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth(); // 0부터 시작 (0=1월)
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
 
   const [currentPage, setCurrentPage] = useState(1);
+
   const [isTablet, setIsTablet] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
+
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [guestCount, setGuestCount] = useState<number>(1);
 
   const { user } = useAuthStore();
 
@@ -61,10 +69,11 @@ export default function ActivityDetailPage() {
     data: activity,
     isLoading: isActivityLoading,
   } = useActivityQuery(activityId, !!activityId);
-  
+
   const {
     data: availableSchedule,
     isLoading: isScheduleLoading,
+    refetch: refetchSchedule,
   } = useActivityAvailableScheduleQuery(
     {
       activityId,
@@ -87,6 +96,14 @@ export default function ActivityDetailPage() {
     !!activityId
   );
 
+  useEffect(() => {
+    if (selectedDate) {
+      setCurrentYear(selectedDate.getFullYear());
+      setCurrentMonth(selectedDate.getMonth());
+      refetchSchedule();
+    }
+  }, [selectedDate]);
+
   const bannerImageUrl = activity?.bannerImageUrl ?? "";
   const subImageUrls = activity?.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
 
@@ -96,20 +113,22 @@ export default function ActivityDetailPage() {
   const averageRating = reviewData?.averageRating ?? 0;
   const totalReviews = reviewData?.totalCount ?? 0;
 
-  // ✅ ReviewType[] → ReviewItemData[]
   const reviews = (reviewData?.reviews ?? []).map((review) => ({
     name: review.user.nickname,
     date: new Date(review.createdAt).toLocaleDateString("ko-KR"),
     rating: review.rating,
     content: review.content,
   }));
-
-  // ✅ 예약 가능 날짜 포맷 보정
-  const availableDates: Record<string, string[]> = availableSchedule?.reduce((acc, cur) => {
-    const formattedDate = format(parseISO(cur.date), 'yyyy-MM-dd');
-    acc[formattedDate] = cur.times.map((t) => t.startTime);
-    return acc;
-  }, {} as Record<string, string[]>) ?? {};
+  
+  if (isActivityLoading || isReviewLoading || isScheduleLoading) {
+    return (
+      <div>
+        <Gnb />
+        <ActivitySkeleton />
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -117,10 +136,7 @@ export default function ActivityDetailPage() {
       <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
-            <ImageGallery
-              bannerImageUrl={activity?.bannerImageUrl ?? ""}
-              subImageUrls={activity?.subImages.map((img: { imageUrl: string }) => img.imageUrl) ?? []}
-            />
+            <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
             {activity && (
               <ActivityInfo
                 category={activity.category}
@@ -133,11 +149,7 @@ export default function ActivityDetailPage() {
             )}
             <Description content={content} />
             <KakaoMap address={address} />
-            <ReviewList
-              totalReviews={totalReviews}
-              averageRating={averageRating}
-              reviews={reviews}
-            />
+            <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(totalReviews / 10)}
@@ -149,19 +161,11 @@ export default function ActivityDetailPage() {
           </div>
         ) : (
           <div className="flex justify-center gap-4">
-            {/* 왼쪽 콘텐츠 */}
             <div>
-              <ImageGallery
-                bannerImageUrl={activity?.bannerImageUrl ?? ""}
-                subImageUrls={activity?.subImages.map((img: { imageUrl: string }) => img.imageUrl) ?? []}
-              />
+              <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
               <Description content={content} />
               <KakaoMap address={address} />
-              <ReviewList
-                totalReviews={totalReviews}
-                averageRating={averageRating}
-                reviews={reviews}
-              />
+              <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
               <Pagination
                 currentPage={currentPage}
                 totalPages={Math.ceil(totalReviews / 10)}
@@ -171,8 +175,6 @@ export default function ActivityDetailPage() {
                 }}
               />
             </div>
-
-            {/* 오른쪽 콘텐츠 */}
             <div>
               {activity && (
                 <ActivityInfo
@@ -185,11 +187,7 @@ export default function ActivityDetailPage() {
                   activityId={activity.id}
                 />
               )}
-              <Reservation 
-                pricePerPerson={pricePerPerson} 
-                activityId={activityId}
-                isMine={user?.id !== activity?.userId}
-              />
+              <Reservation pricePerPerson={pricePerPerson} activityId={activityId} isMine={user?.id !== activity?.userId} />
             </div>
           </div>
         )}
@@ -199,10 +197,15 @@ export default function ActivityDetailPage() {
         <div className="fixed bottom-0 left-0 right-0 z-50">
           <ReservationBtn
             pricePerPerson={pricePerPerson}
-            isReady={Object.keys(availableDates).length > 0}
+            isReady={selectedDate !== null && selectedTime !== null}
             onReserve={() => setIsReservationOpen(true)}
             onDateClick={() => setIsPanelOpen(true)}
             isMine={user?.id !== activity?.userId}
+            activityId={activityId}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            guestCount={guestCount}
+            availableSchedule={availableSchedule ?? []}
           />
         </div>
       )}
@@ -219,19 +222,34 @@ export default function ActivityDetailPage() {
             <ReservationMobile
               pricePerPerson={pricePerPerson}
               activityId={activityId}
-              onNext={() => setReservationStep("guest")}
+              onNext={(date, time) => {
+                setSelectedDate(date);
+                setSelectedTime(time);
+                setReservationStep("guest");
+              }}
             />
           ) : (
             <ReservationMobileCnt
               pricePerPerson={pricePerPerson}
               activityId={activityId}
               onBack={() => setReservationStep("date")}
+              onConfirm={(guestCount) => {
+                setGuestCount(guestCount);
+                setIsPanelOpen(false);
+              }}
             />
           )
         ) : (
           <ReservationTablet
-            pricePerPerson={activity?.price ?? 0}
+            pricePerPerson={pricePerPerson}
             activityId={activityId}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+            guestCount={guestCount}
+            setGuestCount={setGuestCount}
+            onConfirm={() => setIsPanelOpen(false)}
           />
         )}
       </SlidePanel>

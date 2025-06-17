@@ -24,7 +24,7 @@ export default function WarningModal({
             className="aspect-square w-[49px] tablet:w-[88px]"
             aria-label="image wrapper"
           >
-            {/*<Image src={WarningImg} alt="얼럿 메세지창 이미지" fill />*/}
+            <Image src={WarningImg} alt="얼럿 메세지창 이미지" fill />
           </div>
           <div className="text-16-b tablet:text-18-b">
             {message.split("\n").map((line, idx) => (

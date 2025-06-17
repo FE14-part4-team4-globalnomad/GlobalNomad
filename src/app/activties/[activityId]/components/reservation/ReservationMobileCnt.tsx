@@ -14,6 +14,7 @@ type ReservationMobileCntProps = {
   initialGuestCount?: number;
   initialDate?: Date;
   onBack: () => void;
+  onConfirm: (guestCount: number) => void;
 };
 
 export default function ReservationMobileCnt({
@@ -22,6 +23,7 @@ export default function ReservationMobileCnt({
   initialGuestCount,
   initialDate,
   onBack,
+  onConfirm,
 }: ReservationMobileCntProps) {
   const {
     guestCount,
@@ -54,7 +56,12 @@ export default function ReservationMobileCnt({
         </div>
       </div>
 
-      <Button size="calendar" variant="primary" rounded>
+      <Button
+        size="calendar"
+        variant="primary"
+        rounded
+        onClick={() => onConfirm(guestCount)}
+      >
         확인
       </Button>
     </div>

@@ -16,8 +16,13 @@ export default function GnbUserSection() {
       </div>
       <div className="w-[0.1rem] h-[1.4rem] bg-[#E0E0E5]" />
       <Link href="/profile" className="flex items-center gap-[1rem] text-14-m">
-        <div className="relative w-[3rem] h-[3rem] ">
-          <Image src={DefaultProfileImage} alt="프로필 이미지 미리보기" fill />
+        <div className="relative w-[3rem] h-[3rem] rounded-full overflow-hidden">
+          <Image
+            className="absolute object-cover"
+            src={user?.profileImageUrl || DefaultProfileImage}
+            alt="프로필 이미지 미리보기"
+            fill
+          />
         </div>
         <span>{user?.nickname}</span>
       </Link>

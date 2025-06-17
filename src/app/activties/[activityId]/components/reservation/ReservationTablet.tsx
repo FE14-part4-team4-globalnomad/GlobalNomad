@@ -1,7 +1,6 @@
-// 태블릿 예약 컴포넌트
+'use client';
 
-'use client'
-
+import { useEffect } from 'react';
 import useReservation from '@/hooks/useReservation';
 
 import DateSelector from './DateSelector';
@@ -9,22 +8,37 @@ import GuestCountSelector from './GuestCountSelector';
 import AvailableTimes from './AvailableTimes';
 import Button from '@/components/button/Button';
 
-type ReservationProps = {
+type ReservationTabletProps = {
   pricePerPerson: number;
   activityId: number;
-  initialGuestCount?: number;
-  initialDate?: Date;
+  selectedDate: Date | null;
+  setSelectedDate: (date: Date) => void;
+  selectedTime: string | null;
+  setSelectedTime: (time: string) => void;
+  guestCount: number;
+  setGuestCount: (count: number) => void;
+  onConfirm: () => void;
 };
 
-export default function ReservationTablet({ pricePerPerson, activityId }: ReservationProps) {
+export default function ReservationTablet({
+  pricePerPerson,
+  activityId,
+  selectedDate: externalSelectedDate,
+  setSelectedDate: setExternalSelectedDate,
+  selectedTime: externalSelectedTime,
+  setSelectedTime: setExternalSelectedTime,
+  guestCount: externalGuestCount,
+  setGuestCount: setExternalGuestCount,
+  onConfirm,
+}: ReservationTabletProps) {
   const {
     selectedDate,
     setSelectedDate,
+    selectedTime,
+    setSelectedTime,
     guestCount,
     handleDecrease,
     handleIncrease,
-    selectedTime,
-    setSelectedTime,
     currentYear,
     currentMonth,
     handlePrevMonth,
@@ -37,6 +51,32 @@ export default function ReservationTablet({ pricePerPerson, activityId }: Reserv
     availableDates,
     availableTimesForSelectedDate,
   } = useReservation({ pricePerPerson, activityId });
+
+  useEffect(() => {
+    if (externalSelectedDate) setSelectedDate(externalSelectedDate);
+  }, [externalSelectedDate]);
+
+  useEffect(() => {
+    if (externalSelectedTime) setSelectedTime(externalSelectedTime);
+  }, [externalSelectedTime]);
+
+  useEffect(() => {
+    setExternalGuestCount(guestCount);
+  }, [guestCount]);
+
+  useEffect(() => {
+    if (selectedDate) setExternalSelectedDate(selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedTime) setExternalSelectedTime(selectedTime);
+  }, [selectedTime]);
+
+  useEffect(() => {
+    setExternalGuestCount(guestCount);
+  }, [guestCount]);
+
+  const isReadyToReserve = !!selectedDate && !!selectedTime;
 
   return (
     <div className="w-full h-full overflow-y-auto px-3 py-[24px] rounded-t-3xl bg-white">
@@ -67,8 +107,7 @@ export default function ReservationTablet({ pricePerPerson, activityId }: Reserv
             handleDecrease={handleDecrease}
             handleIncrease={handleIncrease}
           />
-          
-          {/* 총 합계 */}
+
           <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
             <div>
               <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
@@ -78,7 +117,15 @@ export default function ReservationTablet({ pricePerPerson, activityId }: Reserv
         </div>
       </div>
 
-      <Button size="calendar" variant={selectedTime ? "primary" : "secondary"} rounded>
+      <Button
+        size="calendar"
+        variant={isReadyToReserve ? 'primary' : 'secondary'}
+        rounded
+        onClick={() => {
+          if (!isReadyToReserve) return;
+          onConfirm();
+        }}
+      >
         확인
       </Button>
     </div>
