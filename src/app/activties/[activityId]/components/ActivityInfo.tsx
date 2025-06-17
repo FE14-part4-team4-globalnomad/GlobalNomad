@@ -1,17 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 import { useMyActivityDeleteMutation } from '@/apis/activity/activity.query';
-import { useOverlay } from '@/hooks/useOverlay';
-
-import WarningModal from '@/components/modal/WarningModal';
-
-import yellowStar from '@/assets/icons/star/icon_star_active.svg';
 import mapIcon from '@/assets/icons/any/icon_map.svg';
 import moreIcon from '@/assets/icons/any/icon_more.svg';
+import yellowStar from '@/assets/icons/star/icon_star_active.svg';
+import WarningModal from '@/components/modal/WarningModal';
+import { useOverlay } from '@/hooks/useOverlay';
 
 interface ActivityInfoProps {
   category: string;
@@ -108,17 +106,22 @@ export default function ActivityInfo({
                           confirmText="삭제"
                           onConfirm={() => {
                             if (activityId !== undefined) {
-                              deleteActivity({ activityId }, {
-                                onSuccess: () => {
-                                  router.push("/");
-                                },
-                              });
+                              deleteActivity(
+                                { activityId },
+                                {
+                                  onSuccess: () => {
+                                    overlay(<></>); // ✅ 여기 추가!
+                                    router.push('/');
+                                  },
+                                }
+                              );
                             }
                           }}
                         />
                       </div>
                     )
                   }
+
                 >
                   삭제하기
                 </button>

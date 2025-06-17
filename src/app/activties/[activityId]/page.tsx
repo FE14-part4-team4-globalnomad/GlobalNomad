@@ -1,32 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-
-import { useAuthStore } from '@/store/authStore';
-
-import Gnb from '@/components/gnb/Gnb';
-import Footer from '@/components/footer/Footer';
-import Pagination from '@/components/pagination/Pagination';
-
-import ImageGallery from '@/app/activties/[activityId]/components/ImageGallery';
-import Description from '@/app/activties/[activityId]/components/Description';
-import KakaoMap from '@/app/activties/[activityId]/components/KakaoMap';
-import ReviewList from '@/app/activties/[activityId]/components/ReviewList';
-import ActivityInfo from '@/app/activties/[activityId]/components/ActivityInfo';
-import ActivitySkeleton from '@/app/activties/[activityId]/components/ActivitySkeleton';
-import Reservation from '@/app/activties/[activityId]/components/reservation/Reservation';
-import ReservationTablet from '@/app/activties/[activityId]/components/reservation/ReservationTablet';
-import ReservationMobile from '@/app/activties/[activityId]/components/reservation/ReservationMobile';
-import ReservationMobileCnt from '@/app/activties/[activityId]/components/reservation/ReservationMobileCnt';
-import ReservationBtn from '@/app/activties/[activityId]/components/reservation/ReservationBtn';
-import SlidePanel from '@/app/activties/[activityId]/components/reservation/SlidePanel';
+import { useState, useEffect } from 'react';
 
 import {
-  useActivityQuery,
   useActivityAvailableScheduleQuery,
+  useActivityQuery,
   useActivityReviewListQuery,
 } from '@/apis/activity/activity.query';
+import ActivityInfo from '@/app/activties/[activityId]/components/ActivityInfo';
+import ActivitySkeleton from '@/app/activties/[activityId]/components/ActivitySkeleton';
+import Description from '@/app/activties/[activityId]/components/Description';
+import ImageGallery from '@/app/activties/[activityId]/components/ImageGallery';
+import KakaoMap from '@/app/activties/[activityId]/components/KakaoMap';
+import Reservation from '@/app/activties/[activityId]/components/reservation/Reservation';
+import ReservationBtn from '@/app/activties/[activityId]/components/reservation/ReservationBtn';
+import ReservationMobile from '@/app/activties/[activityId]/components/reservation/ReservationMobile';
+import ReservationMobileCnt from '@/app/activties/[activityId]/components/reservation/ReservationMobileCnt';
+import ReservationTablet from '@/app/activties/[activityId]/components/reservation/ReservationTablet';
+import SlidePanel from '@/app/activties/[activityId]/components/reservation/SlidePanel';
+import ReviewList from '@/app/activties/[activityId]/components/ReviewList';
+import Footer from '@/components/footer/Footer';
+import Gnb from '@/components/gnb/Gnb';
+import Pagination from '@/components/pagination/Pagination';
+import { useAuthStore } from '@/store/authStore';
 
 export default function ActivityDetailPage() {
   const params = useParams();
@@ -41,7 +38,9 @@ export default function ActivityDetailPage() {
   const [isTablet, setIsTablet] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
 
@@ -100,7 +99,7 @@ export default function ActivityDetailPage() {
       setCurrentMonth(selectedDate.getMonth());
       refetchSchedule();
     }
-  }, [selectedDate]);
+  }, [selectedDate, refetchSchedule]);
 
   const bannerImageUrl = activity?.bannerImageUrl ?? "";
   const subImageUrls = activity?.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];

@@ -54,7 +54,7 @@ export default function useReservation({
     if (!times.includes(selectedTime)) {
       setSelectedTime(times[0] || '');
     }
-  }, [selectedDate, availableDates]);
+  }, [selectedDate, availableDates, selectedTime]);
 
   const handleDecrease = () => {
     if (guestCount > 1) setGuestCount(guestCount - 1);

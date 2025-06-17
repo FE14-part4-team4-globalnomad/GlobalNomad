@@ -2,17 +2,14 @@
 
 import React from 'react';
 
-import { useActivityReservationMutation } from '@/apis/activity/activity.query';
-
-import Button from '@/components/button/Button';
-import ConfirmModal from '@/components/modal/ConfirmModal';
-
-import { useOverlay } from '@/hooks/useOverlay';
-import useReservation from '@/hooks/useReservation';
-
 import AvailableTimes from './AvailableTimes';
 import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
+import { useActivityReservationMutation } from '@/apis/activity/activity.query';
+import Button from '@/components/button/Button';
+import ConfirmModal from '@/components/modal/ConfirmModal';
+import { useOverlay } from '@/hooks/useOverlay';
+import useReservation from '@/hooks/useReservation';
 
 type ReservationProps = {
   pricePerPerson: number;
@@ -21,8 +18,6 @@ type ReservationProps = {
 };
 
 export default function Reservation({ pricePerPerson, activityId, isMine = false }: ReservationProps) {
-  if (!isMine) return null;
-
   const {
     selectedDate,
     setSelectedDate,
@@ -47,6 +42,8 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
 
   const { overlay } = useOverlay();
   const { mutate: reserveActivity } = useActivityReservationMutation();
+
+  if (!isMine) return null;
 
   const isReadyToReserve = selectedDate && selectedTime && setSelectedTime;
 
@@ -109,9 +106,7 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
                 onSuccess: () => {
                   overlay(
                     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-                      <ConfirmModal
-                        message="예약이 완료되었습니다."
-                      />
+                      <ConfirmModal message="예약이 완료되었습니다." />
                     </div>
                   );
                 },
