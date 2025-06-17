@@ -7,7 +7,9 @@ interface CustomInputProps {
   type?: string;
   error?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: () => void;
+  readOnly?: boolean;
 }
 
 export default function CustomInput({
@@ -17,6 +19,8 @@ export default function CustomInput({
   error,
   value,
   onChange,
+  onClick,
+  readOnly,
 }: CustomInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const isPasswordType = type === "password";
@@ -37,6 +41,8 @@ export default function CustomInput({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          onClick={onClick}
+          readOnly={readOnly}
           className={`
             w-full h-[5.4rem] px-[2rem] py-[1.6rem]
             border ${error ? "border-red-500" : "border-gray-100"}

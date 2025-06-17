@@ -14,12 +14,27 @@ import { useEffect, useState } from "react";
 
 import MinusIcon from "./(buttonicon)/minus_button.svg";
 import PlusIcon from "./(buttonicon)/plus_button.svg";
+import AddressSearchScriptLoader from "./(components)/AddressSearchScriptLoader";
 import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
+
+interface DaumPostcodeData {
+  address: string;
+}
+
+declare global {
+  interface Window {
+    daum: {
+      Postcode: new (config: {
+        oncomplete: (data: DaumPostcodeData) => void;
+      }) => { open(): void };
+    };
+  }
+}
 
 const CATEGORY_OPTIONS = [
   { id: 1, title: "문화 예술" },
@@ -40,6 +55,15 @@ function ActivityUpdatePage() {
   const [introImages, setIntroImages] = useState<File[]>([]);
   const [introImageUrls, setIntroImageUrls] = useState<string[]>([]);
 
+  const handleAddressClick = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data: { address: string }) {
+        const fullAddress = data.address;
+        setFormData((prev) => ({ ...prev, address: fullAddress }));
+      },
+    }).open();
+  };
+
   const uploadImage = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
@@ -49,11 +73,11 @@ function ActivityUpdatePage() {
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
+        withCredentials: false,
       },
     );
 
-    return res.data.imageUrl; // <- 응답 예시
+    return res.data.activityImageUrl;
   };
 
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,6 +216,7 @@ function ActivityUpdatePage() {
 
   return (
     <div className="desktop:w-[70rem] tablet:w-[68.4rem] mobile:w-[32.7rem] ">
+      <AddressSearchScriptLoader />
       <h1 className="text-gray-950 text-18-b">
         {isNew ? "내 체험 등록하기" : "내 체험 수정하기"}
       </h1>
@@ -236,7 +261,9 @@ function ActivityUpdatePage() {
         label="주소"
         placeholder="주소를 입력해 주세요"
         value={formData.address}
-        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+        onClick={handleAddressClick}
+        readOnly
+        onChange={() => {}}
       />
 
       {/* 예약 가능 시간대 입력 줄 */}
@@ -326,30 +353,22 @@ function ActivityUpdatePage() {
       tablet:grid-cols-[36rem_27rem_auto]
       mobile:grid-cols-1"
           >
-            {/* 날짜 */}
-            <div className="flex flex-col">
-              <label className="text-16-m text-gray-950 mb-[1rem]">날짜</label>
-              <div className="h-[5.4rem] border border-gray-100 rounded-[1.6rem] px-[2rem] py-[1.6rem] text-16-m text-gray-950 flex items-center">
-                {slot.date ? format(slot.date, "yy/MM/dd") : ""}
-              </div>
+            {/* 날짜 (TextField 스타일로) */}
+            <div className="h-[5.4rem] border border-gray-100 rounded-[1.6rem] px-[2rem] py-[1.6rem] text-16-m text-gray-950 flex items-center w-full">
+              {slot.date ? format(slot.date, "yy/MM/dd") : ""}
             </div>
 
             {/* 시간 + 버튼 묶음 */}
             <div className="grid mobile:grid-cols-[1fr_auto_1fr_auto] tablet:grid-cols-[1fr_auto_1fr_auto] items-end gap-[0.5rem]">
               {/* 시작 시간 */}
-              <div className="flex flex-col">
-                <label className="text-16-m text-gray-950 mb-[1rem]">
-                  시작 시간
-                </label>
-                <TimeSelectDropdown
-                  value={slot.startTime}
-                  onChange={(newStartTime) => {
-                    const newTimes = [...availableTimes];
-                    newTimes[index].startTime = newStartTime;
-                    setAvailableTimes(newTimes);
-                  }}
-                />
-              </div>
+              <TimeSelectDropdown
+                value={slot.startTime}
+                onChange={(newStartTime) => {
+                  const newTimes = [...availableTimes];
+                  newTimes[index].startTime = newStartTime;
+                  setAvailableTimes(newTimes);
+                }}
+              />
 
               {/* 구분 기호 */}
               <div className="flex items-end pb-[1.9rem]">
@@ -357,19 +376,14 @@ function ActivityUpdatePage() {
               </div>
 
               {/* 종료 시간 */}
-              <div className="flex flex-col">
-                <label className="text-16-m text-gray-950 mb-[1rem]">
-                  종료 시간
-                </label>
-                <TimeSelectDropdown
-                  value={slot.endTime}
-                  onChange={(newEndTime) => {
-                    const newTimes = [...availableTimes];
-                    newTimes[index].endTime = newEndTime;
-                    setAvailableTimes(newTimes);
-                  }}
-                />
-              </div>
+              <TimeSelectDropdown
+                value={slot.endTime}
+                onChange={(newEndTime) => {
+                  const newTimes = [...availableTimes];
+                  newTimes[index].endTime = newEndTime;
+                  setAvailableTimes(newTimes);
+                }}
+              />
 
               {/* 삭제 버튼 */}
               <div className="flex items-end pb-[0.6rem] justify-center">
