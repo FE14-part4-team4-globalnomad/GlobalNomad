@@ -1,5 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 
+import myActivityService from "@/apis/myActivity/myActivity.service";
+
 import {
   GetActivityAvailableSchedulePayloadType,
   GetActivityReviewListPayloadType,
@@ -7,7 +9,6 @@ import {
 } from "./activity.schema";
 
 import activityService from "./activity.service";
-import myActivityService from "@/apis/myActivity/myActivity.service";
 
 // 체험 상세 조회
 export const useActivityQuery = (activityId: number, enabled = true) =>

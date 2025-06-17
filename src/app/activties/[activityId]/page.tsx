@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
+import { useAuthStore } from '@/store/authStore';
+
 import Gnb from '@/components/gnb/Gnb';
 import Footer from '@/components/footer/Footer';
 import Pagination from '@/components/pagination/Pagination';
@@ -25,7 +27,6 @@ import {
   useActivityAvailableScheduleQuery,
   useActivityReviewListQuery,
 } from '@/apis/activity/activity.query';
-import { useAuthStore } from '@/store/authStore';
 
 export default function ActivityDetailPage() {
   const params = useParams();
