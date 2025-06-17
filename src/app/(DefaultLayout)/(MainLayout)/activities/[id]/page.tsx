@@ -1,14 +1,6 @@
-import dynamicImport from 'next/dynamic';
+import ActivityDetailPage from './components/ActivityDetailPage';
 
 export const dynamic = 'force-dynamic';
-
-export async function generateStaticParams() {
-  return [];
-}
-
-const ActivityDetailPage = dynamicImport(() => import('./components/ActivityDetailPage'), {
-  ssr: false,
-});
 
 export default function Page(props: { params: { id: string } }) {
   return <ActivityDetailPage {...props} />;
