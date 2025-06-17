@@ -2,12 +2,11 @@
 
 import { useEffect } from 'react';
 
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
-
+import AvailableTimes from './AvailableTimes';
 import DateSelector from './DateSelector';
 import GuestCountSelector from './GuestCountSelector';
-import AvailableTimes from './AvailableTimes';
+import Button from '@/components/button/Button';
+import useReservation from '@/hooks/useReservation';
 
 type ReservationTabletProps = {
   pricePerPerson: number;
@@ -54,27 +53,27 @@ export default function ReservationTablet({
 
   useEffect(() => {
     if (externalSelectedDate) setSelectedDate(externalSelectedDate);
-  }, [externalSelectedDate]);
+  }, [externalSelectedDate,  setSelectedDate]);
 
   useEffect(() => {
     if (externalSelectedTime) setSelectedTime(externalSelectedTime);
-  }, [externalSelectedTime]);
+  }, [externalSelectedTime, setSelectedTime]);
 
   useEffect(() => {
     setExternalGuestCount(guestCount);
-  }, [guestCount]);
+  }, [guestCount, setExternalGuestCount]);
 
   useEffect(() => {
     if (selectedDate) setExternalSelectedDate(selectedDate);
-  }, [selectedDate]);
+  }, [selectedDate, setExternalSelectedDate]);
 
   useEffect(() => {
     if (selectedTime) setExternalSelectedTime(selectedTime);
-  }, [selectedTime]);
+  }, [selectedTime, setExternalSelectedTime]);
 
   useEffect(() => {
     setExternalGuestCount(guestCount);
-  }, [guestCount]);
+  }, [guestCount, setExternalGuestCount]);
 
   const isReadyToReserve = !!selectedDate && !!selectedTime;
 

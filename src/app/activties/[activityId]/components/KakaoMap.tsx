@@ -6,9 +6,57 @@ interface MapProps {
   address: string;
 }
 
-type KakaoType = typeof window & {
-  kakao: any;
-};
+// kakao 타입 선언 (전역 but 이 파일 내에서만 사용)
+declare global {
+  interface Window {
+    kakao: KakaoNamespace;
+  }
+
+  interface KakaoNamespace {
+    maps: {
+      load(callback: () => void): void;
+      LatLng: new (lat: number | string, lng: number | string) => KakaoLatLng;
+      Map: new (container: HTMLElement, options: { center: KakaoLatLng; level: number }) => KakaoMap;
+      Marker: new (options: { map: KakaoMap; position: KakaoLatLng }) => KakaoMarker;
+      CustomOverlay: new (options: { position: KakaoLatLng; yAnchor: number; content: string }) => KakaoCustomOverlay;
+      services: {
+        Geocoder: new () => {
+          addressSearch(query: string, callback: (result: GeocoderResult[], status: GeocoderStatus) => void): void;
+        };
+        Status: {
+          OK: GeocoderStatus;
+        };
+      };
+      event: {
+        addListener(target: unknown, type: string, handler: () => void): void;
+      };
+    };
+  }
+
+  interface KakaoLatLng {
+    getLat(): number;
+    getLng(): number;
+  }
+
+  interface KakaoMap {
+    setCenter(latlng: KakaoLatLng): void;
+  }
+
+  type KakaoMarker = object;
+
+  interface KakaoCustomOverlay {
+    setMap(map: KakaoMap): void;
+  }
+
+  type GeocoderResult = {
+    x: string;
+    y: string;
+    address_name?: string;
+    [key: string]: unknown;
+  };
+
+  type GeocoderStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
+}
 
 export default function KakaoMap({ address }: MapProps) {
   const whiteMarkerSvg = `
@@ -25,9 +73,9 @@ export default function KakaoMap({ address }: MapProps) {
 
     const existingScript = document.getElementById('kakao-map-script');
 
-    function loadMap() {
-      if (typeof window === 'undefined' || !(window as KakaoType).kakao) return;
-      const kakao = (window as KakaoType).kakao;
+    const loadMap = () => {
+      const { kakao } = window;
+      if (!kakao) return;
 
       kakao.maps.load(() => {
         const container = document.getElementById('map');
@@ -40,7 +88,7 @@ export default function KakaoMap({ address }: MapProps) {
 
         const geocoder = new kakao.maps.services.Geocoder();
 
-        geocoder.addressSearch(address, (result: any, status: any) => {
+        geocoder.addressSearch(address, (result, status) => {
           if (status === kakao.maps.services.Status.OK && result.length > 0) {
             const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
@@ -53,52 +101,27 @@ export default function KakaoMap({ address }: MapProps) {
               window.open(`https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`);
             });
 
-            const bubbleStyle = `
-              position: absolute;
-              bottom: 100%;
-              left: calc(50% + 80px);
-              transform: translateX(-50%);
-              display: inline-flex;
-              align-items: center;
-              background: white;
-              border: 2px solid #2D8CFF;
-              border-radius: 999px;
-              padding: 6px 12px;
-              font-weight: bold;
-              font-size: 14px;
-              color: #333333;
-              box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-            `;
-
-            const tailOuter = `
-              position: absolute;
-              top: 100%;
-              left: 50%;
-              transform: translateX(-50%);
-              width: 0;
-              height: 0;
-              border-left: 8px solid transparent;
-              border-right: 8px solid transparent;
-              border-top: 10px solid #2D8CFF;
-            `;
-
-            const tailInner = `
-              position: absolute;
-              top: -12px;
-              left: -7px;
-              width: 0;
-              height: 0;
-              border-left: 8px solid transparent;
-              border-right: 8px solid transparent;
-              border-top: 10px solid white;
-            `;
-
             const overlay = new kakao.maps.CustomOverlay({
               position: coords,
               yAnchor: 1,
               content: `
                 <div style="position: relative;">
-                  <div style="${bubbleStyle}">
+                  <div style="
+                    position: absolute;
+                    bottom: 100%;
+                    left: calc(50% + 80px);
+                    transform: translateX(-50%);
+                    display: inline-flex;
+                    align-items: center;
+                    background: white;
+                    border: 2px solid #2D8CFF;
+                    border-radius: 999px;
+                    padding: 6px 12px;
+                    font-weight: bold;
+                    font-size: 14px;
+                    color: #333333;
+                    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+                  ">
                     <div style="
                       width: 24px;
                       height: 24px;
@@ -113,8 +136,27 @@ export default function KakaoMap({ address }: MapProps) {
                     </div>
                     <div>${address}</div>
                   </div>
-                  <div style="${tailOuter}">
-                    <div style="${tailInner}"></div>
+                  <div style="
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    border-top: 10px solid #2D8CFF;
+                  ">
+                    <div style="
+                      position: absolute;
+                      top: -12px;
+                      left: -7px;
+                      width: 0;
+                      height: 0;
+                      border-left: 8px solid transparent;
+                      border-right: 8px solid transparent;
+                      border-top: 10px solid white;
+                    "></div>
                   </div>
                 </div>
               `,
@@ -123,17 +165,15 @@ export default function KakaoMap({ address }: MapProps) {
             overlay.setMap(map);
             map.setCenter(coords);
 
-            const handleResizeMap = () => {
-              map.setCenter(coords);
-            };
-            window.addEventListener('resize', handleResizeMap);
-            return () => window.removeEventListener('resize', handleResizeMap);
+            const handleResize = () => map.setCenter(coords);
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
           }
         });
       });
-    }
+    };
 
-    if (existingScript && (window as KakaoType).kakao) {
+    if (existingScript && window.kakao) {
       loadMap();
     } else if (!existingScript) {
       const script = document.createElement('script');
@@ -141,12 +181,9 @@ export default function KakaoMap({ address }: MapProps) {
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&autoload=false&libraries=services`;
       script.async = true;
       document.head.appendChild(script);
-
-      script.onload = () => {
-        loadMap();
-      };
+      script.onload = () => loadMap();
     }
-  }, [address]);
+  }, [address, whiteMarkerSvg]);
 
   return (
     <div>

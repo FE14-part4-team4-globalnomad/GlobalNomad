@@ -1,10 +1,9 @@
 'use client';
 
+import AvailableTimes from './AvailableTimes';
+import DateSelector from './DateSelector';
 import Button from '@/components/button/Button';
 import useReservation from '@/hooks/useReservation';
-
-import DateSelector from './DateSelector';
-import AvailableTimes from './AvailableTimes';
 
 type ReservationMobileProps = {
   pricePerPerson: number;
