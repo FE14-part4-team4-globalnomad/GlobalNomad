@@ -20,8 +20,6 @@ import {
   useActivityQuery,
   useActivityReviewListQuery,
 } from '@/apis/activity/activity.query';
-import Footer from '@/components/footer/Footer';
-import Gnb from '@/components/gnb/Gnb';
 import Pagination from '@/components/pagination/Pagination';
 import { useAuthStore } from '@/store/authStore';
 
@@ -108,13 +106,7 @@ export default function ClientActivityDetail({ activityId }: Props) {
     }, [selectedDate, refetchSchedule]);
 
     if (isActivityLoading || isReviewLoading || isScheduleLoading) {
-        return (
-        <>
-            <Gnb />
-            <ActivitySkeleton />
-            <Footer />
-        </>
-        );
+        return ( <ActivitySkeleton /> );
     }
 
     if (!activity) return null;
@@ -137,7 +129,6 @@ export default function ClientActivityDetail({ activityId }: Props) {
 
     return (
         <div>
-            <Gnb />
             <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
                 {isTablet || isMobile ? (
                     <div className="flex flex-col items-center">
@@ -258,8 +249,6 @@ export default function ClientActivityDetail({ activityId }: Props) {
                     />
                 )}
             </SlidePanel>
-
-            <Footer />
         </div>
     );
 }

@@ -1,5 +1,10 @@
-function ActivityDetailPage() {
-  return <div>ActivityDetailPage</div>;
+import ClientActivityDetail from './components/ClientActivityDetail';
+
+interface PageProps {
+  params: { id: string };
 }
 
-export default ActivityDetailPage;
+export default function Page({ params }: PageProps) {
+  const activityId = Number(params.id);
+  return <ClientActivityDetail activityId={activityId} />;
+}
