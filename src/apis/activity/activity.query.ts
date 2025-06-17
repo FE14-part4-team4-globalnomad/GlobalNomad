@@ -60,7 +60,6 @@ export const activityQueries = {
     }),
 };
 
-// 쿼리 훅
 export const useActivityQuery = (activityId: number, enabled = true) =>
   useQuery({
     ...activityQueries.detail(activityId),
@@ -85,7 +84,6 @@ export const useActivityReviewListQuery = (
     enabled,
   });
 
-// 뮤테이션 훅
 export const useActivityReservationMutation = () =>
   useMutation({
     mutationFn: (params: PostActivityReservationPayloadType) =>
