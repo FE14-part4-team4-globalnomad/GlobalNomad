@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import warningIcon from "@/assets/images/warning.svg";
+import warningIcon from "@/assets/images/warning.svg?url";
 
 export default function NotFound() {
   const router = useRouter();

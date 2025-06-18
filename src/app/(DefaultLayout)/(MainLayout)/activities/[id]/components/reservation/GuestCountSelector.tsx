@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import minusIcon from '@/assets/icons/plus_minus/icon_minus.svg';
-import plusIcon from '@/assets/icons/plus_minus/icon_plus.svg';
+import minusIcon from "@/assets/icons/plus_minus/icon_minus.svg?url";
+import plusIcon from "@/assets/icons/plus_minus/icon_plus.svg?url";
 
 type GuestCountSelectorProps = {
   guestCount: number;
@@ -17,18 +17,22 @@ export default function GuestCountSelector({
   handleIncrease,
 }: GuestCountSelectorProps) {
   return (
-    <div className={`desktop:flex desktop:justify-between desktop:items-center desktop:mb-[24px] 
+    <div
+      className={`desktop:flex desktop:justify-between desktop:items-center desktop:mb-[24px] 
       tablet:block tablet:items-start tablet:justify-start tablet:mb-4
-      mobile:flex mobile:justify-between mobile:items-center mobile:mb-2`}>
+      mobile:flex mobile:justify-between mobile:items-center mobile:mb-2`}
+    >
       <div className="text-16-b text-gray-950">참여 인원 수</div>
-      <div className={`flex items-center justify-between border border-gray-100 px-1 py-2
+      <div
+        className={`flex items-center justify-between border border-gray-100 px-1 py-2
         desktop:rounded-full desktop:mt-0 desktop:w-14 desktop:h-4 
         tablet:rounded-3xl tablet:mt-2 tablet:w-full h-5 mobile:rounded-3xl
-        mobile:w-[144px] mobile:h-5`}>
+        mobile:w-[144px] mobile:h-5`}
+      >
         <button
           onClick={handleDecrease}
           disabled={guestCount === 1}
-          className={`${guestCount === 1 ? 'opacity-30 pointer-events-none' : ''}`}
+          className={`${guestCount === 1 ? "opacity-30 pointer-events-none" : ""}`}
         >
           <Image src={minusIcon} alt="감소" />
         </button>

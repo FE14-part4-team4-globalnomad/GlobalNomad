@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import FacebookIcon from "@/assets//icons/social/icon_facebook.svg";
-import InstagramIcon from "@/assets//icons/social/icon_instagram.svg";
-import XIcon from "@/assets//icons/social/icon_X.svg";
-import YoutubeIcon from "@/assets//icons/social/icon_youtube.svg";
+import FacebookIcon from "@/assets//icons/social/icon_facebook.svg?url";
+import InstagramIcon from "@/assets//icons/social/icon_instagram.svg?url";
+import XIcon from "@/assets//icons/social/icon_X.svg?url";
+import YoutubeIcon from "@/assets//icons/social/icon_youtube.svg?url";
 
 const socialIcons = [
   { href: "https://www.facebook.com/", src: FacebookIcon, alt: "Facebook" },

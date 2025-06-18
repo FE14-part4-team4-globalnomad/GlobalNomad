@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import ModalWrapper from "./ModalWrapper";
 import Button from "../button/Button";
-import WarningImg from "@/assets/images/warning.svg";
+import WarningImg from "@/assets/images/warning.svg?url";
 import { useOverlay } from "@/hooks/useOverlay";
 
 export default function WarningModal({
