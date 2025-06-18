@@ -4,14 +4,6 @@ import { usePathname } from "next/navigation";
 
 import ProfileImageWrapper from "./ProfileImageWrapper";
 import SideMenuItem, { SideMenuItemType } from "./SideMenuItem";
-import BlueCalendarIcon from "@/assets/icons/any/calendar/icon_calendar_blue.svg";
-import GrayCalendarIcon from "@/assets/icons/any/calendar/icon_calendar_gray.svg";
-import BlueMessageIcon from "@/assets/icons/any/list/icon_list_blue.svg";
-import GrayMessageIcon from "@/assets/icons/any/list/icon_list_gray.svg";
-import BlueSettingIcon from "@/assets/icons/any/setting/icon_setting_blue.svg";
-import GraySettingIcon from "@/assets/icons/any/setting/icon_setting_gray.svg";
-import BlueProfileIcon from "@/assets/icons/any/user/icon_user_blue.svg";
-import GrayProfileIcon from "@/assets/icons/any/user/icon_user_gray.svg";
 import { useAuthStore } from "@/store/authStore";
 import { cn } from "@/utils/classNames";
 
@@ -19,26 +11,22 @@ const sideMenuRoutes: SideMenuItemType[] = [
   {
     path: "/profile",
     name: "내 정보",
-    inActiveIcon: GrayProfileIcon,
-    activeIcon: BlueProfileIcon,
+    iconName: "Profile",
   },
   {
     path: "/reservation",
     name: "예약 내역",
-    inActiveIcon: GrayMessageIcon,
-    activeIcon: BlueMessageIcon,
+    iconName: "Message",
   },
   {
     path: "/experience",
     name: "내 체험 관리",
-    inActiveIcon: GraySettingIcon,
-    activeIcon: BlueSettingIcon,
+    iconName: "Setting",
   },
   {
     path: "/calendar",
     name: "예약 현황",
-    inActiveIcon: GrayCalendarIcon,
-    activeIcon: BlueCalendarIcon,
+    iconName: "Calendar",
   },
 ];
 
