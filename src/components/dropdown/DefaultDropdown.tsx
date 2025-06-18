@@ -22,7 +22,7 @@ export default function DefaultDropdown<
   return (
     <Dropdown>
       <Dropdown.Label label={label} />
-      <div className="relative">
+      <div className="grid relative">
         <Dropdown.Selected
           placeholder={placeholder}
           selected={selectedItem?.title}
