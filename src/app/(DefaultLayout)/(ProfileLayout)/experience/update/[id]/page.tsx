@@ -130,7 +130,39 @@ function ActivityUpdatePage() {
         .get(`${process.env.NEXT_PUBLIC_API_URL}/api/activities/${id}`, {
           withCredentials: true,
         })
-        .then((res) => setFormData(res.data))
+        .then((res) => {
+          const activity = res.data;
+
+          // 기본 입력 필드 채우기
+          setFormData({
+            title: activity.title,
+            category: activity.category,
+            description: activity.description,
+            price: activity.price.toString(),
+            address: activity.address,
+          });
+
+          // 배너 이미지 세팅
+          setBannerImageUrl(activity.bannerImageUrl);
+
+          // 소개 이미지들 세팅
+          setIntroImageUrls(
+            activity.subImages?.map(
+              (img: { imageUrl: string }) => img.imageUrl,
+            ),
+          );
+
+          // 예약 가능 시간대 세팅
+          setAvailableTimes(
+            activity.schedules?.map(
+              (s: { date: string; startTime: string; endTime: string }) => ({
+                date: new Date(s.date),
+                startTime: s.startTime,
+                endTime: s.endTime,
+              }),
+            ) ?? [],
+          );
+        })
         .catch((err) => console.error("불러오기 실패:", err));
     }
   }, [id, isNew]);
@@ -181,11 +213,17 @@ function ActivityUpdatePage() {
   const handleSubmit = async () => {
     try {
       const payload = {
-        ...formData,
+        title: formData.title,
+        category: formData.category,
+        description: formData.description,
         price: Number(formData.price),
+        address: formData.address,
         bannerImageUrl: bannerImageUrl ?? "",
-        subImageUrls: introImageUrls,
-        schedules: availableTimes.map((slot) => ({
+        subImageUrlsToAdd: introImageUrls, // ✅ 올바른 키 사용
+        subImageIdsToRemove: [],
+        scheduleIdsToRemove: [],
+        schedulesToAdd: availableTimes.map((slot) => ({
+          id: 0,
           date: slot.date ? slot.date.toISOString().slice(0, 10) : "",
           startTime: slot.startTime,
           endTime: slot.endTime,

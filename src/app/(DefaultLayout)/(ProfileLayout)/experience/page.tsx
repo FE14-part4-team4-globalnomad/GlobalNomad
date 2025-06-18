@@ -1,11 +1,11 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+import myActivityService from "@/apis/myActivity/myActivity.service";
 import MyExperienceCard from "@/app/(DefaultLayout)/(ProfileLayout)/experience/(components)/MyExperienceCard";
 import Emptylogo from "@/assets/images/logos/logo_empty.svg";
 import Button from "@/components/button/Button";
@@ -18,13 +18,25 @@ interface ActivityResponse {
 }
 
 const fetchMyActivities = async ({
-  pageParam = 1,
-}): Promise<ActivityResponse> => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/activities/me?page=${pageParam}`,
-    { withCredentials: true },
-  );
-  return res.data;
+  pageParam = undefined,
+}: QueryFunctionContext): Promise<ActivityResponse> => {
+  const { data } = await myActivityService.getMyActivities({
+    query: {
+      method: "cursor",
+      cursorId: pageParam,
+      size: 10,
+    } as {
+      method: "cursor";
+      cursorId?: number;
+      size: number;
+    },
+  });
+
+  return {
+    activities: data.activities,
+    hasNextPage: data.activities.length > 0,
+    nextPage: data.cursorId,
+  };
 };
 
 export default function ExperiencePage() {
@@ -35,22 +47,17 @@ export default function ExperiencePage() {
     useInfiniteQuery({
       queryKey: ["myActivities"],
       queryFn: fetchMyActivities,
-      initialPageParam: 1,
+      initialPageParam: undefined,
       getNextPageParam: (lastPage) =>
         lastPage.hasNextPage ? lastPage.nextPage : undefined,
     });
 
   const handleDelete = async (id: number) => {
     try {
-      // 실제 API 요청
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/activities/${id}`,
-        {
-          withCredentials: true,
-        },
-      );
+      await myActivityService.deleteMyActivity({
+        activityId: id,
+      });
 
-      // 또는 상태를 수동으로 갱신하려면 refetch 사용
       refetch();
     } catch (error) {
       console.error("삭제 실패", error);
