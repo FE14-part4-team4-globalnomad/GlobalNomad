@@ -8,19 +8,19 @@ export interface MyActivityReservationCountType {
   completed: number;
 }
 
-export interface CalendarDayProps
+export interface CalendarDateProps
   extends Partial<MyActivityReservationCountType> {
   children?: ReactNode;
   onUpdateDotClick?: () => void;
 }
 
-export function CalendarDay({
+export function CalendarDate({
   children,
   pending = 0,
   confirmed = 0,
   completed = 0,
   onUpdateDotClick = () => {},
-}: CalendarDayProps) {
+}: CalendarDateProps) {
   const shouldShowDot = pending > 0 || confirmed > 0 || completed > 0;
 
   const badgeData = [
