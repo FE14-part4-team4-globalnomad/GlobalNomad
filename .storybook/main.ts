@@ -1,4 +1,4 @@
-import type { StorybookConfig } from "@storybook/nextjs-vite";
+import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -10,7 +10,7 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest",
   ],
   framework: {
-    name: "@storybook/nextjs-vite",
+    name: "@storybook/nextjs",
     options: {},
   },
   staticDirs: ["../public"],
@@ -34,5 +34,22 @@ const config: StorybookConfig = {
     }
   </style>
   `,
+  webpackFinal: async (config) => {
+    const imageRule = config.module?.rules?.find((rule) => {
+      const test = (rule as { test: RegExp }).test;
+      if (!test) return false;
+      return test.test(".svg");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }) as { [key: string]: any };
+
+    imageRule.exclude = /\.svg?$/;
+
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+
+    return config;
+  },
 };
 export default config;
