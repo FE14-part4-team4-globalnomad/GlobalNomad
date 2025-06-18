@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 
-import { CalendarDay } from "../../components/calendarDate/CalendarDay";
+import { CalendarDay } from "../../app/(DefaultLayout)/(ProfileLayout)/calendar/components/CalendarDay";
 
 const meta: Meta<typeof CalendarDay> = {
   title: "Components/CalendarDay",
