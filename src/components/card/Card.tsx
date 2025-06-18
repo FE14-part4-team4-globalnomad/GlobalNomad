@@ -5,23 +5,30 @@ import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
+interface CardProps
+  extends Pick<
+    ActivityType,
+    "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
+  > {
+  onClick?: () => void;
+}
 export default function Card({
   bannerImageUrl,
   title,
   rating,
   reviewCount,
   price,
-}: Pick<
-  ActivityType,
-  "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
->) {
+  onClick = () => {},
+}: CardProps) {
   return (
     <article
       className={cn(
         "min-w-[155px] tablet:min-w-[260px] h-[242.88px] tablet:h-[423px] desktop:h-[366px]",
         "flex flex-col justify-start items-stretch",
         "relative drop-shadow-card",
+        "cursor-pointer",
       )}
+      onClick={onClick}
     >
       <div className="w-full h-[90%] relative overflow-hidden rounded-t-[18px] tablet:rounded-t-[32px]">
         <Image
