@@ -18,6 +18,7 @@ import AddressSearchScriptLoader from "./(components)/AddressSearchScriptLoader"
 import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
+import { usePostActivityImage } from "./(components)/usePostActivityImage";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
@@ -64,27 +65,13 @@ function ActivityUpdatePage() {
     }).open();
   };
 
-  const uploadImage = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/activities/image`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: false,
-      },
-    );
-
-    return res.data.activityImageUrl;
-  };
+  const { mutateAsync: postImage } = usePostActivityImage();
 
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const url = await uploadImage(file);
+    const url = await postImage(file);
     setBannerImage(file);
     setBannerImageUrl(url);
   };
@@ -94,7 +81,7 @@ function ActivityUpdatePage() {
     if (!files || introImages.length >= 4) return;
 
     const file = files[0];
-    const url = await uploadImage(file);
+    const url = await postImage(file);
 
     setIntroImages((prev) => [...prev, file]);
     setIntroImageUrls((prev) => [...prev, url]);
