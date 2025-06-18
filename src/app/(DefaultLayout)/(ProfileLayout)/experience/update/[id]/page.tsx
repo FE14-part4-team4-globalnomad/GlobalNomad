@@ -20,11 +20,13 @@ import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
 import { usePostActivityImage } from "./(components)/usePostActivityImage";
 import activityService from "@/apis/activity/activity.service";
+import myActivityService from "@/apis/myActivity/myActivity.service";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
 import ConfirmModal from "@/components/modal/ConfirmModal";
 import { useOverlay } from "@/hooks/useOverlay";
+import { ActivityCategoryType } from "@/types/activity";
 
 interface DaumPostcodeData {
   address: string;
@@ -41,12 +43,12 @@ declare global {
 }
 
 const CATEGORY_OPTIONS = [
-  { id: 1, title: "문화 예술" },
-  { id: 2, title: "식음료" },
-  { id: 3, title: "스포츠" },
-  { id: 4, title: "투어" },
-  { id: 5, title: "관광" },
-  { id: 6, title: "웰빙" },
+  { id: 1, title: "문화 예술", value: "문화 · 예술" },
+  { id: 2, title: "식음료", value: "식음료" },
+  { id: 3, title: "스포츠", value: "스포츠" },
+  { id: 4, title: "투어", value: "투어" },
+  { id: 5, title: "관광", value: "관광" },
+  { id: 6, title: "웰빙", value: "웰빙" },
 ];
 
 function ActivityUpdatePage() {
@@ -100,14 +102,19 @@ function ActivityUpdatePage() {
     setBannerImageUrl(null);
   };
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    category: ActivityCategoryType | "";
+    description: string;
+    price: string;
+    address: string;
+  }>({
     title: "",
     category: "",
     description: "",
     price: "",
     address: "",
   });
-
   const filteredCategoryOptions = CATEGORY_OPTIONS;
 
   // 예약 가능한 시간대
@@ -211,6 +218,11 @@ function ActivityUpdatePage() {
   const { overlay, close } = useOverlay();
 
   const handleSubmit = async () => {
+    if (formData.category === "") {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
     try {
       const payload = {
         title: formData.title,
@@ -219,7 +231,7 @@ function ActivityUpdatePage() {
         price: Number(formData.price),
         address: formData.address,
         bannerImageUrl: bannerImageUrl ?? "",
-        subImageUrlsToAdd: introImageUrls, // ✅ 올바른 키 사용
+        subImageUrlsToAdd: introImageUrls,
         subImageIdsToRemove: [],
         scheduleIdsToRemove: [],
         schedulesToAdd: availableTimes.map((slot) => ({
@@ -230,11 +242,18 @@ function ActivityUpdatePage() {
         })),
       };
 
-      await activityService.postActivity({ payload });
+      if (isNew) {
+        await activityService.postActivity({ payload });
+      } else {
+        await myActivityService.patchMyActivity({
+          activityId: Number(id),
+          payload,
+        });
+      }
 
       overlay(
         <ConfirmModal
-          message="등록이 완료되었습니다"
+          message={isNew ? "등록이 완료되었습니다" : "수정이 완료되었습니다"}
           onConfirm={() => {
             close();
             router.push("/experience");
@@ -242,7 +261,7 @@ function ActivityUpdatePage() {
         />,
       );
     } catch (err) {
-      console.error("제출 실패:", err);
+      console.error("❌ 제출 실패:", err);
     }
   };
 
@@ -272,12 +291,15 @@ function ActivityUpdatePage() {
           label="카테고리"
           placeholder="카테고리를 선택하세요"
           selectedItem={
-            CATEGORY_OPTIONS.find((opt) => opt.title === formData.category) ||
+            CATEGORY_OPTIONS.find((opt) => opt.value === formData.category) ||
             undefined
           }
           optionList={filteredCategoryOptions}
           onSelect={(selected) => {
-            setFormData({ ...formData, category: selected.title });
+            setFormData({
+              ...formData,
+              category: selected.value as ActivityCategoryType,
+            });
           }}
         />
       </div>
