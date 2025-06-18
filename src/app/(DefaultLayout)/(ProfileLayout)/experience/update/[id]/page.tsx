@@ -19,9 +19,12 @@ import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
 import { usePostActivityImage } from "./(components)/usePostActivityImage";
+import activityService from "@/apis/activity/activity.service";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
 
 interface DaumPostcodeData {
   address: string;
@@ -173,36 +176,49 @@ function ActivityUpdatePage() {
     setAvailableTimes((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const { overlay, close } = useOverlay();
+
   const handleSubmit = async () => {
     try {
       const payload = {
         ...formData,
-        availableTimes, // 예약 가능한 시간대 포함
+        price: Number(formData.price),
+        bannerImageUrl: bannerImageUrl ?? "",
+        subImageUrls: introImageUrls,
+        schedules: availableTimes.map((slot) => ({
+          date: slot.date ? slot.date.toISOString().slice(0, 10) : "",
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+        })),
       };
 
-      if (isNew) {
-        await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/activities`,
-          payload,
-          {
-            withCredentials: true,
-          },
-        );
-      } else {
-        await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/activities/${id}`,
-          payload,
-          { withCredentials: true },
-        );
-      }
-      router.push("/experience");
+      await activityService.postActivity({ payload });
+
+      overlay(
+        <ConfirmModal
+          message="등록이 완료되었습니다"
+          onConfirm={() => {
+            close();
+            router.push("/experience");
+          }}
+        />,
+      );
     } catch (err) {
       console.error("제출 실패:", err);
     }
   };
 
+  const isFormValid =
+    formData.title.trim() !== "" &&
+    formData.category.trim() !== "" &&
+    formData.description.trim() !== "" &&
+    formData.price.trim() !== "" &&
+    formData.address.trim() !== "" &&
+    availableTimes.length > 0 &&
+    bannerImageUrl !== null;
+
   return (
-    <div className="desktop:w-[70rem] tablet:w-[68.4rem] mobile:w-[32.7rem] ">
+    <div className="desktop:w-[70rem] tablet:w-[68.8rem] mobile:w-[32.7rem] ">
       <AddressSearchScriptLoader />
       <h1 className="text-gray-950 text-18-b">
         {isNew ? "내 체험 등록하기" : "내 체험 수정하기"}
@@ -264,7 +280,9 @@ function ActivityUpdatePage() {
       >
         {/* 날짜 */}
         <div className="flex flex-col">
-          <label className="text-16-m text-gray-950 mb-[1rem]">날짜</label>
+          <label className="tablet:text-16-m text-14-m text-gray-950 mb-[1rem]">
+            날짜
+          </label>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MUIDatePicker
               value={tempDate}
@@ -296,7 +314,7 @@ function ActivityUpdatePage() {
           <div className="grid tablet:grid-cols-[1fr_auto_1fr_auto] mobile:grid-cols-[1fr_auto_1fr_auto] items-end gap-[0.5rem]">
             {/* 시작 시간 */}
             <div className="flex flex-col">
-              <label className="text-16-m text-gray-950 mb-[1rem]">
+              <label className="text-16-m text-gray-950 mb-[1rem] hidden tablet:block">
                 시작 시간
               </label>
               <TimeSelectDropdown value={tempStart} onChange={setTempStart} />
@@ -309,7 +327,7 @@ function ActivityUpdatePage() {
 
             {/* 종료 시간 */}
             <div className="flex flex-col">
-              <label className="text-16-m text-gray-950 mb-[1rem]">
+              <label className="text-16-m text-gray-950 mb-[1rem] hidden tablet:block">
                 종료 시간
               </label>
               <TimeSelectDropdown value={tempEnd} onChange={setTempEnd} />
@@ -389,76 +407,82 @@ function ActivityUpdatePage() {
         ))}
       </div>
 
-      {/* 배너 이미지 */}
       <label className="block text-16-m font-semibold mb-2">
         배너 이미지 등록
       </label>
-      <div className="flex gap-2 items-center">
-        {bannerImageUrl ? (
-          <div className="relative w-[12.8rem] h-[12.8rem] rounded-[1.6rem] border-gray-100 overflow-hidden">
-            <Image
-              src={bannerImageUrl}
-              alt="배너 이미지 등록"
-              width={128}
-              height={128}
-            />
+      <div className="flex gap-2 items-center mb-[2.4rem]">
+        {/* 업로드 버튼은 항상 있음 */}
+        <label className="cursor-pointer desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 border border-gray-100 rounded-[1.6rem] flex items-center justify-center">
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleBannerUpload}
+            disabled={!!bannerImageUrl}
+          />
+          <span className="text-gray-600 tablet:text-14-m text-13-m ">
+            {bannerImageUrl ? "1/1" : "0/1"}
+          </span>
+        </label>
+
+        {bannerImageUrl && (
+          <div className="relative ">
+            <div className="relative desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 rounded-[1.6rem] overflow-hidden">
+              <Image src={bannerImageUrl} alt="소개 이미지" fill />
+            </div>
             <button
-              className="absolute top-0 right-0 bg-black bg-opacity-60 text-white rounded-full w-6 h-6"
+              className="absolute -top-[0.4rem] -right-[0.4rem] bg-black bg-opacity-60 text-white rounded-full tablet:w-[2.6rem] tablet:h-[2.6rem] h-[2rem] w-[2rem] flex justify-center items-center"
               onClick={removeBannerImage}
             >
               ×
             </button>
           </div>
-        ) : (
-          <label className="cursor-pointer w-[12.8rem] h-[12.8rem] border-gray-100 border rounded-[1.6rem] flex items-center justify-center">
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleBannerUpload}
-            />
-            <span className="text-gray-600 text-14-m">0/1</span>
-          </label>
         )}
       </div>
-
-      {/* 소개 이미지 */}
       <label className="block text-16-m font-semibold mt-[3rem] mb-[1rem]">
         소개 이미지 등록
       </label>
-      <div className="flex gap-2 flex-wrap mb-[2.4rem]">
-        {introImageUrls.map((url, index) => (
-          <div
-            key={index}
-            className="relative w-[12.8rem] h-[12.8rem] rounded-[1.6rem]  overflow-hidden"
+      <div className="overflow-x-auto pr-[2.6rem] pt-[1rem] -mt-[1rem]">
+        <div className="flex gap-[1.4rem] mb-[2.4rem] whitespace-nowrap relative">
+          <label
+            className={`flex-none cursor-pointer border-gray-100 desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 border rounded-[1.6rem] flex items-center justify-center ${
+              introImages.length >= 4 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            <Image src={url} alt="소개 이미지" fill />
-            <button
-              className="absolute top-0 right-0 bg-black bg-opacity-60 text-white rounded-full w-6 h-6"
-              onClick={() => removeIntroImage(index)}
-            >
-              ×
-            </button>
-          </div>
-        ))}
-
-        {introImages.length < 4 && (
-          <label className="cursor-pointer border-gray-100 w-[12.8rem] h-[12.8rem] border rounded-[1.6rem] flex items-center justify-center">
             <input
               type="file"
               accept="image/*"
               className="hidden"
               onChange={handleIntroUpload}
+              disabled={introImages.length >= 4}
             />
-            <span className="text-gray-600 text-14-m">
+            <span className="text-gray-600 tablet:text-14-m text-13-m">
               {introImages.length}/4
             </span>
           </label>
-        )}
+
+          {introImageUrls.map((url, index) => (
+            <div key={index} className="relative flex-none">
+              <div className="relative desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 rounded-[1.6rem] overflow-hidden">
+                <Image src={url} alt="소개 이미지" fill />
+              </div>
+              <button
+                className="absolute flex justify-center items-center -top-[0.4rem] -right-[0.4rem] bg-black bg-opacity-60 text-white rounded-full tablet:w-[2.6rem] tablet:h-[2.6rem] h-2 w-2 z-10"
+                onClick={() => removeIntroImage(index)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex justify-center">
-        <Button size="experienceRegister2" onClick={handleSubmit}>
+        <Button
+          size="experienceRegister2"
+          onClick={handleSubmit}
+          disabled={!isFormValid}
+        >
           {isNew ? "등록하기" : "수정하기"}
         </Button>
       </div>
