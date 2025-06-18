@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 
 import Gnb from "@/components/gnb/Gnb";

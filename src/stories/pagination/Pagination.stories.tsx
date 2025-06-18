@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Meta, StoryObj } from "@storybook/nextjs";
 import React, { useState } from "react";
 
 import Pagination from "@/components/pagination/Pagination";
