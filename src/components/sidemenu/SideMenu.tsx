@@ -51,6 +51,7 @@ function SideMenu() {
     <div
       className={cn(
         "flex flex-col items-center px-[1.4rem] bg-white border border-gray-50 text-16-m shadow-[0_4px_24px_0_rgba(156,180,202,0.2)] rounded-[1.2rem]",
+        "gap-[2.4rem] py-[2.4rem]",
         "tablet:gap-[1.2rem] tablet:w-[17.8rem] tablet:py-[1.6rem]",
         "desktop:gap-[2.4rem] desktop:w-[29rem] desktop:py-[2.4rem]",
       )}
