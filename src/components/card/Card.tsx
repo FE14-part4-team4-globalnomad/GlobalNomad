@@ -33,7 +33,7 @@ export default function Card({
       </div>
       <div className="absolute left-0 right-0 bottom-0 grid gap-[10px] bg-white rounded-[1.8rem] tablet:rounded-[3.2rem] py-[1.6rem] px-[1.7rem] tablet:py-[2rem] tablet:px-[3rem]">
         <div className="grid gap-[4px]">
-          <div className="text-14-b font-semibold tablet:text-18-b tablet:font-semibold">
+          <div className="text-14-b font-semibold tablet:text-18-b tablet:font-semibold overflow-hidden text-nowrap text-ellipsis">
             {title}
           </div>
           <div className="flex items-center gap-[2.8px] tablet:gap-[5px]">
