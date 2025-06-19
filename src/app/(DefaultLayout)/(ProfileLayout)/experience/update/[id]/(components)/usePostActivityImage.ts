@@ -1,5 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
+import activityService from "@/apis/activity/activity.service";
 
 export const usePostActivityImage = () => {
   function getAccessToken() {
@@ -34,5 +36,14 @@ export const usePostActivityImage = () => {
 
       return response.data.activityImageUrl;
     },
+  });
+};
+
+export const useGetActivityById = (id: number) => {
+  return useQuery({
+    queryKey: ["activity", id],
+    queryFn: () => activityService.getActivity({ activityId: id }),
+    enabled: !!id,
+    select: (data) => data.data,
   });
 };

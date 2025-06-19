@@ -6,7 +6,6 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -18,7 +17,10 @@ import AddressSearchScriptLoader from "./(components)/AddressSearchScriptLoader"
 import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
-import { usePostActivityImage } from "./(components)/usePostActivityImage";
+import {
+  useGetActivityById,
+  usePostActivityImage,
+} from "./(components)/usePostActivityImage";
 import activityService from "@/apis/activity/activity.service";
 import myActivityService from "@/apis/myActivity/myActivity.service";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
@@ -131,48 +133,34 @@ function ActivityUpdatePage() {
     return <Image src={CalendarIcon} alt="calendar" width={20} height={20} />;
   }
 
+  const { data: activity } = useGetActivityById(Number(id));
+
   useEffect(() => {
-    if (!isNew) {
-      axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/api/activities/${id}`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          const activity = res.data;
+    if (isNew || !activity) return;
+    setFormData({
+      title: activity.title,
+      category: activity.category,
+      description: activity.description,
+      price: activity.price.toString(),
+      address: activity.address,
+    });
 
-          // 기본 입력 필드 채우기
-          setFormData({
-            title: activity.title,
-            category: activity.category,
-            description: activity.description,
-            price: activity.price.toString(),
-            address: activity.address,
-          });
+    setBannerImageUrl(activity.bannerImageUrl);
 
-          // 배너 이미지 세팅
-          setBannerImageUrl(activity.bannerImageUrl);
+    setIntroImageUrls(
+      activity.subImages?.map((img: { imageUrl: string }) => img.imageUrl),
+    );
 
-          // 소개 이미지들 세팅
-          setIntroImageUrls(
-            activity.subImages?.map(
-              (img: { imageUrl: string }) => img.imageUrl,
-            ),
-          );
-
-          // 예약 가능 시간대 세팅
-          setAvailableTimes(
-            activity.schedules?.map(
-              (s: { date: string; startTime: string; endTime: string }) => ({
-                date: new Date(s.date),
-                startTime: s.startTime,
-                endTime: s.endTime,
-              }),
-            ) ?? [],
-          );
-        })
-        .catch((err) => console.error("불러오기 실패:", err));
-    }
-  }, [id, isNew]);
+    setAvailableTimes(
+      activity.schedules?.map(
+        (s: { date: string; startTime: string; endTime: string }) => ({
+          date: new Date(s.date),
+          startTime: s.startTime,
+          endTime: s.endTime,
+        }),
+      ) ?? [],
+    );
+  }, [id, isNew, activity]);
 
   const handleAddTime = () => {
     if (!tempDate) {
@@ -266,13 +254,9 @@ function ActivityUpdatePage() {
   };
 
   const isFormValid =
-    formData.title.trim() !== "" &&
-    formData.category.trim() !== "" &&
-    formData.description.trim() !== "" &&
-    formData.price.trim() !== "" &&
-    formData.address.trim() !== "" &&
-    availableTimes.length > 0 &&
-    bannerImageUrl !== null;
+    Object.values(formData).every((field) => field.trim() !== "") &&
+    availableTimes.length &&
+    !!bannerImageUrl;
 
   return (
     <div className="desktop:w-[70rem] tablet:w-[68.8rem] mobile:w-[32.7rem] ">
