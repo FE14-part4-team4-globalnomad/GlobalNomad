@@ -6,7 +6,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ import AddressSearchScriptLoader from "./(components)/AddressSearchScriptLoader"
 import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
 import TimeSelectDropdown from "./(components)/TimeDropdown";
+import UpdateWarningModal from "./(components)/UpdateWarningModal";
 import {
   useGetActivityById,
   usePostActivityImage,
@@ -59,9 +60,39 @@ function ActivityUpdatePage() {
   const isNew = id === "new";
   const setBannerImage = useState<File | null>(null)[1];
   const [bannerImageUrl, setBannerImageUrl] = useState<string | null>(null);
-
+  const [isDirty, setIsDirty] = useState(false);
+  const [initialState, setInitialState] = useState<string>("");
   const [introImages, setIntroImages] = useState<File[]>([]);
   const [introImageUrls, setIntroImageUrls] = useState<string[]>([]);
+  const { overlay, close } = useOverlay();
+
+  useEffect(() => {
+    const handler = () => {
+      console.log("🔥 popstate fired");
+      if (!isDirty) {
+        console.log("📭 isDirty is false");
+        return;
+      }
+      console.log("📢 모달 뜸");
+
+      window.history.pushState(null, "", window.location.href);
+      console.log("🔔 모달 띄우기 직전");
+      overlay(
+        <UpdateWarningModal
+          message="작성 중인 내용을 저장하지 않았습니다. 이동하시겠습니까?"
+          onConfirm={() => {
+            console.log("✅ 이동 허용");
+            setIsDirty(false);
+            close();
+            router.back();
+          }}
+        />,
+      );
+    };
+
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, [isDirty, overlay, close, router]);
 
   const handleAddressClick = () => {
     new window.daum.Postcode({
@@ -121,7 +152,7 @@ function ActivityUpdatePage() {
 
   // 예약 가능한 시간대
   const [availableTimes, setAvailableTimes] = useState<
-    { date: Date | null; startTime: string; endTime: string }[]
+    { id?: number; date: Date | null; startTime: string; endTime: string }[]
   >([]);
 
   // 입력용 temp 상태
@@ -151,16 +182,46 @@ function ActivityUpdatePage() {
       activity.subImages?.map((img: { imageUrl: string }) => img.imageUrl),
     );
 
-    setAvailableTimes(
-      activity.schedules?.map(
-        (s: { date: string; startTime: string; endTime: string }) => ({
-          date: new Date(s.date),
-          startTime: s.startTime,
-          endTime: s.endTime,
-        }),
-      ) ?? [],
-    );
+    const parsedTimes =
+      activity.schedules?.map((s) => ({
+        id: s.id,
+        date: parseISO(s.date),
+        startTime: s.startTime,
+        endTime: s.endTime,
+      })) ?? [];
+
+    setAvailableTimes(parsedTimes);
+
+    const initialPayload = {
+      title: activity.title,
+      category: activity.category,
+      description: activity.description,
+      price: activity.price.toString(),
+      address: activity.address,
+      availableTimes: parsedTimes,
+      bannerImageUrl: activity.bannerImageUrl,
+      subImages: activity.subImages?.map((img) => img.imageUrl) ?? [],
+    };
+
+    setInitialState(JSON.stringify(initialPayload));
   }, [id, isNew, activity]);
+
+  useEffect(() => {
+    if (!initialState) return;
+
+    const current = {
+      title: formData.title,
+      category: formData.category,
+      description: formData.description,
+      price: formData.price,
+      address: formData.address,
+      availableTimes,
+      bannerImageUrl,
+      subImages: introImageUrls,
+    };
+
+    setIsDirty(JSON.stringify(current) !== initialState);
+  }, [formData, availableTimes, bannerImageUrl, introImageUrls, initialState]);
 
   const handleAddTime = () => {
     if (!tempDate) {
@@ -199,11 +260,20 @@ function ActivityUpdatePage() {
     setTempEnd("");
   };
 
-  const handleRemoveTime = (index: number) => {
-    setAvailableTimes((prev) => prev.filter((_, i) => i !== index));
-  };
+  const [scheduleIdsToRemove, setScheduleIdsToRemove] = useState<number[]>([]);
 
-  const { overlay, close } = useOverlay();
+  const handleRemoveTime = (index: number) => {
+    setAvailableTimes((prev) => {
+      const target = prev[index];
+
+      // 삭제 대상이 서버에서 온 예약시간(id 있음)일 경우 추적
+      if (target.id) {
+        setScheduleIdsToRemove((ids) => [...ids, target.id!]);
+      }
+
+      return prev.filter((_, i) => i !== index);
+    });
+  };
 
   const handleSubmit = async () => {
     if (formData.category === "") {
@@ -221,10 +291,10 @@ function ActivityUpdatePage() {
         bannerImageUrl: bannerImageUrl ?? "",
         subImageUrlsToAdd: introImageUrls,
         subImageIdsToRemove: [],
-        scheduleIdsToRemove: [],
+        scheduleIdsToRemove: scheduleIdsToRemove,
         schedulesToAdd: availableTimes.map((slot) => ({
           id: 0,
-          date: slot.date ? slot.date.toISOString().slice(0, 10) : "",
+          date: slot.date ? format(slot.date, "yyyy-MM-dd") : "",
           startTime: slot.startTime,
           endTime: slot.endTime,
         })),
@@ -257,6 +327,10 @@ function ActivityUpdatePage() {
     Object.values(formData).every((field) => field.trim() !== "") &&
     availableTimes.length &&
     !!bannerImageUrl;
+
+  useEffect(() => {
+    console.log("변경사항 있음?", isDirty);
+  }, [isDirty]);
 
   return (
     <div className="desktop:w-[70rem] tablet:w-[68.8rem] mobile:w-[32.7rem] ">
@@ -310,7 +384,6 @@ function ActivityUpdatePage() {
         value={formData.address}
         onClick={handleAddressClick}
         readOnly
-        onChange={() => {}}
       />
 
       {/* 예약 가능 시간대 입력 줄 */}

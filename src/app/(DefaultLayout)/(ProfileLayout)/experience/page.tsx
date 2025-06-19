@@ -9,6 +9,8 @@ import myActivityService from "@/apis/myActivity/myActivity.service";
 import MyExperienceCard from "@/app/(DefaultLayout)/(ProfileLayout)/experience/(components)/MyExperienceCard";
 import Emptylogo from "@/assets/images/logos/logo_empty.svg";
 import Button from "@/components/button/Button";
+import WarningModal from "@/components/modal/WarningModal";
+import { useOverlay } from "@/hooks/useOverlay";
 import { ActivityType } from "@/types/activity";
 
 interface ActivityResponse {
@@ -42,6 +44,7 @@ const fetchMyActivities = async ({
 export default function ExperiencePage() {
   const router = useRouter();
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const { overlay, close } = useOverlay();
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
     useInfiniteQuery({
@@ -52,16 +55,21 @@ export default function ExperiencePage() {
         lastPage.hasNextPage ? lastPage.nextPage : undefined,
     });
 
-  const handleDelete = async (id: number) => {
-    try {
-      await myActivityService.deleteMyActivity({
-        activityId: id,
-      });
-
-      refetch();
-    } catch (error) {
-      console.error("삭제 실패", error);
-    }
+  const handleDelete = (id: number) => {
+    overlay(
+      <WarningModal
+        message="삭제하시겠습니까?"
+        onConfirm={async () => {
+          try {
+            await myActivityService.deleteMyActivity({ activityId: id });
+            close();
+            refetch();
+          } catch (error) {
+            console.error("삭제 실패", error);
+          }
+        }}
+      />,
+    );
   };
 
   const activities =
