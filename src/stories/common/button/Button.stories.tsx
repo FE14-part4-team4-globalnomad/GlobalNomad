@@ -4,7 +4,7 @@ import Button from "@/components/button/Button";
 import type { ButtonProps } from "@/types/button";
 
 const meta: Meta<ButtonProps> = {
-  title: "Components/Button",
+  title: "Common Components/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {

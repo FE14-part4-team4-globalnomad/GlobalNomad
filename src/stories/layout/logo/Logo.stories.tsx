@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import Logo from "@/components/logo/Logo";
 
 const meta: Meta<typeof Logo> = {
-  title: "Components/Logo",
+  title: "Components/Layout/Logo",
   component: Logo,
 };
 

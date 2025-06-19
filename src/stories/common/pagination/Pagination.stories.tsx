@@ -5,7 +5,7 @@ import Pagination from "@/components/pagination/Pagination";
 import type { PaginationProps } from "@/types/pagination";
 
 const meta: Meta<typeof Pagination> = {
-  title: "Components/Pagination",
+  title: "Common Components/Pagination",
   component: Pagination,
 };
 

@@ -4,7 +4,7 @@ import React from "react";
 import { CalendarDay } from "../../components/calendarDate/CalendarDay";
 
 const meta: Meta<typeof CalendarDay> = {
-  title: "Components/CalendarDay",
+  title: "Components/Calendar/CalendarDay",
   component: CalendarDay,
   argTypes: {
     pending: { control: { type: "number", min: 0 }, name: "예약 (pending)" },

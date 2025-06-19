@@ -5,7 +5,7 @@ import SideMenu from "@/components/sidemenu/SideMenu";
 import { useAuthStore } from "@/store/authStore";
 
 const meta: Meta<typeof SideMenu> = {
-  title: "Components/SideMenu",
+  title: "Components/Layout/SideMenu",
   component: SideMenu,
   parameters: {
     layout: "centered",

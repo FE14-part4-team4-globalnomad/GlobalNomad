@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { CalendarEventBadge } from "../../components/calendarDate/CalendarEventBadge";
 
 const meta: Meta<typeof CalendarEventBadge> = {
-  title: "Components/CalendarEventBadge",
+  title: "Components/Calendar/CalendarEventBadge",
   component: CalendarEventBadge,
   tags: ["autodocs"],
   args: {

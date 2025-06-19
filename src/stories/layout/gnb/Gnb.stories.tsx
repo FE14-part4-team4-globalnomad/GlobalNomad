@@ -5,7 +5,7 @@ import Gnb from "@/components/gnb/Gnb";
 import { useAuthStore } from "@/store/authStore";
 
 const meta: Meta<typeof Gnb> = {
-  title: "Components/Gnb",
+  title: "Components/Layout/Gnb",
   component: Gnb,
   parameters: {
     layout: "fullscreen",

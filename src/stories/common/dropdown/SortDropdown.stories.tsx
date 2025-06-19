@@ -5,7 +5,7 @@ import SortDropdown from "@/app/(DefaultLayout)/(MainLayout)/components/SortDrop
 import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
 
 const meta = {
-  title: "Components/Dropdown/Sort Filter Dropdown",
+  title: "Common Components/Dropdown/Sort Filter Dropdown",
   component: SortDropdown,
   parameters: {
     layout: "centered",

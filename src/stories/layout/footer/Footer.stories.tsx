@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 
-import Footer from "../../components/footer/Footer";
+import Footer from "../../../components/footer/Footer";
 
 const meta: Meta<typeof Footer> = {
-  title: "Components/Footer",
+  title: "Components/Layout/Footer",
   component: Footer,
   // tags: ["autodocs"],
 };

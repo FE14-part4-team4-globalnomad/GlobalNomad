@@ -5,7 +5,7 @@ import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
 import { ACTIVITY_SORT_FILTER } from "@/constants/activity";
 
 const meta = {
-  title: "Components/Dropdown/Default Dropdown",
+  title: "Common Components/Dropdown/Default Dropdown",
   component: DefaultDropdown,
   parameters: {
     layout: "centered",

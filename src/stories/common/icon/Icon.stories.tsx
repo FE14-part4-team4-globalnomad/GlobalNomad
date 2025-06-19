@@ -4,7 +4,7 @@ import * as svg from "@/assets/icons";
 import { Icon } from "@/components/icon/Icon";
 
 const meta = {
-  title: "Components/Icon",
+  title: "Common Components/Icon",
   component: Icon,
   parameters: {
     layout: "centered",

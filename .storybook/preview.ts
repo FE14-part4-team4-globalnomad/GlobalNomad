@@ -16,6 +16,23 @@ const preview: Preview = {
       // 'off' - skip a11y checks entirely
       test: "todo",
     },
+
+    options: {
+      storySort: {
+        order: [
+          "Foundation",
+          "Common Components",
+          "Components",
+          [
+            "Layout",
+            ["Logo", "Gnb", "SideMenu", "Footer"],
+            "Card",
+            "Calendar",
+            "Search",
+          ],
+        ],
+      },
+    },
   },
 };
 
