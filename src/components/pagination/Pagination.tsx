@@ -11,6 +11,8 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  if (totalPages < 1) return null;
+
   const generatePageRange = (): number[] => {
     const totalToShow = 5;
     const half = Math.floor(totalToShow / 2);
@@ -35,7 +37,9 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${currentPage === 1 ? "opacity-50" : "cursor-pointer"}`}
+        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${
+          currentPage === 1 ? "opacity-50" : "cursor-pointer"
+        }`}
       >
         <Image
           src={currentPage === 1 ? BackArrowGray : BackArrowBlack}
@@ -64,14 +68,18 @@ export default function Pagination({
 
       {/* ▶️ 다음 버튼 */}
       <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => {
+          if (currentPage < totalPages) {
+            onPageChange(currentPage + 1);
+          }
+        }}
+        disabled={currentPage >= totalPages}
         className={`w-[4rem] h-[4rem] flex items-center justify-center  ${
-          currentPage === totalPages ? "opacity-50" : "cursor-pointer"
+          currentPage >= totalPages ? "opacity-50" : "cursor-pointer"
         }`}
       >
         <Image
-          src={currentPage === totalPages ? NextArrowGray : NextArrowBlack}
+          src={currentPage >= totalPages ? NextArrowGray : NextArrowBlack}
           alt="다음 페이지"
           width={7}
           height={11}

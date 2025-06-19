@@ -6,7 +6,19 @@ export const ACTIVITY_CATEGORIES = [
   "관광",
   "웰빙",
 ];
-export const ACTIVITY_SORT_FILTER = [
+
+export type SortOptionId =
+  | "latest"
+  | "price_asc"
+  | "price_desc"
+  | "most_reviewed";
+
+export interface SortOption {
+  id: SortOptionId;
+  title: string;
+}
+
+export const ACTIVITY_SORT_FILTER: SortOption[] = [
   { id: "latest", title: "최신순" },
   { id: "price_asc", title: "가격 낮은 순" },
   { id: "price_desc", title: "가격 높은 순" },

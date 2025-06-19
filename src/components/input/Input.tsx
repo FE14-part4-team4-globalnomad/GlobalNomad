@@ -21,7 +21,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         <div className="relative text-14-m">
-                    <input
+          <input
             id={id}
             ref={ref}
             type={isPasswordType ? (showPassword ? "text" : "password") : type}
