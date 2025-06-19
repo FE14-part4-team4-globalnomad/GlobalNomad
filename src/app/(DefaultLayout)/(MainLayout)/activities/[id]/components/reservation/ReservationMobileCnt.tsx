@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import GuestCountSelector from './GuestCountSelector';
-import arrowBackIcon from '@/assets/icons/arrow/icon_arrow_back.svg';
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
+import GuestCountSelector from "./GuestCountSelector";
+import arrowBackIcon from "@/assets/icons/arrow/icon_arrow_back.svg";
+import Button from "@/components/button/Button";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationMobileCntProps = {
   pricePerPerson: number;

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import styles from '@/styles/slideuppanel.module.css';
+import styles from "@/styles/slideuppanel.module.css";
 
 type SlidePanelProps = {
   isOpen: boolean;
@@ -13,13 +13,13 @@ type SlidePanelProps = {
 export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProps) {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
   
@@ -35,7 +35,7 @@ export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProp
       <div
         className={`
           relative z-50 w-full bg-white rounded-t-3xl shadow-xl transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-y-0' : 'translate-y-full'}
+          ${isOpen ? "translate-y-0" : "translate-y-full"}
           h-auto overflow-y-auto overflow-x-hidden mobile:max-h-[320px] tablet:max-h-[400px]
           mobile:max-w-[380px] tablet:max-w-[744px] tablet:scale-[0.95] origin-bottom
           ${styles.customScrollbar}

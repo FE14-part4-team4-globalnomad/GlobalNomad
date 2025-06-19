@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 type AvailableTimesProps = {
   availableTimesForSelectedDate: string[];
@@ -25,8 +25,8 @@ export default function AvailableTimes({
               className={`w-full flex justify-center items-center rounded-3xl py-[16px] tablet:py-[14px] 
                 ${
                   selectedTime === time 
-                      ? 'border-2 border-brand-500 text-brand-500 bg-brand-100' 
-                      : 'border border-gray-300 text-gray-950 bg-white'
+                      ? "border-2 border-brand-500 text-brand-500 bg-brand-100" 
+                      : "border border-gray-300 text-gray-950 bg-white"
                 }`}
             >
               {time}

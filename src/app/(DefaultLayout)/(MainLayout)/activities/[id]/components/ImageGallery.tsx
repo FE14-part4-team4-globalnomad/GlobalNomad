@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useState } from "react";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface ImageGalleryProps {
   bannerImageUrl: string;
@@ -63,7 +63,7 @@ export default function ImageGallery({ bannerImageUrl, subImageUrls }: ImageGall
       {isOpen && (
         <div
           className="fixed inset-0 flex justify-center items-center z-[9999]"
-          style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+          style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
           onClick={closeLightbox}
         >
           <div

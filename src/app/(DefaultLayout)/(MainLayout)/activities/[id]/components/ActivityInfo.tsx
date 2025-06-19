@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-import { useMyActivityDeleteMutation } from '@/apis/activity/activity.query';
-import mapIcon from '@/assets/icons/any/icon_map.svg';
-import moreIcon from '@/assets/icons/any/icon_more.svg';
-import yellowStar from '@/assets/icons/star/icon_star_active.svg';
-import WarningModal from '@/components/modal/WarningModal';
-import { useOverlay } from '@/hooks/useOverlay';
+import { useMyActivityDeleteMutation } from "@/apis/activity/activity.query";
+import mapIcon from "@/assets/icons/any/icon_map.svg";
+import moreIcon from "@/assets/icons/any/icon_more.svg";
+import yellowStar from "@/assets/icons/star/icon_star_active.svg";
+import WarningModal from "@/components/modal/WarningModal";
+import { useOverlay } from "@/hooks/useOverlay";
 
 interface ActivityInfoProps {
   category: string;
@@ -59,7 +59,7 @@ export default function ActivityInfo({
   }, [isDropdownOpen]);
 
   return (
-    <section className="relative bg-white desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
+    <section className="relative desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
       <div className="flex justify-between items-start mb-[17px]">
         <div>
           <div className="mb-1 text-14-m text-gray-950">{category}</div>
@@ -111,7 +111,7 @@ export default function ActivityInfo({
                                 {
                                   onSuccess: () => {
                                     overlay(<></>); // ✅ 여기 추가!
-                                    router.push('/');
+                                    router.push("/");
                                   },
                                 }
                               );

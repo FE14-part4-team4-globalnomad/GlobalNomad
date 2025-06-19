@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 interface MapProps {
   address: string;
@@ -55,7 +55,7 @@ declare global {
     [key: string]: unknown;
   };
 
-  type GeocoderStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
+  type GeocoderStatus = "OK" | "ZERO_RESULT" | "ERROR";
 }
 
 export default function KakaoMap({ address }: MapProps) {
@@ -71,14 +71,14 @@ export default function KakaoMap({ address }: MapProps) {
   useEffect(() => {
     if (!address) return;
 
-    const existingScript = document.getElementById('kakao-map-script');
+    const existingScript = document.getElementById("kakao-map-script");
 
     const loadMap = () => {
       const { kakao } = window;
       if (!kakao) return;
 
       kakao.maps.load(() => {
-        const container = document.getElementById('map');
+        const container = document.getElementById("map");
         if (!container) return;
 
         const map = new kakao.maps.Map(container, {
@@ -97,7 +97,7 @@ export default function KakaoMap({ address }: MapProps) {
               position: coords,
             });
 
-            kakao.maps.event.addListener(marker, 'click', () => {
+            kakao.maps.event.addListener(marker, "click", () => {
               window.open(`https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`);
             });
 
@@ -166,8 +166,8 @@ export default function KakaoMap({ address }: MapProps) {
             map.setCenter(coords);
 
             const handleResize = () => map.setCenter(coords);
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
+            window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
           }
         });
       });
@@ -176,8 +176,8 @@ export default function KakaoMap({ address }: MapProps) {
     if (existingScript && window.kakao) {
       loadMap();
     } else if (!existingScript) {
-      const script = document.createElement('script');
-      script.id = 'kakao-map-script';
+      const script = document.createElement("script");
+      script.id = "kakao-map-script";
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&autoload=false&libraries=services`;
       script.async = true;
       document.head.appendChild(script);

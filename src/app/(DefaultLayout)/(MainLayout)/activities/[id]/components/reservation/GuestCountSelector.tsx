@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import minusIcon from '@/assets/icons/plus_minus/icon_minus.svg';
-import plusIcon from '@/assets/icons/plus_minus/icon_plus.svg';
+import minusIcon from "@/assets/icons/plus_minus/icon_minus.svg";
+import plusIcon from "@/assets/icons/plus_minus/icon_plus.svg";
 
 type GuestCountSelectorProps = {
   guestCount: number;
@@ -28,7 +28,7 @@ export default function GuestCountSelector({
         <button
           onClick={handleDecrease}
           disabled={guestCount === 1}
-          className={`${guestCount === 1 ? 'opacity-30 pointer-events-none' : ''}`}
+          className={`${guestCount === 1 ? "opacity-30 pointer-events-none" : ""}`}
         >
           <Image src={minusIcon} alt="감소" />
         </button>

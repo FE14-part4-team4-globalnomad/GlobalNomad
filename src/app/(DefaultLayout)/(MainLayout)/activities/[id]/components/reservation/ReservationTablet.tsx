@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import AvailableTimes from './AvailableTimes';
-import DateSelector from './DateSelector';
-import GuestCountSelector from './GuestCountSelector';
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
+import AvailableTimes from "./AvailableTimes";
+import DateSelector from "./DateSelector";
+import GuestCountSelector from "./GuestCountSelector";
+import Button from "@/components/button/Button";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationTabletProps = {
   pricePerPerson: number;
@@ -118,7 +118,7 @@ export default function ReservationTablet({
 
       <Button
         size="calendar"
-        variant={isReadyToReserve ? 'primary' : 'secondary'}
+        variant={isReadyToReserve ? "primary" : "secondary"}
         rounded
         onClick={() => {
           if (!isReadyToReserve) return;

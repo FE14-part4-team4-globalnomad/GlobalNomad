@@ -1,34 +1,32 @@
-'use client';
+"use client";
 
-import { notFound } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { notFound } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 import {
   useActivityAvailableScheduleQuery,
   useActivityQuery,
   useActivityReviewListQuery,
-} from '@/apis/activity/activity.query';
-import ActivityInfo from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivityInfo';
-import ActivitySkeleton from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivitySkeleton';
-import Description from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/Description';
-import ImageGallery from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ImageGallery';
-import KakaoMap from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/KakaoMap';
-import Reservation from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/Reservation';
-import ReservationBtn from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationBtn';
-import ReservationMobile from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobile';
-import ReservationMobileCnt from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobileCnt';
-import ReservationTablet from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationTablet';
-import SlidePanel from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/SlidePanel';
-import ReviewList from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ReviewList';
-import Footer from '@/components/footer/Footer';
-import Gnb from '@/components/gnb/Gnb';
-import Pagination from '@/components/pagination/Pagination';
-import { useAuthStore } from '@/store/authStore';
+} from "@/apis/activity/activity.query";
+import ActivityInfo from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivityInfo";
+import ActivitySkeleton from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivitySkeleton";
+import Description from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/Description";
+import ImageGallery from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ImageGallery";
+import KakaoMap from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/KakaoMap";
+import Reservation from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/Reservation";
+import ReservationBtn from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationBtn";
+import ReservationMobile from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobile";
+import ReservationMobileCnt from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobileCnt";
+import ReservationTablet from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationTablet";
+import SlidePanel from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/SlidePanel";
+import ReviewList from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ReviewList";
+import Pagination from "@/components/pagination/Pagination";
+import { useAuthStore } from "@/store/authStore";
 
 export default function ActivityDetailPage() {
   const params = useParams();
-  const activityId = Number(params?.activityId);
+  const activityId = Number(params.id);
 
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -117,7 +115,7 @@ export default function ActivityDetailPage() {
     rating: review.rating,
     content: review.content,
   }));
-
+  
   if (!isActivityLoading && !activity) {
     return notFound();
   }
@@ -125,16 +123,13 @@ export default function ActivityDetailPage() {
   if (isActivityLoading || isReviewLoading || isScheduleLoading) {
     return (
       <div>
-        <Gnb />
         <ActivitySkeleton />
-        <Footer />
       </div>
     );
   }
 
   return (
     <div>
-      <Gnb />
       <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
@@ -255,8 +250,6 @@ export default function ActivityDetailPage() {
           />
         )}
       </SlidePanel>
-
-      <Footer />
     </div>
   );
 }

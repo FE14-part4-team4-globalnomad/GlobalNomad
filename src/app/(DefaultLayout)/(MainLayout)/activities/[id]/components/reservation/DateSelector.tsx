@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { format } from 'date-fns';
-import Image from 'next/image';
+import { format } from "date-fns";
+import Image from "next/image";
 
-import arrowLeftIcon from '@/assets/icons/arrow/icon_alt arrow_left.svg';
-import arrowRightIcon from '@/assets/icons/arrow/icon_alt arrow_right.svg';
+import arrowLeftIcon from "@/assets/icons/arrow/icon_alt arrow_left.svg";
+import arrowRightIcon from "@/assets/icons/arrow/icon_alt arrow_right.svg";
 
 type DateSelectorProps = {
   currentYear: number;
@@ -34,7 +34,7 @@ export default function DateSelector({
   availableDates,
 }: DateSelectorProps) {
   const isAvailable = (date: Date, availableDates: Record<string, string[]>) => {
-    const formatted = format(date, 'yyyy-MM-dd');
+    const formatted = format(date, "yyyy-MM-dd");
     return !!availableDates[formatted];
   };
 
@@ -44,7 +44,7 @@ export default function DateSelector({
       <div className="mt-1 desktop:h-35 tablet:w-36 tablet:h-49">
         <div className="flex justify-between items-center mb-2">
           <div className="text-16-m text-gray-950">
-            {format(new Date(currentYear, currentMonth), 'MMMM yyyy')}
+            {format(new Date(currentYear, currentMonth), "MMMM yyyy")}
           </div>
           <div className="flex gap-1">
             <button onClick={handlePrevMonth}>
@@ -56,7 +56,7 @@ export default function DateSelector({
           </div>
         </div>
         <div className="grid grid-cols-7 gap-1 text-16-m w-full">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, index) => (
+          {["S", "M", "T", "W", "T", "F", "S"].map((d, index) => (
             <div key={`${d}-${index}`} className="text-center text-gray-800">
               {d}
             </div>
@@ -79,9 +79,9 @@ export default function DateSelector({
               date = new Date(currentYear, currentMonth, dateNum);
             }
 
-            const dateStr = format(date, 'yyyy-MM-dd');
+            const dateStr = format(date, "yyyy-MM-dd");
             const isSelected = selectedDate
-              ? dateStr === format(selectedDate, 'yyyy-MM-dd')
+              ? dateStr === format(selectedDate, "yyyy-MM-dd")
               : false;
             const isDateAvailable = isCurrentMonth && isAvailable(date!, availableDates);
 
@@ -93,11 +93,11 @@ export default function DateSelector({
                 }}
                 className={`
                   aspect-square w-full flex items-center justify-center rounded-full
-                  ${isDateAvailable ? 'cursor-pointer' : 'pointer-events-none'}
-                  ${isSelected ? 'bg-brand-500 text-white' : ''}
-                  ${!isSelected && isDateAvailable ? 'bg-brand-100 text-brand-500' : ''}
-                  ${!isDateAvailable ? 'bg-white' : ''}
-                  ${!isCurrentMonth ? 'text-gray-300' : 'text-gray-950'}
+                  ${isDateAvailable ? "cursor-pointer" : "pointer-events-none"}
+                  ${isSelected ? "bg-brand-500 text-white" : ""}
+                  ${!isSelected && isDateAvailable ? "bg-brand-100 text-brand-500" : ""}
+                  ${!isDateAvailable ? "bg-white" : ""}
+                  ${!isCurrentMonth ? "text-gray-300" : "text-gray-950"}
                 `}
               >
                 {date?.getDate()}

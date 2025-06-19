@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-import AvailableTimes from './AvailableTimes';
-import DateSelector from './DateSelector';
-import GuestCountSelector from './GuestCountSelector';
-import { useActivityReservationMutation } from '@/apis/activity/activity.query';
-import Button from '@/components/button/Button';
-import ConfirmModal from '@/components/modal/ConfirmModal';
-import { useOverlay } from '@/hooks/useOverlay';
-import useReservation from '@/hooks/useReservation';
+import AvailableTimes from "./AvailableTimes";
+import DateSelector from "./DateSelector";
+import GuestCountSelector from "./GuestCountSelector";
+import { useActivityReservationMutation } from "@/apis/activity/activity.query";
+import Button from "@/components/button/Button";
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationProps = {
   pricePerPerson: number;
@@ -88,7 +88,7 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
 
         <Button
           size="calendar"
-          variant={isReadyToReserve ? 'primary' : 'secondary'}
+          variant={isReadyToReserve ? "primary" : "secondary"}
           rounded
           className="!w-13"
           onClick={() => {
