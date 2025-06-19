@@ -8,7 +8,7 @@ const sizeStyles: Record<SizeVariant, string> = {
     "mobile:w-[113px] mobile:h-[41px] mobile:text-14-m tablet:w-[135px] tablet:h-[47px] tablet:text-16-m desktop:w-[135px] desktop:h-[47px] desktop:text-16-m",
 
   empty:
-    "mobile:w-[182px] mobile:h-[19px] mobile:text-16-m tablet:w-[182px] tablet:h-[19px] tablet:text-16-m desktop:w-[182px] desktop:h-[19px] desktop:text-16-m",
+    "mobile:w-[182px] mobile:h-[54px] mobile:text-16-m tablet:w-[182px] tablet:h-[54px] tablet:text-16-m desktop:w-[182px] desktop:h-[54px] desktop:text-16-m",
 
   experienceRegister:
     "mobile:w-[138px] mobile:h-[48px] mobile:text-16-m tablet:w-[138px] tablet:h-[48px] tablet:text-16-m desktop:w-[138px] desktop:h-[48px] desktop:text-16-m",
