@@ -1,116 +1,167 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import Image from "next/image";
+import { useEffect, useRef, useCallback, useState } from "react";
 
-import deleteIcon from '@/assets/icons/any/icon_delete.svg';
+import {
+  useDeleteMyNotificationMutation,
+  useMyNotificationListQuery,
+} from "@/apis/notification/notification.query";
+import deleteIcon from "@/assets/icons/any/icon_delete.svg";
 
-type NotificationType = {
+type LocalNotificationType = {
   id: number;
-  type: '예약 승인' | '예약 거절';
-  description: string;
-  time: string;
-  date: string;
-  status: '승인' | '거절';
+  content: string;
+  createdAt: string;
 };
-
-// 초기 더미 데이터 생성
-const generateDummy = (startId: number, count = 10): NotificationType[] =>
-  Array.from({ length: count }, (_, i) => {
-    const id = startId + i;
-    const isApproved = id % 2 === 0;
-    return {
-      id,
-      type: isApproved ? '예약 승인' : '예약 거절',
-      description: '함께하면 즐거운 스트릿 댄스',
-      time: `${id}분 전`,
-      date: '2023-01-14 15:00~18:00',
-      status: isApproved ? '승인' : '거절',
-    };
-  });
 
 export default function Notification() {
   const ref = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const [notifications, setNotifications] = useState<NotificationType[]>(generateDummy(1));
+  const { data, fetchNextPage, hasNextPage } = useMyNotificationListQuery();
+  const { mutate: deleteNotification } = useDeleteMyNotificationMutation();
+
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [nextId, setNextId] = useState(11);
 
-  useEffect(() => {
-    const loaderEl = loaderRef.current; // ✅ 현재 ref 값을 고정
+  const notifications: LocalNotificationType[] =
+    data?.pages.flatMap((page) => page.notifications) ?? [];
 
-    const observer = new IntersectionObserver(
-        ([entry]) => {
-            if (entry.isIntersecting) {
-                setNotifications((prev) => [...prev, ...generateDummy(nextId)]);
-                setNextId((id) => id + 10);
-            }
-        },
-        {
-            root: null,
-            rootMargin: '0px',
-            threshold: 1.0,
-        }
+  const transformNotification = (item: LocalNotificationType) => {
+    const isApproved = item.content.includes('승인');
+
+    const match = item.content.match(
+      /^(.*)\((\d{4}-\d{2}-\d{2} \d{2}:\d{2}~\d{2}:\d{2})\).*예약이\s*(승인|거절)되었습니다?\.?$/
     );
 
-    if (loaderEl) {
-        observer.observe(loaderEl);
+    let title = "";
+    let dateRange = "";
+    let status = isApproved ? "승인" : "거절";
+
+    if (match) {
+      title = match[1].trim();
+      dateRange = match[2].trim();
+      status = match[3].trim();
+    } else {
+      title = item.content;
     }
 
-    return () => {
-        if (loaderEl) observer.unobserve(loaderEl);
-    };
-    }, [nextId]);
+    const createdTime = new Date(item.createdAt).getTime();
+    const now = new Date().getTime();
+    const diffInMinutes = Math.floor((now - createdTime) / (1000 * 60));
 
-  const handleDelete = () => {
-    if (selectedId === null) return;
-    setNotifications((prev) => prev.filter((item) => item.id !== selectedId));
-    setSelectedId(null);
+    let timeAgoLabel = "";
+    if (diffInMinutes < 1) {
+      timeAgoLabel = "방금 전";
+    } else if (diffInMinutes < 60) {
+      timeAgoLabel = `${diffInMinutes}분 전`;
+    } else if (diffInMinutes < 60 * 24) {
+      const hours = Math.floor(diffInMinutes / 60);
+      timeAgoLabel = `${hours}시간 전`;
+    } else if (diffInMinutes < 60 * 24 * 30) {
+      const days = Math.floor(diffInMinutes / (60 * 24));
+      timeAgoLabel = `${days}일 전`;
+    } else {
+      timeAgoLabel = "한 달 이상";
+    }
+
+    return {
+      id: item.id,
+      type: `예약 ${status}`,
+      title,
+      dateRange,
+      status,
+      timeAgoLabel,
+    };
   };
+
+  useEffect(() => {
+    const loaderEl = loaderRef.current;
+    if (!loaderEl) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      { root: null, rootMargin: "0px", threshold: 1.0 }
+    );
+
+    observer.observe(loaderEl);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
+
+  const handleSelect = (id: number) => {
+    setSelectedId((prev) => (prev === id ? null : id));
+  };
+
+  const handleDeleteSelected = useCallback(() => {
+    if (selectedId !== null) {
+      deleteNotification(selectedId);
+      setSelectedId(null);
+    }
+  }, [selectedId, deleteNotification]);
 
   return (
     <div
       ref={ref}
-      className="absolute top-[3.6rem] right-0 w-23 max-h-[326px] bg-white shadow-lg rounded-2xl z-50 pb-1 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+      className="absolute top-[15px] right-0 w-23 max-h-[326px] bg-white shadow-lg rounded-2xl z-50 pb-1 overflow-y-auto [&::-webkit-scrollbar]:hidden"
     >
       <div className="flex justify-between items-center py-[16px] px-2 sticky top-0 bg-white z-10">
-        <span className="text-16-b text-gray-950">알림 {notifications.length}개</span>
-        <button onClick={handleDelete}>
-          <Image src={deleteIcon} alt="삭제" />
-        </button>
+        <span className="text-16-b text-gray-950">
+          알림 {notifications.length}개
+        </span>
+        {selectedId !== null && (
+          <button onClick={handleDeleteSelected}>
+            <Image src={deleteIcon} alt="선택 항목 삭제" width={24} height={24} />
+          </button>
+        )}
       </div>
 
       {[...notifications]
-        .sort((a, b) => a.id - b.id) // 최신순 정렬
+        .map(transformNotification)
+        .sort((a, b) => b.id - a.id)
         .map((item) => (
           <div
             key={item.id}
-            onClick={() => setSelectedId(item.id)}
-            className={`cursor-pointer py-[16px] px-2 ${
+            onClick={() => handleSelect(item.id)}
+            className={`cursor-pointer py-[16px] px-2 transition ${
               selectedId === item.id ? 'bg-brand-100' : ''
             }`}
           >
             <p className="text-14-b text-gray-950 mb-1">
               {item.type}
-              <span className="text-gray-400 text-12-m float-right">{item.time}</span>
+              <span className="text-gray-400 text-12-m float-right">
+                {item.timeAgoLabel}
+              </span>
             </p>
-            <div className="text-body-14 text-gray-800">
-              {item.description}
-              {item.date}
+            <div className="16-body-m text-gray-950">
+              <p>{item.title}</p>
+              <p className="">({item.dateRange})</p>
               <p>
                 예약이{' '}
-                <span className={item.status === '승인' ? 'text-brand-500' : 'text-red-500'}>
+                <span
+                  className={
+                    item.status === "승인" ? "text-brand-500" : "text-red-500"
+                  }
+                >
                   {item.status}
-                </span>{' '}
+                </span>{" "}
                 되었어요.
               </p>
             </div>
           </div>
         ))}
 
-      <div ref={loaderRef} className="py-4 text-center text-gray-400 text-sm">
-        불러오는 중...
-      </div>
+      {notifications.length === 0 ? (
+        <div className="py-4 text-center text-gray-400 text-sm">
+          알림이 없습니다.
+        </div>
+      ) : hasNextPage ? (
+        <div ref={loaderRef} className="py-4 text-center text-gray-400 text-sm">
+          불러오는 중...
+        </div>
+      ) : null}
     </div>
   );
 }
