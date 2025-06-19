@@ -42,11 +42,21 @@ const config: StorybookConfig = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as { [key: string]: any };
 
-    imageRule.exclude = /\.svg?$/;
+    if (imageRule) imageRule.exclude = /\.svg$/;
 
+    // svg as React Component (default svgr)
     config.module?.rules?.push({
       test: /\.svg$/,
+      issuer: /\.[jt]sx?$/,
+      resourceQuery: { not: [/url/] }, // exclude if *.svg?url
       use: ["@svgr/webpack"],
+    });
+
+    // svg as URL (for ?url usage)
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      resourceQuery: /url/, // *.svg?url
+      type: "asset/resource",
     });
 
     return config;

@@ -62,6 +62,8 @@ export default function Footer() {
               <Image
                 src={src}
                 alt={alt}
+                width={20}
+                height={20}
                 className="w-[2rem] h-[2rem] filter grayscale brightness-75 opacity-70 sm:filter-none sm:brightness-100 sm:opacity-100"
               />
             </a>
