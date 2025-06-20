@@ -25,6 +25,7 @@ import {
 import activityService from "@/apis/activity/activity.service";
 import myActivityService from "@/apis/myActivity/myActivity.service";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
+import CloseEye from "@/assets/icons/any/icon_close_eye.svg";
 import BackIcon from "@/assets/icons/arrow/icon_arrow_back.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
@@ -573,9 +574,14 @@ function ActivityUpdatePage() {
             onChange={handleBannerUpload}
             disabled={!!bannerImageUrl}
           />
-          <span className="text-gray-600 tablet:text-14-m text-13-m ">
-            {bannerImageUrl ? "1/1" : "0/1"}
-          </span>
+          <div className="flex flex-col items-center gap-[1rem]">
+            <div className="relative w-[2.7rem] h-[2.3rem]">
+              <Image src={CloseEye} alt="이미지 업로드" fill />
+            </div>
+            <span className="text-gray-600 tablet:text-14-m text-13-m">
+              {bannerImageUrl ? "1/1" : "0/1"}
+            </span>
+          </div>
         </label>
 
         {bannerImageUrl && (
@@ -598,7 +604,7 @@ function ActivityUpdatePage() {
       <div className="overflow-x-auto pr-[2.6rem] pt-[1rem] -mt-[1rem]">
         <div className="flex gap-[1.4rem] mb-[2.4rem] whitespace-nowrap relative">
           <label
-            className={`flex-none cursor-pointer border-gray-100 desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 border rounded-[1.6rem] flex items-center justify-center ${
+            className={`grid grid-col flex-none cursor-pointer border-gray-100 desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 border rounded-[1.6rem] flex items-center justify-center ${
               introImages.length >= 4 ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -609,9 +615,14 @@ function ActivityUpdatePage() {
               onChange={handleIntroUpload}
               disabled={introImages.length >= 4}
             />
-            <span className="text-gray-600 tablet:text-14-m text-13-m">
-              {introImages.length}/4
-            </span>
+            <div className="flex flex-col items-center gap-[1rem]">
+              <div className="relative w-[2.7rem] h-[2.3rem]">
+                <Image src={CloseEye} alt="이미지 업로드" fill />
+              </div>
+              <span className="text-gray-600 tablet:text-14-m text-13-m">
+                {introImages.length}/4
+              </span>
+            </div>
           </label>
 
           {introImageUrls.map((url, index) => (
