@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import GnbUserSection from "./GnbUserSection";
-import Earth from "@/assets/images/logos/logo_earth.svg";
-import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg";
+import Earth from "@/assets/images/logos/logo_earth.svg?url";
+import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg?url";
 import { useAuthStore } from "@/store/authStore";
 
 function Gnb() {

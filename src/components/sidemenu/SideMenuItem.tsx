@@ -1,43 +1,34 @@
-import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/utils/classNames";
+import { Icon } from "../icon/Icon";
+import { cn, cond } from "@/utils/classNames";
+
+type SideMenuIconNameType = "Profile" | "Message" | "Setting" | "Calendar";
 
 export interface SideMenuItemType {
   path: string;
   name: string;
-  inActiveIcon: string;
-  activeIcon: string;
+  iconName: SideMenuIconNameType;
 }
 
 interface SideMenuItemProps extends SideMenuItemType {
   isActive?: boolean;
 }
 
-function SideMenuItem({
-  isActive,
-  path,
-  name,
-  activeIcon,
-  inActiveIcon,
-}: SideMenuItemProps) {
+function SideMenuItem({ isActive, path, name, iconName }: SideMenuItemProps) {
   return (
     <li>
       <Link href={path}>
         <div
           className={cn(
             "flex items-center gap-[0.8rem] h-[5.4rem] py-[1.5rem] px-[2rem] text-gray-600 hover:bg-brand-100 transition-colors rounded-[1.6rem] cursor-pointer",
-            isActive && "bg-brand-100 text-gray-950",
+            cond(!!isActive, "bg-brand-100 text-gray-950"),
           )}
         >
-          <i className={cn("tablet:w-[2rem]", "desktop:w-[2.4rem]")}>
-            <Image
-              width={24}
-              height={24}
-              src={isActive ? activeIcon : inActiveIcon}
-              alt={name}
-            />
-          </i>
+          <Icon
+            name={iconName}
+            className={isActive ? "text-brand-500" : "text-gray-600"}
+          />
           {name}
         </div>
       </Link>

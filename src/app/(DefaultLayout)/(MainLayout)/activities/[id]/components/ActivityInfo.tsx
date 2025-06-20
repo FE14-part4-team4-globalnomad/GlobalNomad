@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useMyActivityDeleteMutation } from "@/apis/activity/activity.query";
-import mapIcon from "@/assets/icons/any/icon_map.svg";
-import moreIcon from "@/assets/icons/any/icon_more.svg";
-import yellowStar from "@/assets/icons/star/icon_star_active.svg";
+import yellowStar from "@/assets/icons/star/icon_star_active.svg?url";
+import { Icon } from "@/components/icon/Icon";
 import WarningModal from "@/components/modal/WarningModal";
 import { useOverlay } from "@/hooks/useOverlay";
 
@@ -69,7 +68,8 @@ export default function ActivityInfo({
         {isMine && (
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen((prev) => !prev)}>
-              <Image src={moreIcon} alt="더보기" />
+              {/* <Image src={moreIcon} alt="더보기" /> */}
+              <Icon name="More" className="text-gray-950" />
             </button>
 
             {isDropdownOpen && (
@@ -139,11 +139,8 @@ export default function ActivityInfo({
       </div>
 
       <div className="mb-2 flex items-center">
-        <Image
-          src={mapIcon}
-          alt="지도아이콘"
-          className="inline-block mr-[4.7px]"
-        />
+        {/* <Image src={mapIcon} alt="지도아이콘" className="inline-block mr-[4.7px]" /> */}
+        <Icon name="Map" className="text-gray-700" />
         <span className="text-14-m text-gray-700">{location}</span>
       </div>
 

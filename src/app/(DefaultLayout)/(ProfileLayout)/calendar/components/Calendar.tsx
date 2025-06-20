@@ -1,13 +1,12 @@
 "use client";
 
 import dayjs from "dayjs";
-import Image from "next/image";
 import { JSX, useState } from "react";
 
 import { CalendarDate, StatusType } from "./CalendarDate";
 import ReservationsModal from "./modal/ReservationsModal";
 import { useMyMonthlyReservations } from "@/apis/myActivity/myActivity.query";
-import ChevronDown from "@/assets/icons/arrow/icon_alt arrow_down_black.svg";
+import { Icon } from "@/components/icon/Icon";
 import {
   formatMonth,
   formatYear,
@@ -56,25 +55,13 @@ export default function Calendar({ activityId }: { activityId: number }) {
       >
         <div className="h-[44px] flex justify-center items-center mb-[8px] tablet:mt-[20px] tablet:mb-[30px]">
           <button onClick={handlePrevMonth}>
-            <Image
-              className="rotate-90"
-              src={ChevronDown}
-              alt="뒤로가기 버튼 이미지"
-              width={24}
-              height={24}
-            />
+            <Icon name="ChevronRight" className="rotate-180" />
           </button>
           <div>
             {year}년 {formatMonth(month)}월
           </div>
           <button onClick={handleNextMonth}>
-            <Image
-              className="rotate-270"
-              src={ChevronDown}
-              alt="뒤로가기 버튼 이미지"
-              width={24}
-              height={24}
-            />
+            <Icon name="ChevronRight" />
           </button>
         </div>
         <div className="w-full grid justify-stretch">

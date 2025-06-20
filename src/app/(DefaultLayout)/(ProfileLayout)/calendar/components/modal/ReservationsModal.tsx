@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import ReservationList from "./ReservationList";
 import { useMyReservedSchedule } from "@/apis/myActivity/myActivity.query";
-import CloseIcon from "@/assets/icons/any/icon_delete.svg";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
+import { Icon } from "@/components/icon/Icon";
 import {
   MyActivityReservationStatusType,
   MyActivityReservedScheduleType,
@@ -61,12 +60,7 @@ export default function ReservationsModal({
           <div className="flex justify-between items-center text-20-b">
             {date?.format("YY년 MM월 DD일")}
             <button onClick={onClose}>
-              <Image
-                src={CloseIcon}
-                alt="탭 닫기 버튼 이미지"
-                width={24}
-                height={24}
-              />
+              <Icon name="Close" />
             </button>
           </div>
           <div className="flex items-stretch gap-[8px] h-[40px] border-b-1 border-gray-100">

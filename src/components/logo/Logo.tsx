@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import LogoEarth from "@/assets/images/logos/logo_earth.svg";
-import LogoGlobalNomad from "@/assets/images/logos/logo_globalnomad_lg.svg";
+import LogoEarth from "@/assets/images/logos/logo_earth.svg?url";
+import LogoGlobalNomad from "@/assets/images/logos/logo_globalnomad_lg.svg?url";
 
 export default function Logo() {
   return (

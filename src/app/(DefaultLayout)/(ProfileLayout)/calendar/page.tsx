@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import Calendar from "./components/Calendar";
 import { useMyActivities } from "@/apis/myActivity/myActivity.query";
-import EmptyLogo from "@/assets/images/logos/logo_empty.svg";
+import EmptyLogo from "@/assets/images/logos/logo_empty.svg?url";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
 import { ActivityType } from "@/types/activity";
 
