@@ -25,6 +25,7 @@ import {
 import activityService from "@/apis/activity/activity.service";
 import myActivityService from "@/apis/myActivity/myActivity.service";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
+import BackIcon from "@/assets/icons/arrow/icon_arrow_back.svg";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
 import ConfirmModal from "@/components/modal/ConfirmModal";
@@ -73,10 +74,7 @@ function ActivityUpdatePage() {
         console.log("📭 isDirty is false");
         return;
       }
-      console.log("📢 모달 뜸");
-
       window.history.pushState(null, "", window.location.href);
-      console.log("🔔 모달 띄우기 직전");
       overlay(
         <UpdateWarningModal
           message="작성 중인 내용을 저장하지 않았습니다. 이동하시겠습니까?"
@@ -167,7 +165,23 @@ function ActivityUpdatePage() {
   const { data: activity } = useGetActivityById(Number(id));
 
   useEffect(() => {
-    if (isNew || !activity) return;
+    if (isNew) {
+      const initialPayload = {
+        title: "",
+        category: "",
+        description: "",
+        price: "",
+        address: "",
+        availableTimes: [],
+        bannerImageUrl: null,
+        subImages: [],
+      };
+      setInitialState(JSON.stringify(initialPayload));
+      return;
+    }
+
+    if (!activity) return;
+
     setFormData({
       title: activity.title,
       category: activity.category,
@@ -333,8 +347,30 @@ function ActivityUpdatePage() {
   }, [isDirty]);
 
   return (
-    <div className="desktop:w-[70rem] tablet:w-[68.8rem] mobile:w-[32.7rem] ">
+    <div className="relative desktop:w-[70rem] tablet:w-[68.8rem] mobile:w-[32.7rem] ">
       <AddressSearchScriptLoader />
+      <div className="absolute top-0 right-0 ">
+        <button
+          onClick={() => {
+            if (!isDirty) {
+              router.back(); // 변경사항 없으면 바로 이동
+              return;
+            }
+            overlay(
+              <UpdateWarningModal
+                message={`저장되지 않았습니다.\n정말 뒤로 가시겠습니까?`}
+                onConfirm={() => {
+                  close();
+                  router.back();
+                }}
+              />,
+            );
+          }}
+          className="w-4 h-4 bg-white border border-gray-300 rounded-full flex items-center justify-center"
+        >
+          <Image src={BackIcon} alt="뒤로가기" width={16} height={16} />
+        </button>
+      </div>
       <h1 className="text-gray-950 text-18-b">
         {isNew ? "내 체험 등록하기" : "내 체험 수정하기"}
       </h1>
