@@ -33,7 +33,7 @@ function ProfileImageWrapper({
   return (
     <div
       className={cn(
-        "relative aspect-square rounded-full",
+        "relative aspect-square rounded-full w-12",
         "tablet:w-[7rem]",
         "desktop:w-[12rem]",
       )}

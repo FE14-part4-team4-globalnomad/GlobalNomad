@@ -5,9 +5,11 @@ import Link from "next/link";
 
 import { Icon } from "../icon/Icon";
 import DefaultProfileImage from "@/assets/images/profile/normal_profile_md.svg?url";
+import { useIsMobile } from "@/hooks/useMobile";
 import { useAuthStore } from "@/store/authStore";
 
 export default function GnbUserSection() {
+  const isMobile = useIsMobile();
   const user = useAuthStore((state) => state.user);
   return (
     <div className="flex items-center gap-[1.2rem] text-14-m text-black">
@@ -16,7 +18,10 @@ export default function GnbUserSection() {
         <Icon name="BellInactive" className="text-gray-600" />
       </div>
       <div className="w-[0.1rem] h-[1.4rem] bg-[#E0E0E5]" />
-      <Link href="/profile" className="flex items-center gap-[1rem] text-14-m">
+      <Link
+        href={isMobile ? "/menus" : "/profile"}
+        className="flex items-center gap-[1rem] text-14-m"
+      >
         <div className="relative w-[3rem] h-[3rem] rounded-full overflow-hidden">
           <Image
             className="absolute object-cover"

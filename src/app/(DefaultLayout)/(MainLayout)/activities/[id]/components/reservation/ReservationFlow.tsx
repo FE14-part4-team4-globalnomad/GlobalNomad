@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import ReservationMobile from './ReservationMobile';
-import ReservationMobileCnt from './ReservationMobileCnt';
-
+import ReservationMobile from "./ReservationMobile";
+import ReservationMobileCnt from "./ReservationMobileCnt";
 
 type ReservationProps = {
   pricePerPerson: number;
@@ -15,14 +14,18 @@ type ReservationProps = {
 };
 
 export default function ReservationFlow(props: ReservationProps) {
-  const [step, setStep] = useState<'guest' | 'date'>('guest');
+  const [step, setStep] = useState<"guest" | "date">("guest");
 
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
-      {step === 'guest' ? (
-        <ReservationMobileCnt {...props} onBack={() => setStep('date')} onConfirm={() => {}} />
+      {step === "guest" ? (
+        <ReservationMobileCnt
+          {...props}
+          onBack={() => setStep("date")}
+          onConfirm={() => {}}
+        />
       ) : (
-        <ReservationMobile {...props} onNext={() => setStep('guest')} />
+        <ReservationMobile {...props} onNext={() => setStep("guest")} />
       )}
     </div>
   );

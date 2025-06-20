@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import AvailableTimes from './AvailableTimes';
-import DateSelector from './DateSelector';
-import GuestCountSelector from './GuestCountSelector';
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
+import AvailableTimes from "./AvailableTimes";
+import DateSelector from "./DateSelector";
+import GuestCountSelector from "./GuestCountSelector";
+import Button from "@/components/button/Button";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationTabletProps = {
   pricePerPerson: number;
@@ -53,7 +53,7 @@ export default function ReservationTablet({
 
   useEffect(() => {
     if (externalSelectedDate) setSelectedDate(externalSelectedDate);
-  }, [externalSelectedDate,  setSelectedDate]);
+  }, [externalSelectedDate, setSelectedDate]);
 
   useEffect(() => {
     if (externalSelectedTime) setSelectedTime(externalSelectedTime);
@@ -110,7 +110,9 @@ export default function ReservationTablet({
           <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
             <div>
               <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
-              <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
+              <span className="text-20-b text-gray-950">
+                ₩ {total.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>
@@ -118,7 +120,7 @@ export default function ReservationTablet({
 
       <Button
         size="calendar"
-        variant={isReadyToReserve ? 'primary' : 'secondary'}
+        variant={isReadyToReserve ? "primary" : "secondary"}
         rounded
         onClick={() => {
           if (!isReadyToReserve) return;

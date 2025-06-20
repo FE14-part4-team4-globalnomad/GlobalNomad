@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 export default function ActivitySkeleton() {
   return (
@@ -20,7 +20,10 @@ export default function ActivitySkeleton() {
           <div className="space-y-4">
             <div className="w-1/3 h-6 bg-gray-100 animate-pulse rounded" />
             {[...Array(2)].map((_, idx) => (
-              <div key={idx} className="w-full h-16 tablet:h-20 bg-gray-100 animate-pulse rounded-xl" />
+              <div
+                key={idx}
+                className="w-full h-16 tablet:h-20 bg-gray-100 animate-pulse rounded-xl"
+              />
             ))}
           </div>
         </div>
