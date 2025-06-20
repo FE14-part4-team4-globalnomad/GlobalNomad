@@ -23,7 +23,7 @@ const sizeStyles: Record<SizeVariant, string> = {
     "mobile:w-[157.5px] mobile:h-[48px] mobile:text-14-m tablet:w-[120px] tablet:h-[41px] tablet:text-16-m desktop:w-[120px] desktop:h-[41px] desktop:text-16-m",
 
   reservation:
-    "mobile:w-[157.5px] mobile:h-[37px] mobile:text-14-m tablet:w-[232px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",
+    "mobile:w-[71px] mobile:h-[37px] mobile:text-14-m tablet:w-[71px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",
 
   review:
     "mobile:w-[309px] mobile:h-[37px] mobile:text-14-m tablet:w-[476px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",
