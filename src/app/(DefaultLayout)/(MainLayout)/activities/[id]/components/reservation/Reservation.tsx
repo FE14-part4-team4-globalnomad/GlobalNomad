@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-import AvailableTimes from './AvailableTimes';
-import DateSelector from './DateSelector';
-import GuestCountSelector from './GuestCountSelector';
-import { useActivityReservationMutation } from '@/apis/activity/activity.query';
-import Button from '@/components/button/Button';
-import ConfirmModal from '@/components/modal/ConfirmModal';
-import { useOverlay } from '@/hooks/useOverlay';
-import useReservation from '@/hooks/useReservation';
+import AvailableTimes from "./AvailableTimes";
+import DateSelector from "./DateSelector";
+import GuestCountSelector from "./GuestCountSelector";
+import { useActivityReservationMutation } from "@/apis/activity/activity.query";
+import Button from "@/components/button/Button";
+import ConfirmModal from "@/components/modal/ConfirmModal";
+import { useOverlay } from "@/hooks/useOverlay";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationProps = {
   pricePerPerson: number;
@@ -17,7 +17,11 @@ type ReservationProps = {
   isMine?: boolean;
 };
 
-export default function Reservation({ pricePerPerson, activityId, isMine = false }: ReservationProps) {
+export default function Reservation({
+  pricePerPerson,
+  activityId,
+  isMine = false,
+}: ReservationProps) {
   const {
     selectedDate,
     setSelectedDate,
@@ -50,7 +54,9 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
   return (
     <div className="w-41 p-3 rounded-3xl shadow-lg bg-white border border-gray-100">
       <div className="mb-[24px]">
-        <span className="text-24-b text-gray-950">₩ {pricePerPerson.toLocaleString()} </span>
+        <span className="text-24-b text-gray-950">
+          ₩ {pricePerPerson.toLocaleString()}{" "}
+        </span>
         <span className="text-20-m text-gray-500">/ 인</span>
       </div>
 
@@ -83,12 +89,14 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
       <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
         <div>
           <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
-          <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
+          <span className="text-20-b text-gray-950">
+            ₩ {total.toLocaleString()}
+          </span>
         </div>
 
         <Button
           size="calendar"
-          variant={isReadyToReserve ? 'primary' : 'secondary'}
+          variant={isReadyToReserve ? "primary" : "secondary"}
           rounded
           className="!w-13"
           onClick={() => {
@@ -107,10 +115,10 @@ export default function Reservation({ pricePerPerson, activityId, isMine = false
                   overlay(
                     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
                       <ConfirmModal message="예약이 완료되었습니다." />
-                    </div>
+                    </div>,
                   );
                 },
-              }
+              },
             );
           }}
           disabled={!isReadyToReserve}

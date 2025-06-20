@@ -1,3 +1,5 @@
+import { cn } from "@/utils/classNames";
+
 const calendarEventBadgeStyles = {
   예약: "bg-brand-100 text-brand-500",
   승인: "bg-[#FFF8DD] text-[#FFB051]",
@@ -5,22 +7,26 @@ const calendarEventBadgeStyles = {
 };
 
 type CalendarEventBadgeProps = {
-  type: "예약" | "승인" | "완료";
+  label: "예약" | "승인" | "완료";
   count: number;
   onClick?: () => void;
 };
 
 export function CalendarEventBadge({
-  type,
+  label,
   count,
   onClick,
 }: CalendarEventBadgeProps) {
   return (
     <button
-      className={`px-[11.5px] py-[2px] rounded-[4px] text-14-m transition ${calendarEventBadgeStyles[type]}`}
+      className={cn(
+        "min-w-[44px] rounded-[4px]",
+        "text-[11px] tablet:text-14-m transition",
+        calendarEventBadgeStyles[label],
+      )}
       onClick={onClick}
     >
-      {type} {count}
+      {label} {count}
     </button>
   );
 }

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import AvailableTimes from './AvailableTimes';
-import DateSelector from './DateSelector';
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
+import AvailableTimes from "./AvailableTimes";
+import DateSelector from "./DateSelector";
+import Button from "@/components/button/Button";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationMobileProps = {
   pricePerPerson: number;
@@ -35,9 +35,14 @@ export default function ReservationMobile({
     totalCells,
     availableDates,
     availableTimesForSelectedDate,
-  } = useReservation({ pricePerPerson, initialGuestCount, initialDate, activityId });
+  } = useReservation({
+    pricePerPerson,
+    initialGuestCount,
+    initialDate,
+    activityId,
+  });
 
-  const isSelectable = selectedDate !== null && selectedTime !== '';
+  const isSelectable = selectedDate !== null && selectedTime !== "";
 
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] pb-2 rounded-tl-3xl rounded-tr-3xl bg-white">
@@ -65,7 +70,7 @@ export default function ReservationMobile({
 
       <Button
         size="calendar"
-        variant={isSelectable ? 'primary' : 'secondary'}
+        variant={isSelectable ? "primary" : "secondary"}
         rounded
         onClick={() => {
           if (selectedDate && selectedTime) {

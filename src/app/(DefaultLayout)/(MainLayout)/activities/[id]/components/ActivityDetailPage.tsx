@@ -1,23 +1,27 @@
-'use client';
+"use client";
 
-import { notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import ActivityInfo from './ActivityInfo';
-import ActivitySkeleton from './ActivitySkeleton';
-import Description from './Description';
-import ImageGallery from './ImageGallery';
-import KakaoMap from './KakaoMap';
-import Reservation from './reservation/Reservation';
-import ReservationBtn from './reservation/ReservationBtn';
-import ReservationMobile from './reservation/ReservationMobile';
-import ReservationMobileCnt from './reservation/ReservationMobileCnt';
-import ReservationTablet from './reservation/ReservationTablet';
-import SlidePanel from './reservation/SlidePanel';
-import ReviewList from './ReviewList';
-import { useActivityAvailableScheduleQuery, useActivityQuery, useActivityReviewListQuery } from '@/apis/activity/activity.query';
-import Pagination from '@/components/pagination/Pagination';
-import { useAuthStore } from '@/store/authStore';
+import ActivityInfo from "./ActivityInfo";
+import ActivitySkeleton from "./ActivitySkeleton";
+import Description from "./Description";
+import ImageGallery from "./ImageGallery";
+import KakaoMap from "./KakaoMap";
+import Reservation from "./reservation/Reservation";
+import ReservationBtn from "./reservation/ReservationBtn";
+import ReservationMobile from "./reservation/ReservationMobile";
+import ReservationMobileCnt from "./reservation/ReservationMobileCnt";
+import ReservationTablet from "./reservation/ReservationTablet";
+import SlidePanel from "./reservation/SlidePanel";
+import ReviewList from "./ReviewList";
+import {
+  useActivityAvailableScheduleQuery,
+  useActivityQuery,
+  useActivityReviewListQuery,
+} from "@/apis/activity/activity.query";
+import Pagination from "@/components/pagination/Pagination";
+import { useAuthStore } from "@/store/authStore";
 
 type PageProps = {
   params: {
@@ -39,7 +43,9 @@ export default function ActivityDetailPage({ params }: PageProps) {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [reservationStep, setReservationStep] = useState<'date' | 'guest'>('date');
+  const [reservationStep, setReservationStep] = useState<"date" | "guest">(
+    "date",
+  );
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -62,22 +68,20 @@ export default function ActivityDetailPage({ params }: PageProps) {
       activityId,
       query: {
         year: String(currentYear),
-        month: String(currentMonth + 1).padStart(2, '0'),
+        month: String(currentMonth + 1).padStart(2, "0"),
       },
     },
-    !!activityId
+    !!activityId,
   );
 
-  const {
-    data: reviewData,
-    isLoading: isReviewLoading,
-  } = useActivityReviewListQuery(
-    {
-      activityId,
-      query: { page: currentPage, size: 10 },
-    },
-    !!activityId
-  );
+  const { data: reviewData, isLoading: isReviewLoading } =
+    useActivityReviewListQuery(
+      {
+        activityId,
+        query: { page: currentPage, size: 10 },
+      },
+      !!activityId,
+    );
 
   useEffect(() => {
     if (!isActivityLoading && (isActivityError || !activity)) {
@@ -93,8 +97,8 @@ export default function ActivityDetailPage({ params }: PageProps) {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -111,18 +115,19 @@ export default function ActivityDetailPage({ params }: PageProps) {
 
   if (!activity) return null;
 
-  const bannerImageUrl = activity.bannerImageUrl ?? '';
-  const subImageUrls = activity.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
+  const bannerImageUrl = activity.bannerImageUrl ?? "";
+  const subImageUrls =
+    activity.subImages?.slice(0, 4).map((img) => img.imageUrl) ?? [];
 
-  const content = activity.description ?? '';
+  const content = activity.description ?? "";
   const pricePerPerson = activity.price ?? 0;
-  const address = activity.address ?? '';
+  const address = activity.address ?? "";
   const averageRating = reviewData?.averageRating ?? 0;
   const totalReviews = reviewData?.totalCount ?? 0;
 
-  const reviews = (reviewData?.reviews ?? []).map(review => ({
+  const reviews = (reviewData?.reviews ?? []).map((review) => ({
     name: review.user.nickname,
-    date: new Date(review.createdAt).toLocaleDateString('ko-KR'),
+    date: new Date(review.createdAt).toLocaleDateString("ko-KR"),
     rating: review.rating,
     content: review.content,
   }));
@@ -132,7 +137,10 @@ export default function ActivityDetailPage({ params }: PageProps) {
       <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
-            <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+            <ImageGallery
+              bannerImageUrl={bannerImageUrl}
+              subImageUrls={subImageUrls}
+            />
             <ActivityInfo
               category={activity.category}
               title={activity.title}
@@ -143,7 +151,11 @@ export default function ActivityDetailPage({ params }: PageProps) {
             />
             <Description content={content} />
             <KakaoMap address={address} />
-            <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+            <ReviewList
+              totalReviews={totalReviews}
+              averageRating={averageRating}
+              reviews={reviews}
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(totalReviews / 10)}
@@ -156,10 +168,17 @@ export default function ActivityDetailPage({ params }: PageProps) {
         ) : (
           <div className="flex justify-center gap-4">
             <div>
-              <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+              <ImageGallery
+                bannerImageUrl={bannerImageUrl}
+                subImageUrls={subImageUrls}
+              />
               <Description content={content} />
               <KakaoMap address={address} />
-              <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+              <ReviewList
+                totalReviews={totalReviews}
+                averageRating={averageRating}
+                reviews={reviews}
+              />
               <Pagination
                 currentPage={currentPage}
                 totalPages={Math.ceil(totalReviews / 10)}
@@ -210,25 +229,25 @@ export default function ActivityDetailPage({ params }: PageProps) {
         isOpen={isPanelOpen}
         onClose={() => {
           setIsPanelOpen(false);
-          setReservationStep('date');
+          setReservationStep("date");
         }}
       >
         {isMobile ? (
-          reservationStep === 'date' ? (
+          reservationStep === "date" ? (
             <ReservationMobile
               pricePerPerson={pricePerPerson}
               activityId={activityId}
               onNext={(date, time) => {
                 setSelectedDate(date);
                 setSelectedTime(time);
-                setReservationStep('guest');
+                setReservationStep("guest");
               }}
             />
           ) : (
             <ReservationMobileCnt
               pricePerPerson={pricePerPerson}
               activityId={activityId}
-              onBack={() => setReservationStep('date')}
+              onBack={() => setReservationStep("date")}
               onConfirm={(guestCount) => {
                 setGuestCount(guestCount);
                 setIsPanelOpen(false);

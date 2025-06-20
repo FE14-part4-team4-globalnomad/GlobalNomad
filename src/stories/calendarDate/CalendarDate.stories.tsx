@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 
-import { CalendarDay } from "../../components/calendarDate/CalendarDay";
+import { CalendarDate } from "../../app/(DefaultLayout)/(ProfileLayout)/calendar/components/CalendarDate";
 
-const meta: Meta<typeof CalendarDay> = {
-  title: "Components/CalendarDay",
-  component: CalendarDay,
+const meta: Meta<typeof CalendarDate> = {
+  title: "Components/Calendar/CalendarDay",
+  component: CalendarDate,
   argTypes: {
     pending: { control: { type: "number", min: 0 }, name: "예약 (pending)" },
     confirmed: {
@@ -21,7 +21,7 @@ const meta: Meta<typeof CalendarDay> = {
 
 export default meta;
 
-type Story = StoryObj<typeof CalendarDay>;
+type Story = StoryObj<typeof CalendarDate>;
 
 export const Default: Story = {
   args: {
@@ -30,7 +30,7 @@ export const Default: Story = {
     completed: 2,
   },
   render: (args) => (
-    <CalendarDay {...args} onUpdateDotClick={() => alert("Dot clicked!")}>
+    <CalendarDate {...args} onUpdateDotClick={() => alert("Dot clicked!")}>
       <div
         style={{
           cursor: "default",
@@ -43,6 +43,6 @@ export const Default: Story = {
       >
         <span style={{ fontSize: 24 }}>4</span>
       </div>
-    </CalendarDay>
+    </CalendarDate>
   ),
 };

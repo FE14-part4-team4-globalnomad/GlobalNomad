@@ -1,8 +1,4 @@
-import {
-  queryOptions,
-  useQuery,
-  useMutation,
-} from "@tanstack/react-query";
+import { queryOptions, useQuery, useMutation } from "@tanstack/react-query";
 
 import {
   GetActivityAvailableSchedulePayloadType,
@@ -42,10 +38,12 @@ export const activityQueries = {
       queryKey: activityQueryKeys.schedule(
         params.activityId,
         Number(params.query.year),
-        Number(params.query.month)
+        Number(params.query.month),
       ),
       queryFn: () =>
-        activityService.getActivityAvailableSchedule(params).then((res) => res.data),
+        activityService
+          .getActivityAvailableSchedule(params)
+          .then((res) => res.data),
     }),
 
   reviewList: (params: GetActivityReviewListPayloadType) =>
@@ -53,7 +51,7 @@ export const activityQueries = {
       queryKey: activityQueryKeys.reviewList(
         params.activityId,
         params.query?.page,
-        params.query?.size
+        params.query?.size,
       ),
       queryFn: () =>
         activityService.getActivityReviewList(params).then((res) => res.data),
@@ -68,7 +66,7 @@ export const useActivityQuery = (activityId: number, enabled = true) =>
 
 export const useActivityAvailableScheduleQuery = (
   params: GetActivityAvailableSchedulePayloadType,
-  enabled = true
+  enabled = true,
 ) =>
   useQuery({
     ...activityQueries.availableSchedule(params),
@@ -77,7 +75,7 @@ export const useActivityAvailableScheduleQuery = (
 
 export const useActivityReviewListQuery = (
   params: GetActivityReviewListPayloadType,
-  enabled = true
+  enabled = true,
 ) =>
   useQuery({
     ...activityQueries.reviewList(params),
