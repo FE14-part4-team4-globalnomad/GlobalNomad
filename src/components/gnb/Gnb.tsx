@@ -11,7 +11,7 @@ import { useAuthStore } from "@/store/authStore";
 function Gnb() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   return (
-    <nav className="w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center z-9999 ">
+    <nav className="w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center">
       <div>
         <Link href="/">
           {/* 데스크탑용 로고 (기본) */}
