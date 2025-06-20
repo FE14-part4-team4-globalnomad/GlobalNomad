@@ -87,11 +87,13 @@ function DropdownSelected({
           : "px-1 pl-[1.4rem]",
         cond(!disabled, "focus:border-brand-500"),
         selected ? "text-gray-950" : "text-gray-400",
-        "flex justify-between items-center",
+        "flex justify-between items-center overflow-hidden",
       )}
       onClick={disabled ? undefined : toggle}
     >
-      {selected || placeholder}
+      <span className="overflow-hidden text-nowrap text-ellipsis">
+        {selected || placeholder}
+      </span>
       <Image
         className={cn(cond(isOpen, "rotate-180"), cond(disabled, "opacity-50"))}
         src={IconChevron}
