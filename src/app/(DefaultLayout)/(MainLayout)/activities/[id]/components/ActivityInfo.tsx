@@ -58,7 +58,7 @@ export default function ActivityInfo({
   }, [isDropdownOpen]);
 
   return (
-    <section className="relative bg-white desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
+    <section className="relative desktop:mb-7 desktop:w-41 desktop:mt-0 tablet:w-67 tablet:mt-[24px] tablet:mb-0 mobile:mt-2 mobile:mb-0 mobile:w-33">
       <div className="flex justify-between items-start mb-[17px]">
         <div>
           <div className="mb-1 text-14-m text-gray-950">{category}</div>
@@ -68,7 +68,6 @@ export default function ActivityInfo({
         {isMine && (
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen((prev) => !prev)}>
-              {/* <Image src={moreIcon} alt="더보기" /> */}
               <Icon name="More" className="text-gray-950" />
             </button>
 

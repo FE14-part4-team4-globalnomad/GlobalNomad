@@ -6,7 +6,7 @@ interface MapProps {
   address: string;
 }
 
-// kakao 타입 선언 (전역 but 이 파일 내에서만 사용)
+// kakao 타입 선언
 declare global {
   interface Window {
     kakao: KakaoNamespace;
@@ -114,9 +114,7 @@ export default function KakaoMap({ address }: MapProps) {
             });
 
             kakao.maps.event.addListener(marker, "click", () => {
-              window.open(
-                `https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`,
-              );
+              window.open(`https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`);
             });
 
             const overlay = new kakao.maps.CustomOverlay({

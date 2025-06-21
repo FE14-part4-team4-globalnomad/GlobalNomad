@@ -31,10 +31,7 @@ export default function DateSelector({
   totalCells,
   availableDates,
 }: DateSelectorProps) {
-  const isAvailable = (
-    date: Date,
-    availableDates: Record<string, string[]>,
-  ) => {
+  const isAvailable = (date: Date, availableDates: Record<string, string[]>) => {
     const formatted = format(date, "yyyy-MM-dd");
     return !!availableDates[formatted];
   };
@@ -51,11 +48,9 @@ export default function DateSelector({
           </div>
           <div className="flex gap-1">
             <button onClick={handlePrevMonth}>
-              {/* <Image src={arrowLeftIcon} alt="이전 달" /> */}
               <Icon name="ChevronRight" className="rotate-180" />
             </button>
             <button onClick={handleNextMonth}>
-              {/* <Image src={arrowRightIcon} alt="다음 달" /> */}
               <Icon name="ChevronRight" />
             </button>
           </div>
