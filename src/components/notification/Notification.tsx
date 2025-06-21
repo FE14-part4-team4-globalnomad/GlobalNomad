@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useCallback, useState } from "react";
 
+import { Icon } from "../icon/Icon";
 import {
   useDeleteMyNotificationMutation,
   useMyNotificationListQuery,
 } from "@/apis/notification/notification.query";
-import deleteIcon from "@/assets/icons/any/icon_delete.svg";
 
 type LocalNotificationType = {
   id: number;
@@ -111,11 +110,15 @@ export default function Notification() {
         <span className="text-16-b text-gray-950">
           알림 {notifications.length}개
         </span>
-        {selectedId !== null && (
+        <div
+          className={`flex justify-center items-center ${
+            selectedId !== null ? "visible" : "invisible"
+          }`}
+        >
           <button onClick={handleDeleteSelected}>
-            <Image src={deleteIcon} alt="선택 항목 삭제" width={24} height={24} />
+            <Icon name="Close" />
           </button>
-        )}
+        </div>
       </div>
 
       {[...notifications]

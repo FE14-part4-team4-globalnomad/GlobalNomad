@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 import { usePostAuthLoginMutation } from "@/apis/auth/auth.query";
-import KakaoIcon from "@/assets/icons/social/icon_kakao.svg";
 import Button from "@/components/button/Button";
+import { Icon } from "@/components/icon/Icon";
 import Input from "@/components/input/Input";
 import Logo from "@/components/logo/Logo";
 import {
@@ -102,12 +101,7 @@ export default function SigninPage() {
                 variant="outline"
                 className="flex justify-center items-center gap-[4px] text-16-m text-gray-600"
               >
-                <Image
-                  src={KakaoIcon}
-                  alt="카카오 로그인 아이콘 이미지"
-                  width={24}
-                  height={24}
-                />
+                <Icon name="Kakao" />
                 카카오 로그인
               </Button>
             </Link>

@@ -1,34 +1,32 @@
-'use client';
+"use client";
 
-import { notFound } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { notFound } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 import {
   useActivityAvailableScheduleQuery,
   useActivityQuery,
   useActivityReviewListQuery,
-} from '@/apis/activity/activity.query';
-import ActivityInfo from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivityInfo';
-import ActivitySkeleton from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivitySkeleton';
-import Description from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/Description';
-import ImageGallery from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ImageGallery';
-import KakaoMap from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/KakaoMap';
-import Reservation from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/Reservation';
-import ReservationBtn from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationBtn';
-import ReservationMobile from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobile';
-import ReservationMobileCnt from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobileCnt';
-import ReservationTablet from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationTablet';
-import SlidePanel from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/SlidePanel';
-import ReviewList from '@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ReviewList';
-import Footer from '@/components/footer/Footer';
-import Gnb from '@/components/gnb/Gnb';
-import Pagination from '@/components/pagination/Pagination';
-import { useAuthStore } from '@/store/authStore';
+} from "@/apis/activity/activity.query";
+import ActivityInfo from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivityInfo";
+import ActivitySkeleton from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ActivitySkeleton";
+import Description from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/Description";
+import ImageGallery from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ImageGallery";
+import KakaoMap from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/KakaoMap";
+import Reservation from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/Reservation";
+import ReservationBtn from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationBtn";
+import ReservationMobile from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobile";
+import ReservationMobileCnt from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationMobileCnt";
+import ReservationTablet from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/ReservationTablet";
+import SlidePanel from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/reservation/SlidePanel";
+import ReviewList from "@/app/(DefaultLayout)/(MainLayout)/activities/[id]/components/ReviewList";
+import Pagination from "@/components/pagination/Pagination";
+import { useAuthStore } from "@/store/authStore";
 
 export default function ActivityDetailPage() {
   const params = useParams();
-  const activityId = Number(params?.activityId);
+  const activityId = Number(params.id);
 
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -43,7 +41,9 @@ export default function ActivityDetailPage() {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
+  const [reservationStep, setReservationStep] = useState<"date" | "guest">(
+    "date",
+  );
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -63,10 +63,10 @@ export default function ActivityDetailPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const {
-    data: activity,
-    isLoading: isActivityLoading,
-  } = useActivityQuery(activityId, !!activityId);
+  const { data: activity, isLoading: isActivityLoading } = useActivityQuery(
+    activityId,
+    !!activityId,
+  );
 
   const {
     data: availableSchedule,
@@ -80,19 +80,17 @@ export default function ActivityDetailPage() {
         month: String(currentMonth + 1).padStart(2, "0"),
       },
     },
-    !!activityId
+    !!activityId,
   );
 
-  const {
-    data: reviewData,
-    isLoading: isReviewLoading,
-  } = useActivityReviewListQuery(
-    {
-      activityId,
-      query: { page: currentPage, size: 10 },
-    },
-    !!activityId
-  );
+  const { data: reviewData, isLoading: isReviewLoading } =
+    useActivityReviewListQuery(
+      {
+        activityId,
+        query: { page: currentPage, size: 10 },
+      },
+      !!activityId,
+    );
 
   useEffect(() => {
     if (selectedDate) {
@@ -103,7 +101,8 @@ export default function ActivityDetailPage() {
   }, [selectedDate, refetchSchedule]);
 
   const bannerImageUrl = activity?.bannerImageUrl ?? "";
-  const subImageUrls = activity?.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
+  const subImageUrls =
+    activity?.subImages?.slice(0, 4).map((img) => img.imageUrl) ?? [];
 
   const content = activity?.description ?? "";
   const pricePerPerson = activity?.price ?? 0;
@@ -117,28 +116,28 @@ export default function ActivityDetailPage() {
     rating: review.rating,
     content: review.content,
   }));
-
+  
   if (!isActivityLoading && !activity) {
     return notFound();
   }
-  
+
   if (isActivityLoading || isReviewLoading || isScheduleLoading) {
     return (
       <div>
-        <Gnb />
         <ActivitySkeleton />
-        <Footer />
       </div>
     );
   }
 
   return (
     <div>
-      <Gnb />
       <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
-            <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+            <ImageGallery
+              bannerImageUrl={bannerImageUrl}
+              subImageUrls={subImageUrls}
+            />
             {activity && (
               <ActivityInfo
                 category={activity.category}
@@ -151,7 +150,11 @@ export default function ActivityDetailPage() {
             )}
             <Description content={content} />
             <KakaoMap address={address} />
-            <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+            <ReviewList
+              totalReviews={totalReviews}
+              averageRating={averageRating}
+              reviews={reviews}
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(totalReviews / 10)}
@@ -164,10 +167,17 @@ export default function ActivityDetailPage() {
         ) : (
           <div className="flex justify-center gap-4">
             <div>
-              <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+              <ImageGallery
+                bannerImageUrl={bannerImageUrl}
+                subImageUrls={subImageUrls}
+              />
               <Description content={content} />
               <KakaoMap address={address} />
-              <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+              <ReviewList
+                totalReviews={totalReviews}
+                averageRating={averageRating}
+                reviews={reviews}
+              />
               <Pagination
                 currentPage={currentPage}
                 totalPages={Math.ceil(totalReviews / 10)}
@@ -189,7 +199,11 @@ export default function ActivityDetailPage() {
                   activityId={activity.id}
                 />
               )}
-              <Reservation pricePerPerson={pricePerPerson} activityId={activityId} isMine={user?.id !== activity?.userId} />
+              <Reservation
+                pricePerPerson={pricePerPerson}
+                activityId={activityId}
+                isMine={user?.id !== activity?.userId}
+              />
             </div>
           </div>
         )}
@@ -255,8 +269,6 @@ export default function ActivityDetailPage() {
           />
         )}
       </SlidePanel>
-
-      <Footer />
     </div>
   );
 }

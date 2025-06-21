@@ -1,11 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-
-import GuestCountSelector from './GuestCountSelector';
-import arrowBackIcon from '@/assets/icons/arrow/icon_arrow_back.svg';
-import Button from '@/components/button/Button';
-import useReservation from '@/hooks/useReservation';
+import GuestCountSelector from "./GuestCountSelector";
+import Button from "@/components/button/Button";
+import { Icon } from "@/components/icon/Icon";
+import useReservation from "@/hooks/useReservation";
 
 type ReservationMobileCntProps = {
   pricePerPerson: number;
@@ -24,22 +22,24 @@ export default function ReservationMobileCnt({
   onBack,
   onConfirm,
 }: ReservationMobileCntProps) {
-  const {
-    guestCount,
-    handleDecrease,
-    handleIncrease,
-    total,
-  } = useReservation({ pricePerPerson, initialGuestCount, initialDate, activityId });
+  const { guestCount, handleDecrease, handleIncrease, total } = useReservation({
+    pricePerPerson,
+    initialGuestCount,
+    initialDate,
+    activityId,
+  });
 
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
       <div className="flex items-center gap-1 mb-1">
         <button onClick={onBack}>
-          <Image src={arrowBackIcon} alt="이전" />
+          <Icon name="ArrowBack" />
         </button>
         <span className="text-18-b text-gray-950">인원</span>
       </div>
-      <span className="text-16-m text-gray-500 mb-2">예약할 인원을 선택해주세요.</span>
+      <span className="text-16-m text-gray-500 mb-2">
+        예약할 인원을 선택해주세요.
+      </span>
       <div className="mt-2 mb-3">
         <GuestCountSelector
           guestCount={guestCount}
@@ -50,7 +50,9 @@ export default function ReservationMobileCnt({
         <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
           <div>
             <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
-            <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
+            <span className="text-20-b text-gray-950">
+              ₩ {total.toLocaleString()}
+            </span>
           </div>
         </div>
       </div>
