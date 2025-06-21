@@ -40,11 +40,6 @@ export function Search({
           onBlur={(e) => (e.target.placeholder = placeholder)}
           className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md border-none"
         />
-        {/* <Image
-          src={searchIcon}
-          alt="검색 아이콘"
-          className="absolute left-[20px] top-1/2 -translate-y-1/2 w-[24px] h-[24px] text-gray-500"
-        /> */}
         <Icon
           name="Search"
           className="absolute left-[20px] top-1/2 -translate-y-1/2 w-[24px] h-[24px] text-gray-500"

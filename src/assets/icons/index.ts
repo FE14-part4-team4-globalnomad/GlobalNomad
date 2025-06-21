@@ -11,6 +11,7 @@ export { default as Warning } from "./any/icon_warning.svg";
 
 export { default as BellActive } from "./any/bell/icon_active_bell.svg";
 export { default as BellInactive } from "./any/bell/icon_inactive_bell.svg";
+export { default as BellActiveBrand } from "./any/bell/icon_active_bell_brand.svg";
 
 export { default as ArrowBack } from "./arrow/arrow_back.svg";
 export { default as ArrowPagination } from "./arrow/arrow_pagination.svg";
