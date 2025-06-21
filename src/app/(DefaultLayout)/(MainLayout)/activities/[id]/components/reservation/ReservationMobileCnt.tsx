@@ -1,10 +1,8 @@
 "use client";
 
-import Image from "next/image";
-
 import GuestCountSelector from "./GuestCountSelector";
-import arrowBackIcon from "@/assets/icons/arrow/icon_arrow_back.svg";
 import Button from "@/components/button/Button";
+import { Icon } from "@/components/icon/Icon";
 import useReservation from "@/hooks/useReservation";
 
 type ReservationMobileCntProps = {
@@ -35,7 +33,7 @@ export default function ReservationMobileCnt({
     <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
       <div className="flex items-center gap-1 mb-1">
         <button onClick={onBack}>
-          <Image src={arrowBackIcon} alt="이전" />
+          <Icon name="ArrowBack" />
         </button>
         <span className="text-18-b text-gray-950">인원</span>
       </div>

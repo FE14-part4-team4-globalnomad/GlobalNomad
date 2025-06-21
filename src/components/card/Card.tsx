@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import StarIcon from "@/assets/icons/star/icon_star_active.svg";
+import StarIcon from "@/assets/icons/star/icon_star_active.svg?url";
 import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";

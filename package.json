@@ -37,7 +37,6 @@
     "@storybook/addon-onboarding": "^9.0.0",
     "@storybook/addon-vitest": "^9.0.0",
     "@storybook/nextjs": "^9.0.6",
-    "@storybook/nextjs-vite": "^9.0.0",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5.77.2",

@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 
-import minusIcon from "@/assets/icons/plus_minus/icon_minus.svg";
-import plusIcon from "@/assets/icons/plus_minus/icon_plus.svg";
+import minusIcon from "@/assets/icons/plus_minus/icon_minus.svg?url";
+import plusIcon from "@/assets/icons/plus_minus/icon_plus.svg?url";
 
 type GuestCountSelectorProps = {
   guestCount: number;

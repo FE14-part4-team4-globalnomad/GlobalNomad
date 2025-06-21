@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import {
   createContext,
   ReactNode,
@@ -10,7 +9,7 @@ import {
   useState,
 } from "react";
 
-import IconChevron from "@/assets/icons/arrow/icon_alt arrow_down_black.svg";
+import { Icon } from "../icon/Icon";
 import { cn, cond } from "@/utils/classNames";
 
 interface DropdownContextType {
@@ -78,6 +77,7 @@ function DropdownSelected({
   disabled?: boolean;
 }) {
   const { isOpen, toggle } = useDropdown();
+
   return (
     <button
       className={cn(
@@ -87,17 +87,17 @@ function DropdownSelected({
           : "px-1 pl-[1.4rem]",
         cond(!disabled, "focus:border-brand-500"),
         selected ? "text-gray-950" : "text-gray-400",
-        "flex justify-between items-center",
+        "flex justify-between items-center overflow-hidden",
       )}
       onClick={disabled ? undefined : toggle}
     >
       {selected || placeholder}
-      <Image
-        className={cn(cond(isOpen, "rotate-180"), cond(disabled, "opacity-50"))}
-        src={IconChevron}
-        width={24}
-        height={24}
-        alt="드롭다운 화살표 아이콘"
+      <Icon
+        name="ChevronRight"
+        className={cn(
+          isOpen ? "rotate-270" : "rotate-90",
+          disabled ? "text-gray-400" : "text-gray-950",
+        )}
       />
     </button>
   );
