@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { ChangeEvent, useRef } from "react";
 
+import { Icon } from "../icon/Icon";
 import { usePostUserImageMutation } from "@/apis/user/user.query";
-import EditIcon from "@/assets/icons/any/edit/icon_edit_white.svg";
-import DefaultProfile from "@/assets/images/profile/normal_profile_lg.svg";
+import DefaultProfile from "@/assets/images/profile/normal_profile_lg.svg?url";
 import { useAuthStore } from "@/store/authStore";
 import { cn } from "@/utils/classNames";
 
@@ -33,7 +33,7 @@ function ProfileImageWrapper({
   return (
     <div
       className={cn(
-        "relative aspect-square rounded-full",
+        "relative aspect-square rounded-full w-12",
         "tablet:w-[7rem]",
         "desktop:w-[12rem]",
       )}
@@ -63,13 +63,7 @@ function ProfileImageWrapper({
             )}
             onClick={handleClickEditButton}
           >
-            <Image
-              width={24}
-              height={24}
-              src={EditIcon}
-              alt="프로필 편집 버튼"
-              className={cn("tablet:w-[1.2rem]", "desktop:w-[2.4rem]")}
-            />
+            <Icon name="Edit" className="text-white" />
           </button>
         </>
       )}

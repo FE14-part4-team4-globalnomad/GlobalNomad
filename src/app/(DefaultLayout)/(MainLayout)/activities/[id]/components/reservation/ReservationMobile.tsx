@@ -35,7 +35,12 @@ export default function ReservationMobile({
     totalCells,
     availableDates,
     availableTimesForSelectedDate,
-  } = useReservation({ pricePerPerson, initialGuestCount, initialDate, activityId });
+  } = useReservation({
+    pricePerPerson,
+    initialGuestCount,
+    initialDate,
+    activityId,
+  });
 
   const isSelectable = selectedDate !== null && selectedTime !== "";
 

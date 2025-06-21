@@ -41,7 +41,9 @@ export default function ActivityDetailPage() {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [reservationStep, setReservationStep] = useState<"date" | "guest">("date");
+  const [reservationStep, setReservationStep] = useState<"date" | "guest">(
+    "date",
+  );
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -61,10 +63,10 @@ export default function ActivityDetailPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const {
-    data: activity,
-    isLoading: isActivityLoading,
-  } = useActivityQuery(activityId, !!activityId);
+  const { data: activity, isLoading: isActivityLoading } = useActivityQuery(
+    activityId,
+    !!activityId,
+  );
 
   const {
     data: availableSchedule,
@@ -78,19 +80,17 @@ export default function ActivityDetailPage() {
         month: String(currentMonth + 1).padStart(2, "0"),
       },
     },
-    !!activityId
+    !!activityId,
   );
 
-  const {
-    data: reviewData,
-    isLoading: isReviewLoading,
-  } = useActivityReviewListQuery(
-    {
-      activityId,
-      query: { page: currentPage, size: 10 },
-    },
-    !!activityId
-  );
+  const { data: reviewData, isLoading: isReviewLoading } =
+    useActivityReviewListQuery(
+      {
+        activityId,
+        query: { page: currentPage, size: 10 },
+      },
+      !!activityId,
+    );
 
   useEffect(() => {
     if (selectedDate) {
@@ -101,7 +101,8 @@ export default function ActivityDetailPage() {
   }, [selectedDate, refetchSchedule]);
 
   const bannerImageUrl = activity?.bannerImageUrl ?? "";
-  const subImageUrls = activity?.subImages?.slice(0, 4).map(img => img.imageUrl) ?? [];
+  const subImageUrls =
+    activity?.subImages?.slice(0, 4).map((img) => img.imageUrl) ?? [];
 
   const content = activity?.description ?? "";
   const pricePerPerson = activity?.price ?? 0;
@@ -119,7 +120,7 @@ export default function ActivityDetailPage() {
   if (!isActivityLoading && !activity) {
     return notFound();
   }
-  
+
   if (isActivityLoading || isReviewLoading || isScheduleLoading) {
     return (
       <div>
@@ -133,7 +134,10 @@ export default function ActivityDetailPage() {
       <div className="desktop:pt-9 pb-18 tablet:pt-6 tablet:pb-12 mobile:pt-4 mobile:pb-10">
         {isTablet || isMobile ? (
           <div className="flex flex-col items-center">
-            <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+            <ImageGallery
+              bannerImageUrl={bannerImageUrl}
+              subImageUrls={subImageUrls}
+            />
             {activity && (
               <ActivityInfo
                 category={activity.category}
@@ -146,7 +150,11 @@ export default function ActivityDetailPage() {
             )}
             <Description content={content} />
             <KakaoMap address={address} />
-            <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+            <ReviewList
+              totalReviews={totalReviews}
+              averageRating={averageRating}
+              reviews={reviews}
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(totalReviews / 10)}
@@ -159,10 +167,17 @@ export default function ActivityDetailPage() {
         ) : (
           <div className="flex justify-center gap-4">
             <div>
-              <ImageGallery bannerImageUrl={bannerImageUrl} subImageUrls={subImageUrls} />
+              <ImageGallery
+                bannerImageUrl={bannerImageUrl}
+                subImageUrls={subImageUrls}
+              />
               <Description content={content} />
               <KakaoMap address={address} />
-              <ReviewList totalReviews={totalReviews} averageRating={averageRating} reviews={reviews} />
+              <ReviewList
+                totalReviews={totalReviews}
+                averageRating={averageRating}
+                reviews={reviews}
+              />
               <Pagination
                 currentPage={currentPage}
                 totalPages={Math.ceil(totalReviews / 10)}
@@ -184,7 +199,11 @@ export default function ActivityDetailPage() {
                   activityId={activity.id}
                 />
               )}
-              <Reservation pricePerPerson={pricePerPerson} activityId={activityId} isMine={user?.id !== activity?.userId} />
+              <Reservation
+                pricePerPerson={pricePerPerson}
+                activityId={activityId}
+                isMine={user?.id !== activity?.userId}
+              />
             </div>
           </div>
         )}

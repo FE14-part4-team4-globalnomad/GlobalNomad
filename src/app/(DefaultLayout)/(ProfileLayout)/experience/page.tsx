@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 import MyExperienceCard from "@/app/(DefaultLayout)/(ProfileLayout)/experience/(components)/MyExperienceCard";
-import Emptylogo from "@/assets/images/logos/logo_empty.svg";
+import Emptylogo from "@/assets/images/logos/logo_empty.svg?url";
 import Button from "@/components/button/Button";
 import { ActivityType } from "@/types/activity";
 

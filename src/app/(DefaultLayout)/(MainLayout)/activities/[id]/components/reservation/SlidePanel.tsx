@@ -10,7 +10,11 @@ type SlidePanelProps = {
   children: React.ReactNode;
 };
 
-export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProps) {
+export default function SlidePanel({
+  isOpen,
+  onClose,
+  children,
+}: SlidePanelProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -22,15 +26,12 @@ export default function SlidePanel({ isOpen, onClose, children }: SlidePanelProp
       document.body.style.overflow = "";
     };
   }, [isOpen]);
-  
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-center items-end mobile:px-2 tablet:px-4">
-      <div
-        className="absolute inset-0 bg-dimmed"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-dimmed" onClick={onClose} />
 
       <div
         className={`

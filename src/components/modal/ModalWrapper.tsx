@@ -11,7 +11,7 @@ export default function ModalWrapper({
   children,
 }: ModalWrapperProps) {
   return (
-    <div className="fixed inset-0 bg-dimmed flex justify-center items-center">
+    <div className="fixed z-10 inset-0 bg-dimmed flex justify-center items-center">
       <div
         className={cn(
           "bg-white py-[20px] px-[24px] tablet:py-[24px] tablet:px-[30px]",

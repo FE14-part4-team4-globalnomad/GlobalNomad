@@ -53,7 +53,7 @@ export default function ReservationTablet({
 
   useEffect(() => {
     if (externalSelectedDate) setSelectedDate(externalSelectedDate);
-  }, [externalSelectedDate,  setSelectedDate]);
+  }, [externalSelectedDate, setSelectedDate]);
 
   useEffect(() => {
     if (externalSelectedTime) setSelectedTime(externalSelectedTime);
@@ -110,7 +110,9 @@ export default function ReservationTablet({
           <div className="flex items-center justify-between border-t border-gray-200 pt-2 pb-1">
             <div>
               <span className="text-20-m text-gray-500 mr-[6px]">총 합계</span>
-              <span className="text-20-b text-gray-950">₩ {total.toLocaleString()}</span>
+              <span className="text-20-b text-gray-950">
+                ₩ {total.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>

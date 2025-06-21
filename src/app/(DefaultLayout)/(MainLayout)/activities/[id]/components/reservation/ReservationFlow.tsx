@@ -5,7 +5,6 @@ import { useState } from "react";
 import ReservationMobile from "./ReservationMobile";
 import ReservationMobileCnt from "./ReservationMobileCnt";
 
-
 type ReservationProps = {
   pricePerPerson: number;
   activityId: number;

@@ -63,10 +63,12 @@ export const activityQueries = {
       queryKey: activityQueryKeys.schedule(
         params.activityId,
         Number(params.query.year),
-        Number(params.query.month)
+        Number(params.query.month),
       ),
       queryFn: () =>
-        activityService.getActivityAvailableSchedule(params).then((res) => res.data),
+        activityService
+          .getActivityAvailableSchedule(params)
+          .then((res) => res.data),
     }),
 
   // 체험 리뷰 리스트 조회 (리뷰 영역에서 사용)
@@ -75,7 +77,7 @@ export const activityQueries = {
       queryKey: activityQueryKeys.reviewList(
         params.activityId,
         params.query?.page,
-        params.query?.size
+        params.query?.size,
       ),
       queryFn: () =>
         activityService.getActivityReviewList(params).then((res) => res.data),
@@ -102,7 +104,7 @@ export const useActivityQuery = (activityId: number, enabled = true) =>
 // 예약 가능한 스케줄 조회 훅 (예약 달력에서 사용)
 export const useActivityAvailableScheduleQuery = (
   params: GetActivityAvailableSchedulePayloadType,
-  enabled = true
+  enabled = true,
 ) =>
   useQuery({
     ...activityQueries.availableSchedule(params),
@@ -112,7 +114,7 @@ export const useActivityAvailableScheduleQuery = (
 // 체험 리뷰 리스트 조회 훅 (리뷰 영역에서 사용)
 export const useActivityReviewListQuery = (
   params: GetActivityReviewListPayloadType,
-  enabled = true
+  enabled = true,
 ) =>
   useQuery({
     ...activityQueries.reviewList(params),

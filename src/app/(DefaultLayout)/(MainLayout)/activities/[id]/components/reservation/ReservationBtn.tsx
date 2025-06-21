@@ -45,40 +45,43 @@ export default function ReservationBtn(props: ReservationBtnProps) {
   if (!isMine) return null;
 
   const handleReserve = () => {
-  const scheduleId = findScheduleId(selectedDate, selectedTime, availableSchedule);
+    const scheduleId = findScheduleId(
+      selectedDate,
+      selectedTime,
+      availableSchedule,
+    );
 
-  if (!scheduleId) {
-    return;
-  }
-
-  reserveActivity(
-    {
-      activityId,
-      payload: {
-        scheduleId,
-        headCount: guestCount,
-      },
-    },
-    {
-      onSuccess: () => {
-        overlay(
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-            <ConfirmModal
-              message="예약이 완료되었습니다."
-            />
-          </div>
-        );
-      },
+    if (!scheduleId) {
+      return;
     }
-  );
-};
 
-  const formattedDateTime = selectedDate && selectedTime
-    ? (() => {
-        const [start, end] = selectedTime.split("~");
-        return `${format(selectedDate, "yy/MM/dd")} ${start.trim()} ~ ${end?.trim() ?? getEndTime(start.trim())}`;
-      })()
-    : null;
+    reserveActivity(
+      {
+        activityId,
+        payload: {
+          scheduleId,
+          headCount: guestCount,
+        },
+      },
+      {
+        onSuccess: () => {
+          overlay(
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+              <ConfirmModal message="예약이 완료되었습니다." />
+            </div>,
+          );
+        },
+      },
+    );
+  };
+
+  const formattedDateTime =
+    selectedDate && selectedTime
+      ? (() => {
+          const [start, end] = selectedTime.split("~");
+          return `${format(selectedDate, "yy/MM/dd")} ${start.trim()} ~ ${end?.trim() ?? getEndTime(start.trim())}`;
+        })()
+      : null;
 
   return (
     <div className="py-2 px-[24px] bg-white border-t border-gray-100">
@@ -127,7 +130,7 @@ function getEndTime(startTime: string): string {
 function findScheduleId(
   selectedDate: Date | null,
   selectedTime: string | null,
-  availableSchedule: ReservationBtnProps["availableSchedule"]
+  availableSchedule: ReservationBtnProps["availableSchedule"],
 ): number | null {
   if (!selectedDate || !selectedTime) return null;
 
@@ -135,7 +138,9 @@ function findScheduleId(
   const [start] = selectedTime.split("~");
 
   const daySchedule = availableSchedule.find((s) => s.date === formattedDate);
-  const matchedTime = daySchedule?.times.find((t) => t.startTime === start.trim());
+  const matchedTime = daySchedule?.times.find(
+    (t) => t.startTime === start.trim(),
+  );
 
   return matchedTime?.id ?? null;
 }

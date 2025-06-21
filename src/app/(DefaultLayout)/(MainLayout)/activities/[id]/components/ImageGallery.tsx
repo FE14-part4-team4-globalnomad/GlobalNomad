@@ -13,7 +13,10 @@ interface ImageGalleryProps {
   subImageUrls: string[];
 }
 
-export default function ImageGallery({ bannerImageUrl, subImageUrls }: ImageGalleryProps) {
+export default function ImageGallery({
+  bannerImageUrl,
+  subImageUrls,
+}: ImageGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 

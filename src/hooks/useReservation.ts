@@ -1,7 +1,7 @@
-import { format, parseISO } from 'date-fns';
-import { useState, useEffect, useMemo } from 'react';
+import { format, parseISO } from "date-fns";
+import { useState, useEffect, useMemo } from "react";
 
-import { useActivityAvailableScheduleQuery } from '@/apis/activity/activity.query';
+import { useActivityAvailableScheduleQuery } from "@/apis/activity/activity.query";
 
 type UseReservationProps = {
   pricePerPerson: number;
@@ -18,7 +18,7 @@ export default function useReservation({
 }: UseReservationProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [guestCount, setGuestCount] = useState(initialGuestCount);
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState("");
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
 
@@ -26,33 +26,39 @@ export default function useReservation({
     activityId,
     query: {
       year: String(currentYear),
-      month: String(currentMonth + 1).padStart(2, '0'),
+      month: String(currentMonth + 1).padStart(2, "0"),
     },
   });
 
   const availableDates: Record<string, string[]> = useMemo(() => {
-    return schedule?.reduce((acc, cur) => {
-      const dateKey = format(parseISO(cur.date), 'yyyy-MM-dd');
-      acc[dateKey] = cur.times.map(t => `${t.startTime}~${t.endTime}`);
-      return acc;
-    }, {} as Record<string, string[]>) ?? {};
+    return (
+      schedule?.reduce(
+        (acc, cur) => {
+          const dateKey = format(parseISO(cur.date), "yyyy-MM-dd");
+          acc[dateKey] = cur.times.map((t) => `${t.startTime}~${t.endTime}`);
+          return acc;
+        },
+        {} as Record<string, string[]>,
+      ) ?? {}
+    );
   }, [schedule]);
 
-  const [availableTimesForSelectedDate, setAvailableTimesForSelectedDate] = useState<string[]>([]);
+  const [availableTimesForSelectedDate, setAvailableTimesForSelectedDate] =
+    useState<string[]>([]);
 
   useEffect(() => {
     if (!selectedDate) {
       setAvailableTimesForSelectedDate([]);
-      setSelectedTime('');
+      setSelectedTime("");
       return;
     }
 
-    const dateKey = format(selectedDate, 'yyyy-MM-dd');
+    const dateKey = format(selectedDate, "yyyy-MM-dd");
     const times = availableDates[dateKey] || [];
     setAvailableTimesForSelectedDate(times);
 
     if (!times.includes(selectedTime)) {
-      setSelectedTime(times[0] || '');
+      setSelectedTime(times[0] || "");
     }
   }, [selectedDate, availableDates, selectedTime]);
 
@@ -94,15 +100,16 @@ export default function useReservation({
   const selectedScheduleId = useMemo(() => {
     if (!selectedDate || !selectedTime) return null;
 
-    const [startTime] = selectedTime.split('~');
-    const dateKey = format(selectedDate, 'yyyy-MM-dd');
+    const [startTime] = selectedTime.split("~");
+    const dateKey = format(selectedDate, "yyyy-MM-dd");
 
-    const daySchedule = schedule?.find(s => format(parseISO(s.date), 'yyyy-MM-dd') === dateKey);
-    const match = daySchedule?.times.find(t => t.startTime === startTime);
+    const daySchedule = schedule?.find(
+      (s) => format(parseISO(s.date), "yyyy-MM-dd") === dateKey,
+    );
+    const match = daySchedule?.times.find((t) => t.startTime === startTime);
 
     return match?.id ?? null;
   }, [selectedDate, selectedTime, schedule]);
-
 
   return {
     selectedDate,

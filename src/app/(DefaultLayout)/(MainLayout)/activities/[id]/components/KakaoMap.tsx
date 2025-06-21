@@ -6,7 +6,7 @@ interface MapProps {
   address: string;
 }
 
-// kakao 타입 선언 (전역 but 이 파일 내에서만 사용)
+// kakao 타입 선언
 declare global {
   interface Window {
     kakao: KakaoNamespace;
@@ -16,12 +16,28 @@ declare global {
     maps: {
       load(callback: () => void): void;
       LatLng: new (lat: number | string, lng: number | string) => KakaoLatLng;
-      Map: new (container: HTMLElement, options: { center: KakaoLatLng; level: number }) => KakaoMap;
-      Marker: new (options: { map: KakaoMap; position: KakaoLatLng }) => KakaoMarker;
-      CustomOverlay: new (options: { position: KakaoLatLng; yAnchor: number; content: string }) => KakaoCustomOverlay;
+      Map: new (
+        container: HTMLElement,
+        options: { center: KakaoLatLng; level: number },
+      ) => KakaoMap;
+      Marker: new (options: {
+        map: KakaoMap;
+        position: KakaoLatLng;
+      }) => KakaoMarker;
+      CustomOverlay: new (options: {
+        position: KakaoLatLng;
+        yAnchor: number;
+        content: string;
+      }) => KakaoCustomOverlay;
       services: {
         Geocoder: new () => {
-          addressSearch(query: string, callback: (result: GeocoderResult[], status: GeocoderStatus) => void): void;
+          addressSearch(
+            query: string,
+            callback: (
+              result: GeocoderResult[],
+              status: GeocoderStatus,
+            ) => void,
+          ): void;
         };
         Status: {
           OK: GeocoderStatus;

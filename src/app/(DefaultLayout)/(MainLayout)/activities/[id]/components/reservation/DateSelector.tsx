@@ -1,10 +1,8 @@
 "use client";
 
 import { format } from "date-fns";
-import Image from "next/image";
 
-import arrowLeftIcon from "@/assets/icons/arrow/icon_alt arrow_left.svg";
-import arrowRightIcon from "@/assets/icons/arrow/icon_alt arrow_right.svg";
+import { Icon } from "@/components/icon/Icon";
 
 type DateSelectorProps = {
   currentYear: number;
@@ -40,7 +38,9 @@ export default function DateSelector({
 
   return (
     <div className="mb-5">
-      <div className="text-gray-950 desktop:text-16-b tablet:text-20-b">날짜</div>
+      <div className="text-gray-950 desktop:text-16-b tablet:text-20-b">
+        날짜
+      </div>
       <div className="mt-1 desktop:h-35 tablet:w-36 tablet:h-49">
         <div className="flex justify-between items-center mb-2">
           <div className="text-16-m text-gray-950">
@@ -48,10 +48,10 @@ export default function DateSelector({
           </div>
           <div className="flex gap-1">
             <button onClick={handlePrevMonth}>
-              <Image src={arrowLeftIcon} alt="이전 달" />
+              <Icon name="ChevronRight" className="rotate-180" />
             </button>
             <button onClick={handleNextMonth}>
-              <Image src={arrowRightIcon} alt="다음 달" />
+              <Icon name="ChevronRight" />
             </button>
           </div>
         </div>
@@ -83,7 +83,8 @@ export default function DateSelector({
             const isSelected = selectedDate
               ? dateStr === format(selectedDate, "yyyy-MM-dd")
               : false;
-            const isDateAvailable = isCurrentMonth && isAvailable(date!, availableDates);
+            const isDateAvailable =
+              isCurrentMonth && isAvailable(date!, availableDates);
 
             return (
               <div
