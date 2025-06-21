@@ -1,20 +1,17 @@
 import { create } from "zustand";
 
 interface NotificationStore {
-  isOpen: boolean;
   hasNew: boolean;
-  open: () => void;
-  close: () => void;
+  isOpen: boolean;
   toggle: () => void;
-  setHasNew: (v: boolean) => void;
+  close: () => void;
+  setHasNew: (value: boolean) => void;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
+  hasNew: false,
   isOpen: false,
-  hasNew: true,
-
-  open: () => set({ isOpen: true }),
-  close: () => set({ isOpen: false }),
   toggle: () => set((state) => ({ isOpen: !state.isOpen })),
-  setHasNew: (v) => set({ hasNew: v }),
+  close: () => set({ isOpen: false }),
+  setHasNew: (value) => set({ hasNew: value }),
 }));
