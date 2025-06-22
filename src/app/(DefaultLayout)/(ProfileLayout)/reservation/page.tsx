@@ -19,6 +19,7 @@ function ReservationPage() {
     MyReservationType[]
   >([]);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const overlay = useOverlay();
 
@@ -94,8 +95,10 @@ function ReservationPage() {
         console.log("API 응답 데이터:", data);
         setReservations(data.reservations);
         setFilteredReservations(data.reservations);
+        setIsLoading(false);
       } catch (error) {
         console.error("예약 목록을 불러오는 데 실패했습니다", error);
+        setIsLoading(false);
       }
     };
 
@@ -132,7 +135,11 @@ function ReservationPage() {
       </div>
 
       <div>
-        {filteredReservations.length > 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center items-center h-[20rem]">
+            <p className="text-14-m text-gray-500">불러오는 중...</p>
+          </div>
+        ) : filteredReservations.length > 0 ? (
           <div className="flex flex-col gap-2 mt-3">
             {filteredReservations.map((reservation) => (
               <MyReservationCard
