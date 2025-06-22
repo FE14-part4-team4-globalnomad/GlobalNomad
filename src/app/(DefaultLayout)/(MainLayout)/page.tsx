@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 import ArrowButton from "./components/ArrowButton";
@@ -45,14 +46,16 @@ function HomePage() {
   );
 
   const renderCard = (activity: ActivityType) => (
-    <Card
-      key={activity.id}
-      title={activity.title}
-      price={activity.price}
-      bannerImageUrl={activity.bannerImageUrl}
-      rating={activity.rating}
-      reviewCount={activity.reviewCount}
-    />
+    <Link href={`/activities/${activity.id}`}>
+      <Card
+        key={activity.id}
+        title={activity.title}
+        price={activity.price}
+        bannerImageUrl={activity.bannerImageUrl}
+        rating={activity.rating}
+        reviewCount={activity.reviewCount}
+      />
+    </Link>
   );
 
   return (
