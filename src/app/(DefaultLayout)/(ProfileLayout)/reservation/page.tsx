@@ -65,6 +65,11 @@ function ReservationPage() {
         },
       });
       overlay.close();
+      setReservations((prev) =>
+        prev.map((r) =>
+          r.id === reservationId ? { ...r, reviewSubmitted: true } : r,
+        ),
+      );
     } catch (error) {
       console.error("리뷰 작성 실패:", error);
     }
