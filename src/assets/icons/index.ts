@@ -21,3 +21,4 @@ export { default as Kakao } from "./social/icon_kakao.svg";
 
 export { default as StarActive } from "./star/icon_star_active.svg";
 export { default as StarInactive } from "./star/icon_star_inactive.svg";
+export { default as Empty } from "../images/logos/logo_empty.svg";

@@ -1,15 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import ReviewModal from "./components/ReviewModal";
 import StatusBadgeGroup from "./components/StatusBadgeGroup";
 import reservationService from "@/apis/reservation/reservation.service";
-import Empty from "@/assets/images/logos/logo_empty.svg";
 import Button from "@/components/button/Button";
 import MyReservationCard from "@/components/card/MyReservationCard";
+import { Icon } from "@/components/icon/Icon";
 import WarningModal from "@/components/modal/WarningModal";
 import { useOverlay } from "@/hooks/useOverlay";
 import { MyReservationType } from "@/types/reservation";
@@ -143,11 +142,7 @@ function ReservationPage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center mt-5 gap-1">
-            <Image
-              src={Empty}
-              alt="지구 일러스트"
-              className="w-[18.2rem] h-[18.2rem]"
-            />
+            <Icon name="Empty" size={182} />
             <p className="text-18-m text-gray-600">아직 예약한 체험이 없어요</p>
             <Button
               size="empty"
