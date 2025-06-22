@@ -1,9 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
+import iconDelete from "@/assets/icons/any/icon_delete.svg?url";
+import iconStarActive from "@/assets/icons/star/icon_star_active.svg?url";
+import iconStarInactive from "@/assets/icons/star/icon_star_inactive.svg?url";
 import Button from "@/components/button/Button";
-import { Icon } from "@/components/icon/Icon";
 import ModalWrapper from "@/components/modal/ModalWrapper";
 import { useOverlay } from "@/hooks/useOverlay";
 import { ReviewModalProps } from "@/types/reservation";
@@ -21,8 +24,7 @@ export default function ReviewModal({
     <ModalWrapper className="w-[38.5rem] h-[54.9rem] p-[30px] rounded-[30px] flex flex-col gap-[24px]">
       <div className="flex justify-end w-full">
         <button onClick={() => overlay.close()}>
-          {/* <Image src={iconDelete} alt="닫기 아이콘" width={24} height={24} /> */}
-          <Icon name="Close" className="w-[24px] h-[24px]" />
+          <Image src={iconDelete} alt="닫기 아이콘" width={24} height={24} />
         </button>
       </div>
 
@@ -39,16 +41,12 @@ export default function ReviewModal({
               onClick={() => setRating(idx + 1)}
               className="text-yellow-400"
             >
-              {/*
               <Image
                 src={rating > idx ? iconStarActive : iconStarInactive}
                 alt={rating > idx ? "활성 별" : "비활성 별"}
                 width={32}
                 height={32}
-              />              
-              */}
-              <Icon name={rating > idx ? "StarActive" : "StarInactive"} className="w-[32px] h-[32px]" />
-
+              />
             </button>
           ))}
         </div>

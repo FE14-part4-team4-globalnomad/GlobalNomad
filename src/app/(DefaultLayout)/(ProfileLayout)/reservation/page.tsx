@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import ReviewModal from "./components/ReviewModal";
 import StatusBadgeGroup from "./components/StatusBadgeGroup";
 import reservationService from "@/apis/reservation/reservation.service";
-import Empty from "@/assets/images/logos/logo_empty.svg";
+import Empty from "@/assets/images/logos/logo_empty.svg?url";
 import Button from "@/components/button/Button";
 import MyReservationCard from "@/components/card/MyReservationCard";
 import WarningModal from "@/components/modal/WarningModal";
