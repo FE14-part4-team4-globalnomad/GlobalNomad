@@ -29,9 +29,14 @@ module.exports = {
       brand: {
         100: "#E5F3FF",
         500: "#3D9EF2",
+        900: "#112211",
       },
       red: {
         500: "#FF2727",
+      },
+      main: {
+        100: "#BBDDFF",
+        200: "#F7FBFF",
       },
     },
     fontSize: {
@@ -63,6 +68,9 @@ module.exports = {
     },
     backgroundColor: {
       dimmed: "rgba(0, 0, 0, 0.5)",
+    },
+    backgroundImage: {
+      main: "linear-gradient(to bottom, #BBDDFF 0%, #F7FBFF 10%, #FFFFFF 80%)",
     },
     dropShadow: {
       card: "0px 4px 24px rgba(156, 180, 202, 0.2)",

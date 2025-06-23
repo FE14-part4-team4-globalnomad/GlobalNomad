@@ -1,18 +1,19 @@
 import axios from "axios";
 
-import { isTokenRequired } from "@/utils/axiosInterceptors";
+import {
+  responseInterceptorForError,
+  updateHeaderWithToken,
+} from "@/utils/axiosInterceptors";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const url = config.url ?? "";
+axiosInstance.interceptors.request.use(updateHeaderWithToken);
 
-  return {
-    ...config,
-    withCredentials: isTokenRequired(url),
-  };
-});
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  responseInterceptorForError,
+);
 
 export default axiosInstance;

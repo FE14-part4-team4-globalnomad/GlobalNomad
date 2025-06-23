@@ -1,18 +1,21 @@
-import Input from "../input/Input";
-
 import React, { useRef } from "react";
+
+import { Icon } from "../icon/Icon";
+import Input from "../input/Input";
 
 type SearchProps = {
   placeholder?: string;
   onSearch: (keyword: string) => void;
 };
 
-export function Search({ placeholder = "내가 원하는 체험은", onSearch }: SearchProps) {
+export function Search({
+  placeholder = "내가 원하는 체험은",
+  onSearch,
+}: SearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = () => {
     const keyword = inputRef.current?.value.trim() ?? "";
-    if (!keyword) return;
     onSearch(keyword);
   };
 
@@ -24,7 +27,9 @@ export function Search({ placeholder = "내가 원하는 체험은", onSearch }:
 
   return (
     <div className="w-full flex flex-col items-center">
-      <h2 className="text-32-b mb-[36px] text-gray-950">무엇을 체험하고 싶으신가요?</h2>
+      <h2 className="text-gray-950 desktop:text-32-b desktop:mb-[36px] mobile:text-16-b mobile:mb-[12px]">
+        무엇을 체험하고 싶으신가요?
+      </h2>
       <div className="w-full relative">
         <Input
           ref={inputRef}
@@ -32,11 +37,10 @@ export function Search({ placeholder = "내가 원하는 체험은", onSearch }:
           onKeyDown={handleKeyDown}
           onFocus={(e) => (e.target.placeholder = "")}
           onBlur={(e) => (e.target.placeholder = placeholder)}
-          className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md "
+          className="pl-[56px] pr-[150px] h-[64px] desktop:text-18-m mobile:text-14-m shadow-md border-none truncate !text-gray-600"
         />
-        <img
-          src="/src/assets/icons/any/icon_search.svg"
-          alt="검색 아이콘"
+        <Icon
+          name="Search"
           className="absolute left-[20px] top-1/2 -translate-y-1/2 w-[24px] h-[24px] text-gray-500"
         />
         <button

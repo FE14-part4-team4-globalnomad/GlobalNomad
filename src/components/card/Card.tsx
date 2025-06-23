@@ -1,24 +1,24 @@
 import Image from "next/image";
 
-import StarIcon from "@/assets/icons/star/icon_star_active.svg";
+import StarIcon from "@/assets/icons/star/icon_star_active.svg?url";
+import { ActivityType } from "@/types/activity";
 import { cn } from "@/utils/classNames";
 import { formatNumberWithComma } from "@/utils/common";
 
-// TODO: type 정의 반영
-interface CardProps {
-  title: string;
-  price: number;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
+interface CardProps
+  extends Pick<
+    ActivityType,
+    "title" | "price" | "bannerImageUrl" | "rating" | "reviewCount"
+  > {
+  onClick?: () => void;
 }
-
 export default function Card({
   bannerImageUrl,
   title,
   rating,
   reviewCount,
   price,
+  onClick = () => {},
 }: CardProps) {
   return (
     <article
@@ -26,7 +26,9 @@ export default function Card({
         "min-w-[155px] tablet:min-w-[260px] h-[242.88px] tablet:h-[423px] desktop:h-[366px]",
         "flex flex-col justify-start items-stretch",
         "relative drop-shadow-card",
+        "cursor-pointer",
       )}
+      onClick={onClick}
     >
       <div className="w-full h-[90%] relative overflow-hidden rounded-t-[18px] tablet:rounded-t-[32px]">
         <Image
@@ -38,7 +40,7 @@ export default function Card({
       </div>
       <div className="absolute left-0 right-0 bottom-0 grid gap-[10px] bg-white rounded-[1.8rem] tablet:rounded-[3.2rem] py-[1.6rem] px-[1.7rem] tablet:py-[2rem] tablet:px-[3rem]">
         <div className="grid gap-[4px]">
-          <div className="text-14-b font-semibold tablet:text-18-b tablet:font-semibold">
+          <div className="text-14-b font-semibold tablet:text-18-b tablet:font-semibold overflow-hidden text-nowrap text-ellipsis">
             {title}
           </div>
           <div className="flex items-center gap-[2.8px] tablet:gap-[5px]">

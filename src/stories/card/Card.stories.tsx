@@ -1,7 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 import Card from "@/components/card/Card";
-import "../../styles/globals.css";
 
 const meta = {
   title: "Components/Card/Main",

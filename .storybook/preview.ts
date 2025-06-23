@@ -1,4 +1,5 @@
-import type { Preview } from "@storybook/nextjs-vite";
+import type { Preview } from "@storybook/nextjs";
+import "../src/styles/globals.css";
 
 const preview: Preview = {
   parameters: {
@@ -14,6 +15,23 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: "todo",
+    },
+
+    options: {
+      storySort: {
+        order: [
+          "Foundation",
+          "Common Components",
+          "Components",
+          [
+            "Layout",
+            ["Logo", "Gnb", "SideMenu", "Footer"],
+            "Card",
+            "Calendar",
+            "Search",
+          ],
+        ],
+      },
     },
   },
 };

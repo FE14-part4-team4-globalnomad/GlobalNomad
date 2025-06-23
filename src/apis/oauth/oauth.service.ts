@@ -2,6 +2,8 @@ import { AxiosInstance } from "axios";
 
 import axiosInstance from "../instance";
 import {
+  GetTokenFromKakaoResponse,
+  GetUserInfoFromKakaoResponse,
   PostOauthAppsPayload,
   PostOauthAppsResultType,
   PostOauthSigninPayloadType,
@@ -100,6 +102,41 @@ class OauthService {
       method: HTTP_METHODS.POST,
       data: payload,
       ...options,
+    });
+  }
+
+  /**
+   * 카카오에서 CODE로 TOKEN을 받아오기
+   */
+  getTokenFromKakao(authCode: string) {
+    const TOKEN_URL_BASE =
+      "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
+    return this.fetcher<GetTokenFromKakaoResponse>({
+      url: [
+        TOKEN_URL_BASE,
+        `client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+        `redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_SIGNUP_REDIRECT_URI}`,
+        `code=${authCode}`,
+      ].join("&"),
+      method: HTTP_METHODS.POST,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  /**
+   * 카카오에서 TOKEN으로 USER정보를 받아오기
+   */
+  getUserFromKakao(accessToken: string) {
+    const USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
+    return this.fetcher<GetUserInfoFromKakaoResponse>({
+      url: USER_INFO_URL,
+      method: HTTP_METHODS.GET,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
   }
 }
