@@ -50,9 +50,8 @@ function HomePage() {
   );
 
   const renderCard = (activity: ActivityType) => (
-    <Link href={`/activities/${activity.id}`}>
+    <Link key={activity.id} href={`/activities/${activity.id}`}>
       <Card
-        key={activity.id}
         title={activity.title}
         price={activity.price}
         bannerImageUrl={activity.bannerImageUrl}

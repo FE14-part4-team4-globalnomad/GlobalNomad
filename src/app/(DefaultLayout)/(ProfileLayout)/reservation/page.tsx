@@ -28,15 +28,16 @@ function ReservationPage() {
             예약내역 변경 및 취소할 수 있습니다.
           </p>
         </div>
-        {reservations.length > 0 && (
-          <div className="w-full overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <StatusBadgeGroup
-              selectedStatus={selectedStatus}
-              setSelectedStatus={setSelectedStatus}
-            />
-          </div>
-        )}
       </div>
+
+      {reservations.length > 0 && (
+        <div className="mt-[2.5rem] w-full overflow-x-auto scrollbar-hide -mx-4 px-4">
+          <StatusBadgeGroup
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus}
+          />
+        </div>
+      )}
 
       <div>
         {isLoading ? (
