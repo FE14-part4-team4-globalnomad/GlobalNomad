@@ -219,11 +219,12 @@ export default function MyReservationCard({
             <MyReservationCardProvider.ReservationInfo />
             <MyReservationCardProvider.PriceAndActions />
           </ReservationCardWrapper>
-          {reservationInfo.status !== "declined" && status !== "canceled" && (
-            <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
-              <MyReservationCardProvider.ReviewButtons />
-            </div>
-          )}
+          {reservationInfo.status !== "declined" &&
+            reservationInfo.status !== "canceled" && (
+              <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
+                <MyReservationCardProvider.ReviewButtons />
+              </div>
+            )}
         </div>
       </article>
     </MyReservationCardProvider>
