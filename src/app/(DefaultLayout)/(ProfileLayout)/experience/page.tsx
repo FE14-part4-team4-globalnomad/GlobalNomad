@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 
 import myActivityService from "@/apis/myActivity/myActivity.service";
 import MyExperienceCard from "@/app/(DefaultLayout)/(ProfileLayout)/experience/(components)/MyExperienceCard";
-import Emptylogo from "@/assets/images/logos/logo_empty.svg";
+import Emptylogo from "@/assets/images/logos/logo_empty.svg?url";
 import Button from "@/components/button/Button";
 import WarningModal from "@/components/modal/WarningModal";
 import { useOverlay } from "@/hooks/useOverlay";

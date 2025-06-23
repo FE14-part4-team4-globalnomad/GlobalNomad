@@ -53,20 +53,11 @@ function MyReservationCardProvider({
 function ReviewButtons() {
   const {
     reservationInfo: { status, reviewSubmitted },
-    onChangeReservation,
     onCancelReservation,
     onUpdateReview,
   } = useMyReservationCard();
   return status !== "completed" ? (
     <>
-      <Button
-        size="reservation"
-        variant="outline"
-        className="mobile:w-full rounded-[8px]"
-        onClick={onChangeReservation}
-      >
-        예약 변경
-      </Button>
       <Button
         size="reservation"
         variant="secondary"

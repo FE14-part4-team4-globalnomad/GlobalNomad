@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import WarningImg from "@/assets/images/warning.svg";
+import WarningImg from "@/assets/images/warning.svg?url";
 import Button from "@/components/button/Button";
 import ModalWrapper from "@/components/modal/ModalWrapper";
 import { useOverlay } from "@/hooks/useOverlay";

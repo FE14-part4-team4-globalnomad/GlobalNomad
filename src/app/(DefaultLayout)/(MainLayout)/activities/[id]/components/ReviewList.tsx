@@ -3,8 +3,8 @@
 import Image from "next/image";
 import React from "react";
 
-import yellowStar from "@/assets/icons/star/icon_star_active.svg";
-import grayStar from "@/assets/icons/star/icon_star_inactive.svg";
+import yellowStar from "@/assets/icons/star/icon_star_active.svg?url";
+import grayStar from "@/assets/icons/star/icon_star_inactive.svg?url";
 
 type ReviewItemData = {
   name: string;
@@ -24,7 +24,8 @@ const getSatisfactionLabel = (rating: number) => {
   if (rating >= 3.5) return "만족";
   if (rating >= 2.5) return "보통";
   if (rating >= 1.5) return "싫음";
-  return "매우 싫음";
+  if (rating >= 1) return "매우 싫음";
+  return "리뷰 없음";
 };
 
 export default function ReviewList({

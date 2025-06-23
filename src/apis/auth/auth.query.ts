@@ -33,14 +33,8 @@ export const usePostAuthLoginMutation = () => {
  */
 export const usePostAuthTokenMutation = () => {
   const setToken = useAuthStore((state) => state.setToken);
-  const refreshToken = useAuthStore((state) => state.refreshToken);
   return useMutation<PostAuthTokensResultType>({
-    mutationFn: () =>
-      authService
-        .postAuthToken({
-          options: { headers: { Authorization: `Bearer ${refreshToken}` } },
-        })
-        .then((res) => res.data),
+    mutationFn: () => authService.postAuthToken().then((res) => res.data),
     onSuccess: (result) => {
       const { accessToken, refreshToken } = result;
       setToken(accessToken, refreshToken);

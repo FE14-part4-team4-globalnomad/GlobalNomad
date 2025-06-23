@@ -30,3 +30,9 @@ export interface MyReservationType
     bannerImageUrl: string;
   };
 }
+
+export interface ReviewModalProps {
+  title: string;
+  schedule: string;
+  onSubmit: (rating: number, content: string) => void;
+}

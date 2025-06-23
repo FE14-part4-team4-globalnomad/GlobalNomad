@@ -7,6 +7,7 @@ import {
   PostAuthTokensResultType,
 } from "@/apis/auth/auth.schema";
 import { HTTP_METHODS } from "@/constants/httpMethod";
+import { useAuthStore } from "@/store/authStore";
 import { ApiRequestParams } from "@/types/common";
 
 class AuthService {
@@ -38,6 +39,9 @@ class AuthService {
     return this.fetcher<PostAuthTokensResultType>({
       url: "/auth/tokens",
       method: HTTP_METHODS.POST,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().refreshToken}`,
+      },
       ...options,
     });
   }

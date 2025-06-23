@@ -61,7 +61,7 @@ class ReservationService {
     options,
   }: ApiRequestParams<PostMyReservationReviewPayloadType>) {
     return this.fetcher<PostMyReservationReviewResultType>({
-      url: `/my-reservations/${reservationId}`,
+      url: `/my-reservations/${reservationId}/reviews`,
       method: HTTP_METHODS.POST,
       data: payload,
       ...options,

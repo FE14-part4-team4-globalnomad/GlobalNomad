@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-import bus from "@/assets/icons/category/icon_bus.svg";
-import food from "@/assets/icons/category/icon_food.svg";
-import music from "@/assets/icons/category/icon_music.svg";
-import tour from "@/assets/icons/category/icon_tour.svg";
-import wellbeing from "@/assets/icons/category/icon_wellbeing.svg";
+import bus from "@/assets/icons/category/icon_bus.svg?url";
+import food from "@/assets/icons/category/icon_food.svg?url";
+import music from "@/assets/icons/category/icon_music.svg?url";
+import tour from "@/assets/icons/category/icon_tour.svg?url";
+import wellbeing from "@/assets/icons/category/icon_wellbeing.svg?url";
 import { Category, CategoryFilterProps as Props } from "@/types/category";
 
 const categories: Category[] = [

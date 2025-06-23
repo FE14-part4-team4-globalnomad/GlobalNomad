@@ -4,14 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import GnbUserSection from "./GnbUserSection";
-import Earth from "@/assets/images/logos/logo_earth.svg";
-import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg";
+import Earth from "@/assets/images/logos/logo_earth.svg?url";
+import LogoEarth from "@/assets/images/logos/logo_globalnomad_md.svg?url";
 import { useAuthStore } from "@/store/authStore";
 
 function Gnb() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   return (
-    <nav className="w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center">
+    <nav className="w-full bg-transparent px-[2.4rem] tablet:px-[3rem] desktop:px-[20rem] h-[8rem] flex justify-between items-center z-10 ">
       <div>
         <Link href="/">
           {/* 데스크탑용 로고 (기본) */}

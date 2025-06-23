@@ -1,10 +1,8 @@
 "use client";
 
 import { format } from "date-fns";
-import Image from "next/image";
 
-import arrowLeftIcon from "@/assets/icons/arrow/icon_alt arrow_left.svg";
-import arrowRightIcon from "@/assets/icons/arrow/icon_alt arrow_right.svg";
+import { Icon } from "@/components/icon/Icon";
 
 type DateSelectorProps = {
   currentYear: number;
@@ -53,10 +51,10 @@ export default function DateSelector({
           </div>
           <div className="flex gap-1">
             <button onClick={handlePrevMonth}>
-              <Image src={arrowLeftIcon} alt="이전 달" />
+              <Icon name="ChevronRight" className="rotate-180" />
             </button>
             <button onClick={handleNextMonth}>
-              <Image src={arrowRightIcon} alt="다음 달" />
+              <Icon name="ChevronRight" />
             </button>
           </div>
         </div>

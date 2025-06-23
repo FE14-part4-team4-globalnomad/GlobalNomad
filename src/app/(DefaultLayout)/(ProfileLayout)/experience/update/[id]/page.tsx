@@ -11,8 +11,8 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import MinusIcon from "./(buttonicon)/minus_button.svg";
-import PlusIcon from "./(buttonicon)/plus_button.svg";
+import MinusIcon from "./(buttonicon)/minus_button.svg?url";
+import PlusIcon from "./(buttonicon)/plus_button.svg?url";
 import AddressSearchScriptLoader from "./(components)/AddressSearchScriptLoader";
 import CustomInput from "./(components)/CustomInput";
 import CustomTextarea from "./(components)/CustomTextarea";
@@ -24,9 +24,9 @@ import {
 } from "./(components)/usePostActivityImage";
 import activityService from "@/apis/activity/activity.service";
 import myActivityService from "@/apis/myActivity/myActivity.service";
-import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg";
-import CloseEye from "@/assets/icons/any/icon_close_eye.svg";
-import BackIcon from "@/assets/icons/arrow/icon_arrow_back.svg";
+import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg?url";
+import CloseEye from "@/assets/icons/any/icon_close_eye.svg?url";
+import BackIcon from "@/assets/icons/arrow/arrow_back.svg?url";
 import Button from "@/components/button/Button";
 import DefaultDropdown from "@/components/dropdown/DefaultDropdown";
 import ConfirmModal from "@/components/modal/ConfirmModal";

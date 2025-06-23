@@ -6,7 +6,7 @@ interface MapProps {
   address: string;
 }
 
-// kakao 타입 선언 (전역 but 이 파일 내에서만 사용)
+// kakao 타입 선언
 declare global {
   interface Window {
     kakao: KakaoNamespace;

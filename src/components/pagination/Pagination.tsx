@@ -1,10 +1,6 @@
-import Image from "next/image";
-
-import BackArrowBlack from "@/assets/icons/arrow/icon_back_pagination_black.png";
-import BackArrowGray from "@/assets/icons/arrow/icon_back_pagination_gray.png";
-import NextArrowBlack from "@/assets/icons/arrow/icon_next_pagination_black.png";
-import NextArrowGray from "@/assets/icons/arrow/icon_next_pagination_gray.png";
+import { Icon } from "../icon/Icon";
 import { PaginationProps } from "@/types/pagination";
+import { cn } from "@/utils/classNames";
 
 export default function Pagination({
   currentPage,
@@ -37,15 +33,18 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${
-          currentPage === 1 ? "opacity-50" : "cursor-pointer"
-        }`}
+        className="flex items-center justify-center"
       >
-        <Image
+        {/* <Image
           src={currentPage === 1 ? BackArrowGray : BackArrowBlack}
           alt="이전 페이지"
           width={7}
           height={11}
+        /> */}
+        <Icon
+          name="ArrowPagination"
+          size={40}
+          className={currentPage === 1 ? "text-gray-300" : "text-gray-950"}
         />
       </button>
 
@@ -74,15 +73,21 @@ export default function Pagination({
           }
         }}
         disabled={currentPage >= totalPages}
-        className={`w-[4rem] h-[4rem] flex items-center justify-center  ${
-          currentPage >= totalPages ? "opacity-50" : "cursor-pointer"
-        }`}
+        className="flex items-center justify-center"
       >
-        <Image
+        {/* <Image
           src={currentPage >= totalPages ? NextArrowGray : NextArrowBlack}
           alt="다음 페이지"
           width={7}
           height={11}
+        /> */}
+        <Icon
+          name="ArrowPagination"
+          size={40}
+          className={cn(
+            "rotate-180",
+            currentPage >= totalPages ? "text-gray-300" : "text-gray-950",
+          )}
         />
       </button>
     </div>
