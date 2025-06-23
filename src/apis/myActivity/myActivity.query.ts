@@ -5,14 +5,33 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 import {
   GetMyActivityReservedSchedulePayloadType,
   GetMyHourlyActivityReservationsPayloadType,
   GetMyMonthlyActivityReservationsPayloadType,
+  PatchMyActivityPayloadType,
 } from "@/apis/myActivity/myActivity.schema";
 import myActivityService from "@/apis/myActivity/myActivity.service";
 import { MyActivityReservationStatusType } from "@/types/myActivity";
+
+type PatchParams = {
+  activityId: number;
+  payload: PatchMyActivityPayloadType["payload"];
+};
+
+export const usePatchMyActivityMutation = () => {
+  return useMutation<AxiosResponse<{ success: boolean }>, unknown, PatchParams>(
+    {
+      mutationFn: ({ activityId, payload }) =>
+        myActivityService.patchMyActivity({ activityId, payload }),
+      onError: () => {
+        alert("수정에 실패했습니다.");
+      },
+    },
+  );
+};
 
 const myActivityQuery = {
   all: () => ["my-activities"],

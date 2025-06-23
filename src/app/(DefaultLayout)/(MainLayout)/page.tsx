@@ -71,6 +71,21 @@ function HomePage() {
     </Link>
   );
 
+
+  const filteredActivities = searchKeyword
+    ? allActivities.filter((activity) =>
+        activity.title.toLowerCase().includes(searchKeyword.toLowerCase()),
+      )
+    : activities;
+
+  const totalFiltered = filteredActivities.length;
+  const totalFilteredPages = Math.ceil(totalFiltered / itemsPerPage);
+
+  const paginatedActivities = filteredActivities.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
+
   return (
     <div className="flex flex-col space-y-6">
       {/* 배너 영역 */}
@@ -122,7 +137,10 @@ function HomePage() {
           <h2 className="text-24-b">🔥 인기 체험</h2>
           <div className="relative">
             <div className="hidden tablet:grid tablet:grid-cols-2 desktop:grid-cols-4 gap-4">
-              {paginatedPopularActivities?.map(renderCard)}
+              {paginatedPopularActivities?.map((activity) =>
+                renderCard(activity),
+              )}
+
             </div>
 
             <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 tablet:hidden desktop:hidden">

@@ -22,8 +22,8 @@ import {
   useGetActivityById,
   usePostActivityImage,
 } from "./(components)/usePostActivityImage";
-import activityService from "@/apis/activity/activity.service";
-import myActivityService from "@/apis/myActivity/myActivity.service";
+import { usePostActivityMutation } from "@/apis/activity/activity.query";
+import { usePatchMyActivityMutation } from "@/apis/myActivity/myActivity.query";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg?url";
 import CloseEye from "@/assets/icons/any/icon_close_eye.svg?url";
 import BackIcon from "@/assets/icons/arrow/arrow_back.svg?url";
@@ -57,6 +57,8 @@ const CATEGORY_OPTIONS = [
 ];
 
 function ActivityUpdatePage() {
+  const { mutateAsync: patchActivity } = usePatchMyActivityMutation();
+  const { mutateAsync: postActivity } = usePostActivityMutation();
   const { id } = useParams();
   const router = useRouter();
   const isNew = id === "new";
@@ -64,9 +66,11 @@ function ActivityUpdatePage() {
   const [bannerImageUrl, setBannerImageUrl] = useState<string | null>(null);
   const [isDirty, setIsDirty] = useState(false);
   const [initialState, setInitialState] = useState<string>("");
-  const [introImages, setIntroImages] = useState<File[]>([]);
   const [introImageUrls, setIntroImageUrls] = useState<string[]>([]);
   const { overlay, close } = useOverlay();
+  const [originalIntroImageUrls, setOriginalIntroImageUrls] = useState<
+    string[]
+  >([]);
 
   useEffect(() => {
     const handler = () => {
@@ -115,17 +119,15 @@ function ActivityUpdatePage() {
 
   const handleIntroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || introImages.length >= 4) return;
+    if (!files || introImageUrls.length >= 4) return;
 
     const file = files[0];
     const url = await postImage(file);
 
-    setIntroImages((prev) => [...prev, file]);
     setIntroImageUrls((prev) => [...prev, url]);
   };
 
   const removeIntroImage = (index: number) => {
-    setIntroImages((prev) => prev.filter((_, i) => i !== index));
     setIntroImageUrls((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -193,9 +195,9 @@ function ActivityUpdatePage() {
 
     setBannerImageUrl(activity.bannerImageUrl);
 
-    setIntroImageUrls(
-      activity.subImages?.map((img: { imageUrl: string }) => img.imageUrl),
-    );
+    const urls = activity.subImages?.map((img) => img.imageUrl) ?? [];
+    setIntroImageUrls(urls);
+    setOriginalIntroImageUrls(urls); // ← 여기에 추가
 
     const parsedTimes =
       activity.schedules?.map((s) => ({
@@ -296,32 +298,63 @@ function ActivityUpdatePage() {
       return;
     }
 
-    try {
-      const payload = {
-        title: formData.title,
-        category: formData.category,
-        description: formData.description,
-        price: Number(formData.price),
-        address: formData.address,
-        bannerImageUrl: bannerImageUrl ?? "",
-        subImageUrlsToAdd: introImageUrls,
-        subImageIdsToRemove: [],
-        scheduleIdsToRemove: scheduleIdsToRemove,
-        schedulesToAdd: availableTimes.map((slot) => ({
-          id: 0,
-          date: slot.date ? format(slot.date, "yyyy-MM-dd") : "",
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-      };
+    const commonPayload = {
+      title: formData.title,
+      category: formData.category,
+      description: formData.description,
+      price: Number(formData.price),
+      address: formData.address,
+      bannerImageUrl: bannerImageUrl ?? "",
+    };
 
+    try {
       if (isNew) {
-        await activityService.postActivity({ payload });
+        const payload = {
+          ...commonPayload,
+          schedules: availableTimes.map((slot) => ({
+            date: format(slot.date!, "yyyy-MM-dd"),
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          subImageUrls: introImageUrls,
+        };
+        console.log("🛠️ 등록 요청 Payload:", payload);
+
+        await postActivity({ payload });
       } else {
-        await myActivityService.patchMyActivity({
-          activityId: Number(id),
-          payload,
-        });
+        if (!activity) return;
+        const urlsToAdd = introImageUrls.filter(
+          (url) => !originalIntroImageUrls.includes(url),
+        );
+        const existingSubImages = activity.subImages ?? [];
+        const idsToRemove = existingSubImages
+          .filter((img) => !introImageUrls.includes(img.imageUrl))
+          .map((img) => img.id);
+        const schedulesToAdd = availableTimes
+          .filter(
+            (slot) =>
+              !slot.id &&
+              !activity.schedules.some(
+                (s) =>
+                  s.date === format(slot.date!, "yyyy-MM-dd") &&
+                  s.startTime === slot.startTime &&
+                  s.endTime === slot.endTime,
+              ),
+          )
+          .map((slot) => ({
+            date: format(slot.date!, "yyyy-MM-dd"),
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          }));
+
+        const payload = {
+          ...commonPayload,
+          schedulesToAdd,
+          scheduleIdsToRemove,
+          subImageUrlsToAdd: urlsToAdd,
+          subImageIdsToRemove: idsToRemove,
+        };
+        await patchActivity({ activityId: Number(id), payload });
       }
 
       overlay(
@@ -605,7 +638,7 @@ function ActivityUpdatePage() {
         <div className="flex gap-[1.4rem] mb-[2.4rem] whitespace-nowrap relative">
           <label
             className={`grid grid-col flex-none cursor-pointer border-gray-100 desktop:w-[12.8rem] desktop:h-[12.8rem] tablet:h-[12.6rem] tablet:w-[12.6rem] w-8 h-8 border rounded-[1.6rem] flex items-center justify-center ${
-              introImages.length >= 4 ? "opacity-50 cursor-not-allowed" : ""
+              introImageUrls.length >= 4 ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             <input
@@ -613,14 +646,14 @@ function ActivityUpdatePage() {
               accept="image/*"
               className="hidden"
               onChange={handleIntroUpload}
-              disabled={introImages.length >= 4}
+              disabled={introImageUrls.length >= 4}
             />
             <div className="flex flex-col items-center gap-[1rem]">
               <div className="relative w-[2.7rem] h-[2.3rem]">
                 <Image src={CloseEye} alt="이미지 업로드" fill />
               </div>
               <span className="text-gray-600 tablet:text-14-m text-13-m">
-                {introImages.length}/4
+                {introImageUrls.length}/4
               </span>
             </div>
           </label>
