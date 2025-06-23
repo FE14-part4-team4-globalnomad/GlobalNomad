@@ -19,7 +19,11 @@ export default function ReservationFlow(props: ReservationProps) {
   return (
     <div className="w-full h-full overflow-y-auto p-[24px] rounded-t-3xl bg-white">
       {step === "guest" ? (
-        <ReservationMobileCnt {...props} onBack={() => setStep("date")} onConfirm={() => {}} />
+        <ReservationMobileCnt
+          {...props}
+          onBack={() => setStep("date")}
+          onConfirm={() => {}}
+        />
       ) : (
         <ReservationMobile {...props} onNext={() => setStep("guest")} />
       )}

@@ -26,9 +26,9 @@ export default function AvailableTimes({
               onClick={() => setSelectedTime(time)}
               className={`w-full flex justify-center items-center rounded-3xl py-[16px] tablet:py-[14px] 
                 ${
-                  selectedTime === time 
-                      ? "border-2 border-brand-500 text-brand-500 bg-brand-100" 
-                      : "border border-gray-300 text-gray-950 bg-white"
+                  selectedTime === time
+                    ? "border-2 border-brand-500 text-brand-500 bg-brand-100"
+                    : "border border-gray-300 text-gray-950 bg-white"
                 }`}
             >
               {time}

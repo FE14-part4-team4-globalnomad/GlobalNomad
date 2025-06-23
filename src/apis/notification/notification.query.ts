@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   GetMyNotificationListResultType,
@@ -9,7 +13,7 @@ import notificationService from "./notification.service";
 const myNotificationsQueryKey = ["myNotifications"];
 
 export const useMyNotificationListQuery = (
-  params?: GetMyNotificationListPayloadType
+  params?: GetMyNotificationListPayloadType,
 ) => {
   const size = params?.query?.size ?? 10;
 

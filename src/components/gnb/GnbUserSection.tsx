@@ -28,14 +28,18 @@ export default function GnbUserSection() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) { close(); }
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        close();
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [close]);
 
   const getBellIconName = () => {
-    if (hasNew) { return isOpen ? "BellActiveBrand" : "BellActive"; }
+    if (hasNew) {
+      return isOpen ? "BellActiveBrand" : "BellActive";
+    }
     return "BellInactive";
   };
 
@@ -46,7 +50,10 @@ export default function GnbUserSection() {
   };
 
   return (
-    <div className="flex items-center gap-[1.2rem] text-14-m text-black" ref={ref}>
+    <div
+      className="flex items-center gap-[1.2rem] text-14-m text-black"
+      ref={ref}
+    >
       <div className="relative w-[2.4rem] h-[2.4rem] flex items-center justify-center">
         <button onClick={toggle}>
           <Icon
