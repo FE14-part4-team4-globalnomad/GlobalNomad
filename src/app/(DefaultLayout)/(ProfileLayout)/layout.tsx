@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import SideMenu from "@/components/sidemenu/SideMenu";
+import DynamicSideMenu from "@/components/sidemenu/DynamicSideMenu";
 import { cn } from "@/utils/classNames";
 
 function Layout({ children }: { children: ReactNode }) {
@@ -12,9 +12,7 @@ function Layout({ children }: { children: ReactNode }) {
         "desktop:w-[98rem] desktop:gap-[5rem] desktop:mx-auto",
       )}
     >
-      <aside className={cn("hidden", "tablet:block")}>
-        <SideMenu />
-      </aside>
+      <DynamicSideMenu />
       <main className="grow-1">{children}</main>
     </div>
   );
