@@ -11,6 +11,7 @@ export { default as Warning } from "./any/icon_warning.svg";
 
 export { default as BellActive } from "./any/bell/icon_active_bell.svg";
 export { default as BellInactive } from "./any/bell/icon_inactive_bell.svg";
+export { default as BellActiveBrand } from "./any/bell/icon_active_bell_brand.svg";
 
 export { default as ArrowBack } from "./arrow/arrow_back.svg";
 export { default as ArrowPagination } from "./arrow/arrow_pagination.svg";
@@ -20,3 +21,4 @@ export { default as Kakao } from "./social/icon_kakao.svg";
 
 export { default as StarActive } from "./star/icon_star_active.svg";
 export { default as StarInactive } from "./star/icon_star_inactive.svg";
+export { default as Empty } from "../images/logos/logo_empty.svg";

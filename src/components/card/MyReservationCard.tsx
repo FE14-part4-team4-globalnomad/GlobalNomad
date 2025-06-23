@@ -53,20 +53,11 @@ function MyReservationCardProvider({
 function ReviewButtons() {
   const {
     reservationInfo: { status, reviewSubmitted },
-    onChangeReservation,
     onCancelReservation,
     onUpdateReview,
   } = useMyReservationCard();
   return status !== "completed" ? (
     <>
-      <Button
-        size="reservation"
-        variant="outline"
-        className="mobile:w-full rounded-[8px]"
-        onClick={onChangeReservation}
-      >
-        예약 변경
-      </Button>
       <Button
         size="reservation"
         variant="secondary"
@@ -228,11 +219,12 @@ export default function MyReservationCard({
             <MyReservationCardProvider.ReservationInfo />
             <MyReservationCardProvider.PriceAndActions />
           </ReservationCardWrapper>
-          {reservationInfo.status !== "declined" && status !== "canceled" && (
-            <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
-              <MyReservationCardProvider.ReviewButtons />
-            </div>
-          )}
+          {reservationInfo.status !== "declined" &&
+            reservationInfo.status !== "canceled" && (
+              <div className="flex tablet:hidden justify-stretch items-stretch gap-[12px]">
+                <MyReservationCardProvider.ReviewButtons />
+              </div>
+            )}
         </div>
       </article>
     </MyReservationCardProvider>

@@ -9,7 +9,7 @@ const sizeStyles: Record<SizeVariant, string> = {
     "w-[113px] h-[41px] text-14-m tablet:w-[135px] tablet:h-[47px] tablet:text-16-m desktop:w-[135px] desktop:h-[47px] desktop:text-16-m",
 
   empty:
-    "w-[182px] h-[19px] text-16-m tablet:w-[182px] tablet:h-[19px] tablet:text-16-m desktop:w-[182px] desktop:h-[19px] desktop:text-16-m",
+    "mobile:w-[182px] mobile:h-[54px] mobile:text-16-m tablet:w-[182px] tablet:h-[54px] tablet:text-16-m desktop:w-[182px] desktop:h-[54px] desktop:text-16-m",
 
   experienceRegister:
     "w-[138px] h-[48px] text-16-m tablet:w-[138px] tablet:h-[48px] tablet:text-16-m desktop:w-[138px] desktop:h-[48px] desktop:text-16-m",
@@ -24,7 +24,7 @@ const sizeStyles: Record<SizeVariant, string> = {
     "w-[157.5px] h-[48px] text-14-m tablet:w-[120px] tablet:h-[41px] tablet:text-16-m desktop:w-[120px] desktop:h-[41px] desktop:text-16-m",
 
   reservation:
-    "w-[157.5px] h-[37px] text-14-m tablet:w-[232px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",
+    "mobile:w-[71px] mobile:h-[37px] mobile:text-14-m tablet:w-[71px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",
 
   review:
     "w-[309px] h-[37px] text-14-m tablet:w-[476px] tablet:h-[37px] tablet:text-14-m desktop:w-[71px] desktop:h-[29px] desktop:text-14-m",

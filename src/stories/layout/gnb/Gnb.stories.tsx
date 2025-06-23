@@ -1,8 +1,11 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 import Gnb from "@/components/gnb/Gnb";
 import { useAuthStore } from "@/store/authStore";
+
+const queryClient = new QueryClient();
 
 const meta: Meta<typeof Gnb> = {
   title: "Components/Layout/Gnb",
@@ -10,6 +13,13 @@ const meta: Meta<typeof Gnb> = {
   parameters: {
     layout: "fullscreen",
   },
+  decorators: [
+    (Story) => (
+      <QueryClientProvider client={queryClient}>
+        <Story />
+      </QueryClientProvider>
+    ),
+  ],
 };
 
 export default meta;
