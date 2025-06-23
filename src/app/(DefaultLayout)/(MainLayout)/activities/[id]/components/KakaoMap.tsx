@@ -114,7 +114,9 @@ export default function KakaoMap({ address }: MapProps) {
             });
 
             kakao.maps.event.addListener(marker, "click", () => {
-              window.open(`https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`);
+              window.open(
+                `https://map.kakao.com/link/map/선택위치,${result[0].y},${result[0].x}`,
+              );
             });
 
             const overlay = new kakao.maps.CustomOverlay({

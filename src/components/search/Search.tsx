@@ -27,7 +27,7 @@ export function Search({
 
   return (
     <div className="w-full flex flex-col items-center">
-      <h2 className="text-32-b mb-[36px] text-gray-950">
+      <h2 className="text-gray-950 desktop:text-32-b desktop:mb-[36px] mobile:text-16-b mobile:mb-[12px]">
         무엇을 체험하고 싶으신가요?
       </h2>
       <div className="w-full relative">
@@ -37,7 +37,7 @@ export function Search({
           onKeyDown={handleKeyDown}
           onFocus={(e) => (e.target.placeholder = "")}
           onBlur={(e) => (e.target.placeholder = placeholder)}
-          className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md border-none !text-gray-600"
+          className="pl-[56px] pr-[150px] h-[64px] desktop:text-18-m mobile:text-14-m shadow-md border-none truncate !text-gray-600"
         />
         <Icon
           name="Search"

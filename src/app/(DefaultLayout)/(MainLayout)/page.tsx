@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 import ArrowButton from "./components/ArrowButton";
@@ -20,28 +21,41 @@ import { useSort } from "@/hooks/useSort";
 import { ActivityType } from "@/types/activity";
 
 function HomePage() {
-  // 🔥 인기 체험 영역 관련 상태
+  // 🔥 인기 체험
   const { popularActivities } = usePopularActivities();
   const [slideIndex, setSlideIndex] = useState(0);
 
-  // 🛼 모든 체험 영역 관련 상태
+  // 📌 상태
   const { selectedCategory, handleCategorySelect } = useCategoryFilter();
   const { currentPage, setCurrentPage } = usePagination();
   const { sortOption, setSortOption } = useSort();
   const { itemsPerSlide, itemsPerPage } = useResponsiveSlider();
+  const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { activities, totalPages } = useActivities(
+  // 📊 데이터 요청
+  const { data: searchedData } = useAllActivities({
+    page: currentPage,
+    size: itemsPerPage,
+    sort: sortOption.id,
+    keyword: searchKeyword,
+  });
+
+  const { activities: defaultActivities, totalPages: defaultTotalPages } = useActivities(
     selectedCategory,
     sortOption.id,
     currentPage,
-    itemsPerPage,
+    itemsPerPage
   );
 
-  const { data: allActivities = [] } = useAllActivities();
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const activities = searchKeyword
+    ? searchedData?.activities ?? []
+    : defaultActivities;
 
-  // 🖼️ 배너 영역 관련 상태
-  const { currentIndex, extendedActivities } = useAutoSlider(activities);
+  const totalPages = searchKeyword
+    ? Math.ceil((searchedData?.totalCount ?? 0) / itemsPerPage)
+    : defaultTotalPages;
+
+  const { currentIndex, extendedActivities } = useAutoSlider(defaultActivities);
 
   const paginatedPopularActivities = popularActivities?.slice(
     slideIndex * itemsPerSlide,
@@ -49,28 +63,15 @@ function HomePage() {
   );
 
   const renderCard = (activity: ActivityType) => (
-    <Card
-      key={activity.id}
-      title={activity.title}
-      price={activity.price}
-      bannerImageUrl={activity.bannerImageUrl}
-      rating={activity.rating}
-      reviewCount={activity.reviewCount}
-    />
-  );
-
-  const filteredActivities = searchKeyword
-    ? allActivities.filter((activity) =>
-        activity.title.toLowerCase().includes(searchKeyword.toLowerCase())
-      )
-    : activities;
-
-  const totalFiltered = filteredActivities.length;
-  const totalFilteredPages = Math.ceil(totalFiltered / itemsPerPage);
-
-  const paginatedActivities = filteredActivities.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    <Link href={`/activities/${activity.id}`} key={activity.id}>
+      <Card
+        title={activity.title}
+        price={activity.price}
+        bannerImageUrl={activity.bannerImageUrl}
+        rating={activity.rating}
+        reviewCount={activity.reviewCount}
+      />
+    </Link>
   );
 
   return (
@@ -81,15 +82,15 @@ function HomePage() {
           id="slider-track"
           className="flex transition-transform duration-700 ease-in-out"
           style={{
-            width: `${activities.length * 100}%`,
-            transform: `translateX(-${currentIndex * (100 / (activities.length || 1))}%)`,
+            width: `${defaultActivities.length * 100}%`,
+            transform: `translateX(-${currentIndex * (100 / (defaultActivities.length || 1))}%)`,
           }}
         >
           {extendedActivities.map((activity, index) => (
             <div
               key={`${activity.id}-${index}`}
               className="w-full flex-shrink-0 relative rounded-[24px] overflow-hidden mobile:h-[18.1rem] tablet:h-[37.5rem] desktop:h-[50rem]"
-              style={{ width: `${100 / (activities.length || 1)}%` }}
+              style={{ width: `${100 / (defaultActivities.length || 1)}%` }}
             >
               <Image
                 src={activity.bannerImageUrl}
@@ -109,10 +110,12 @@ function HomePage() {
           ))}
         </div>
         <div className="mt-6.5 px-1 pb-1">
-          <Search onSearch={(keyword) => {
-            setSearchKeyword(keyword);
-            setCurrentPage(1);
-          }} />
+          <Search
+            onSearch={(keyword) => {
+              setSearchKeyword(keyword);
+              setCurrentPage(1);
+            }}
+          />
         </div>
       </section>
 
@@ -121,25 +124,28 @@ function HomePage() {
         <section className="flex flex-col gap-[2rem]">
           <h2 className="text-24-b">🔥 인기 체험</h2>
           <div className="relative">
-            {/* 데스크탑/태블릿용 그리드 */}
             <div className="hidden tablet:grid tablet:grid-cols-2 desktop:grid-cols-4 gap-4">
-              {paginatedPopularActivities?.map((activity) => renderCard(activity))}
+              {paginatedPopularActivities?.map(renderCard)}
             </div>
 
-            {/* 모바일용 가로 슬라이드 */}
             <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 tablet:hidden desktop:hidden">
               {popularActivities.map((activity) => (
-                <div key={activity.id} className="flex-shrink-0 w-[85%] snap-start">
+                <div
+                  key={activity.id}
+                  className="flex-shrink-0 w-[85%] snap-start"
+                >
                   {renderCard(activity)}
                 </div>
               ))}
             </div>
+
             <div className="absolute desktop:right-[-40px] tablet:right-[-25px] top-1/2 -translate-y-1/2 hidden mobile:hidden tablet:block">
               <ArrowButton
                 onClick={() =>
                   setSlideIndex(
                     (prev) =>
-                      (prev + 1) % Math.ceil(popularActivities.length / itemsPerSlide),
+                      (prev + 1) %
+                      Math.ceil(popularActivities.length / itemsPerSlide)
                   )
                 }
               />
@@ -150,14 +156,13 @@ function HomePage() {
 
       {/* 모든 체험 */}
       <section className="flex flex-col gap-[2rem]">
-        {/* 서치했을 경우 */}
         {searchKeyword ? (
           <>
             <p className="text-20-m mb-1">
               <span className="text-20-b">{searchKeyword}</span>으로 검색한 결과입니다.
             </p>
             <p className="text-18-m text-gray-700 mb-3">
-              총 {totalFiltered}개의 결과
+              총 {searchedData?.totalCount ?? 0}개의 결과
             </p>
           </>
         ) : (
@@ -166,10 +171,9 @@ function HomePage() {
               <h2 className="text-24-b">🛼 모든 체험</h2>
               <SortDropdown
                 selectedItem={sortOption}
-                onSelect={(option) => setSortOption(option)}
+                onSelect={setSortOption}
               />
             </div>
-            {/* 필터, 태그 */}
             <div className="flex overflow-x-auto gap-2 tablet:justify-between scrollbar-hide">
               <CategoryFilter
                 selectedId={selectedCategory}
@@ -180,12 +184,12 @@ function HomePage() {
         )}
 
         <div className="grid grid-cols-2 tablet:grid-cols-2 desktop:grid-cols-4 gap-4">
-          {paginatedActivities.map((activity) => renderCard(activity))}
+          {activities.map(renderCard)}
         </div>
 
         <Pagination
           currentPage={currentPage}
-          totalPages={searchKeyword ? totalFilteredPages : totalPages}
+          totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </section>

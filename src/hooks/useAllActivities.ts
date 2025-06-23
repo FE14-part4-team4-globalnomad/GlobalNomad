@@ -1,19 +1,43 @@
 import { useQuery } from "@tanstack/react-query";
 
 import activityService from "@/apis/activity/activity.service";
+import { SortOptionType } from "@/app/(DefaultLayout)/(MainLayout)/components/SortDropdown";
+import { ActivityType } from "@/types/activity";
 
-export const useAllActivities = () => {
-  return useQuery({
-    queryKey: ["allActivities"],
-    queryFn: () =>
-      activityService
-        .getActivities({
-          query: {
-            method: "offset",
-            page: 1,
-            size: 1000,
-          },
-        })
-        .then((res) => res.data.activities),
+type UseAllActivitiesParams = {
+  page: number;
+  size: number;
+  sort: SortOptionType["id"];
+  keyword?: string;
+};
+
+type UseAllActivitiesResult = {
+  activities: ActivityType[];
+  totalCount: number;
+};
+
+export const useAllActivities = ({
+  page,
+  size,
+  sort,
+  keyword = "",
+}: UseAllActivitiesParams) => {
+  return useQuery<UseAllActivitiesResult>({
+    queryKey: ["allActivities", page, size, sort, keyword],
+    queryFn: async () => {
+      const response = await activityService.getActivities({
+        query: {
+          method: "offset",
+          page,
+          size,
+          sort,
+          keyword: keyword || undefined,
+        },
+      });
+      return {
+        activities: response.data.activities,
+        totalCount: response.data.totalCount,
+      };
+    },
   });
 };

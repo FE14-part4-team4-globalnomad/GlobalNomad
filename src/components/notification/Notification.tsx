@@ -26,10 +26,10 @@ export default function Notification() {
     data?.pages.flatMap((page) => page.notifications) ?? [];
 
   const transformNotification = (item: LocalNotificationType) => {
-    const isApproved = item.content.includes('승인');
+    const isApproved = item.content.includes("승인");
 
     const match = item.content.match(
-      /^(.*)\((\d{4}-\d{2}-\d{2} \d{2}:\d{2}~\d{2}:\d{2})\).*예약이\s*(승인|거절)되었습니다?\.?$/
+      /^(.*)\((\d{4}-\d{2}-\d{2} \d{2}:\d{2}~\d{2}:\d{2})\).*예약이\s*(승인|거절)되었습니다?\.?$/,
     );
 
     let title = "";
@@ -83,7 +83,7 @@ export default function Notification() {
           fetchNextPage();
         }
       },
-      { root: null, rootMargin: "0px", threshold: 1.0 }
+      { root: null, rootMargin: "0px", threshold: 1.0 },
     );
 
     observer.observe(loaderEl);
@@ -129,7 +129,7 @@ export default function Notification() {
             key={item.id}
             onClick={() => handleSelect(item.id)}
             className={`cursor-pointer py-[16px] px-2 transition ${
-              selectedId === item.id ? 'bg-brand-100' : ''
+              selectedId === item.id ? "bg-brand-100" : ""
             }`}
           >
             <p className="text-14-b text-gray-950 mb-1">
@@ -142,7 +142,7 @@ export default function Notification() {
               <p>{item.title}</p>
               <p className="">({item.dateRange})</p>
               <p>
-                예약이{' '}
+                예약이{" "}
                 <span
                   className={
                     item.status === "승인" ? "text-brand-500" : "text-red-500"

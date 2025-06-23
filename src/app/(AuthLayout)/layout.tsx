@@ -1,6 +1,12 @@
+import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 
 import { cn } from "@/utils/classNames";
+
+export const metadata: Metadata = {
+  title: "GlobalNomad | 로그인",
+  description: "GlobalNomad 시작해 보세요",
+};
 
 function Layout({ children }: { children: ReactNode }) {
   return (

@@ -87,7 +87,7 @@ export const activityQueries = {
 // 체험 리스트 조회 훅 (목록 페이지에서 사용)
 export const useActivityListQuery = (
   params: GetActivityListPayloadType,
-  enabled = true
+  enabled = true,
 ) =>
   useQuery({
     ...activityQueries.list(params),

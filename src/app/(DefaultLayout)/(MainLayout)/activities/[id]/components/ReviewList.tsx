@@ -24,7 +24,7 @@ const getSatisfactionLabel = (rating: number) => {
   if (rating >= 3.5) return "만족";
   if (rating >= 2.5) return "보통";
   if (rating >= 1.5) return "싫음";
-  if (rating >= 1) return "매우 싫음"
+  if (rating >= 1) return "매우 싫음";
   return "리뷰 없음";
 };
 
