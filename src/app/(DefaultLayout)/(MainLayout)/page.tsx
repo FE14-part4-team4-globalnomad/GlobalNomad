@@ -64,7 +64,7 @@ function HomePage() {
 
   const filteredActivities = searchKeyword
     ? allActivities.filter((activity) =>
-        activity.title.toLowerCase().includes(searchKeyword.toLowerCase())
+        activity.title.toLowerCase().includes(searchKeyword.toLowerCase()),
       )
     : activities;
 
@@ -112,10 +112,12 @@ function HomePage() {
           ))}
         </div>
         <div className="mt-6.5 px-1 pb-1">
-          <Search onSearch={(keyword) => {
-            setSearchKeyword(keyword);
-            setCurrentPage(1);
-          }} />
+          <Search
+            onSearch={(keyword) => {
+              setSearchKeyword(keyword);
+              setCurrentPage(1);
+            }}
+          />
         </div>
       </section>
 
@@ -126,13 +128,18 @@ function HomePage() {
           <div className="relative">
             {/* 데스크탑/태블릿용 그리드 */}
             <div className="hidden tablet:grid tablet:grid-cols-2 desktop:grid-cols-4 gap-4">
-              {paginatedPopularActivities?.map((activity) => renderCard(activity))}
+              {paginatedPopularActivities?.map((activity) =>
+                renderCard(activity),
+              )}
             </div>
 
             {/* 모바일용 가로 슬라이드 */}
             <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 tablet:hidden desktop:hidden">
               {popularActivities.map((activity) => (
-                <div key={activity.id} className="flex-shrink-0 w-[85%] snap-start">
+                <div
+                  key={activity.id}
+                  className="flex-shrink-0 w-[85%] snap-start"
+                >
                   {renderCard(activity)}
                 </div>
               ))}
@@ -142,7 +149,8 @@ function HomePage() {
                 onClick={() =>
                   setSlideIndex(
                     (prev) =>
-                      (prev + 1) % Math.ceil(popularActivities.length / itemsPerSlide),
+                      (prev + 1) %
+                      Math.ceil(popularActivities.length / itemsPerSlide),
                   )
                 }
               />
@@ -157,7 +165,8 @@ function HomePage() {
         {searchKeyword ? (
           <>
             <p className="text-20-m mb-1">
-              <span className="text-20-b">{searchKeyword}</span>으로 검색한 결과입니다.
+              <span className="text-20-b">{searchKeyword}</span>으로 검색한
+              결과입니다.
             </p>
             <p className="text-18-m text-gray-700 mb-3">
               총 {totalFiltered}개의 결과

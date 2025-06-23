@@ -54,13 +54,13 @@ export default function Calendar({ activityId }: { activityId: number }) {
         id="calendar-component-area"
       >
         <div className="h-[44px] flex justify-center items-center mb-[8px] tablet:mt-[20px] tablet:mb-[30px]">
-          <button onClick={handlePrevMonth}>
+          <button className="flex" onClick={handlePrevMonth}>
             <Icon name="ChevronRight" className="rotate-180" />
           </button>
           <div>
             {year}년 {formatMonth(month)}월
           </div>
-          <button onClick={handleNextMonth}>
+          <button className="flex" onClick={handleNextMonth}>
             <Icon name="ChevronRight" />
           </button>
         </div>
