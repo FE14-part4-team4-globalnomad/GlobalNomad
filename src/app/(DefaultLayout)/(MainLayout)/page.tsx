@@ -21,11 +21,11 @@ import { useSort } from "@/hooks/useSort";
 import { ActivityType } from "@/types/activity";
 
 function HomePage() {
-  // 🔥 인기 체험
+  // 🔥 인기 체험 영역 관련 상태
   const { popularActivities } = usePopularActivities();
   const [slideIndex, setSlideIndex] = useState(0);
 
-  // 📌 상태
+  // 🛼 모든 체험 영역 관련 상태
   const { selectedCategory, handleCategorySelect } = useCategoryFilter();
   const { currentPage, setCurrentPage } = usePagination();
   const { sortOption, setSortOption } = useSort();
@@ -55,6 +55,7 @@ function HomePage() {
     ? Math.ceil((searchedData?.totalCount ?? 0) / itemsPerPage)
     : defaultTotalPages;
 
+  // 🖼️ 배너 영역 관련 상태
   const { currentIndex, extendedActivities } = useAutoSlider(defaultActivities);
 
   const paginatedPopularActivities = popularActivities?.slice(
