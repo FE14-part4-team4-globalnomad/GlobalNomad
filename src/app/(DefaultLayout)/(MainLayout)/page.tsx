@@ -40,15 +40,11 @@ function HomePage() {
     keyword: searchKeyword,
   });
 
-  const { activities: defaultActivities, totalPages: defaultTotalPages } = useActivities(
-    selectedCategory,
-    sortOption.id,
-    currentPage,
-    itemsPerPage
-  );
+  const { activities: defaultActivities, totalPages: defaultTotalPages } =
+    useActivities(selectedCategory, sortOption.id, currentPage, itemsPerPage);
 
   const activities = searchKeyword
-    ? searchedData?.activities ?? []
+    ? (searchedData?.activities ?? [])
     : defaultActivities;
 
   const totalPages = searchKeyword
@@ -76,7 +72,7 @@ function HomePage() {
   );
 
   return (
-    <div className="flex flex-col space-y-16">
+    <div className="flex flex-col space-y-6">
       {/* 배너 영역 */}
       <section className="w-full overflow-hidden relative">
         <div
@@ -146,7 +142,7 @@ function HomePage() {
                   setSlideIndex(
                     (prev) =>
                       (prev + 1) %
-                      Math.ceil(popularActivities.length / itemsPerSlide)
+                      Math.ceil(popularActivities.length / itemsPerSlide),
                   )
                 }
               />
@@ -160,7 +156,8 @@ function HomePage() {
         {searchKeyword ? (
           <>
             <p className="text-20-m mb-1">
-              <span className="text-20-b">{searchKeyword}</span>으로 검색한 결과입니다.
+              <span className="text-20-b">{searchKeyword}</span>으로 검색한
+              결과입니다.
             </p>
             <p className="text-18-m text-gray-700 mb-3">
               총 {searchedData?.totalCount ?? 0}개의 결과
