@@ -1,112 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-import ReviewModal from "./components/ReviewModal";
+import EmptyState from "./components/EmptyState";
+import LoadingState from "./components/LoadingState";
 import StatusBadgeGroup from "./components/StatusBadgeGroup";
-import reservationService from "@/apis/reservation/reservation.service";
-import Empty from "@/assets/images/logos/logo_empty.svg?url";
-import Button from "@/components/button/Button";
 import MyReservationCard from "@/components/card/MyReservationCard";
-import WarningModal from "@/components/modal/WarningModal";
-import { useOverlay } from "@/hooks/useOverlay";
-import { MyReservationType } from "@/types/reservation";
+import { useCancelReservation } from "@/hooks/useCancelReservation";
+import { useReservationData } from "@/hooks/useReservationData.ts";
+import { useReservationFilter } from "@/hooks/useReservationFilter";
+import { useReviewModal } from "@/hooks/useReviewModal";
 
 function ReservationPage() {
-  const [reservations, setReservations] = useState<MyReservationType[]>([]);
-  const [filteredReservations, setFilteredReservations] = useState<
-    MyReservationType[]
-  >([]);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const { reservations, setReservations, isLoading } = useReservationData();
+  const handleCancelReservation = useCancelReservation(setReservations);
+  const handleOpenReviewModal = useReviewModal(setReservations);
+  const { selectedStatus, setSelectedStatus, filteredReservations } =
+    useReservationFilter(reservations);
   const router = useRouter();
-  const overlay = useOverlay();
-
-  const handleCancelReservationApi = async (reservationId: number) => {
-    try {
-      await reservationService.patchMyReservations({
-        reservationId,
-        payload: { status: "canceled" },
-      });
-      setReservations((prev) =>
-        prev.map((r) =>
-          r.id === reservationId ? { ...r, status: "canceled" } : r,
-        ),
-      );
-    } catch (error) {
-      console.error("예약 취소 실패:", error);
-    }
-  };
-
-  const handleCancelReservation = (reservationId: number) => {
-    overlay.overlay(
-      <WarningModal
-        message="예약을 취소하시겠어요?"
-        confirmText="취소하기"
-        onConfirm={() => {
-          handleCancelReservationApi(reservationId);
-          overlay.close();
-        }}
-      />,
-    );
-  };
-
-  const handleSubmitReview = async (
-    reservationId: number,
-    rating: number,
-    content: string,
-  ) => {
-    try {
-      await reservationService.postMyReservationReview({
-        reservationId,
-        payload: {
-          rating,
-          content,
-        },
-      });
-      overlay.close();
-    } catch (error) {
-      console.error("리뷰 작성 실패:", error);
-    }
-  };
-
-  const handleOpenReviewModal = (reservation: MyReservationType) => {
-    overlay.overlay(
-      <ReviewModal
-        title={reservation.activity.title}
-        schedule={`${reservation.date} · ${reservation.startTime} - ${reservation.endTime} (${reservation.headCount}명)`}
-        onSubmit={(rating, content) =>
-          handleSubmitReview(reservation.id, rating, content)
-        }
-      />,
-    );
-  };
-
-  useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const { data } = await reservationService.getMyReservations();
-        console.log("API 응답 데이터:", data);
-        setReservations(data.reservations);
-        setFilteredReservations(data.reservations);
-      } catch (error) {
-        console.error("예약 목록을 불러오는 데 실패했습니다", error);
-      }
-    };
-
-    fetchReservations();
-  }, []);
-
-  useEffect(() => {
-    if (!selectedStatus) {
-      setFilteredReservations(reservations);
-    } else {
-      setFilteredReservations(
-        reservations.filter((r) => r.status === selectedStatus),
-      );
-    }
-  }, [selectedStatus, reservations]);
 
   return (
     <section>
@@ -128,7 +39,9 @@ function ReservationPage() {
       </div>
 
       <div>
-        {filteredReservations.length > 0 ? (
+        {isLoading ? (
+          <LoadingState />
+        ) : filteredReservations.length > 0 ? (
           <div className="flex flex-col gap-2 mt-3">
             {filteredReservations.map((reservation) => (
               <MyReservationCard
@@ -142,22 +55,7 @@ function ReservationPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center mt-5 gap-1">
-            <Image
-              src={Empty}
-              alt="지구 일러스트"
-              className="w-[18.2rem] h-[18.2rem]"
-            />
-            <p className="text-18-m text-gray-600">아직 예약한 체험이 없어요</p>
-            <Button
-              size="empty"
-              variant="primary"
-              rounded
-              onClick={() => router.push("/")}
-            >
-              둘러보기
-            </Button>
-          </div>
+          <EmptyState onClick={() => router.push("/")} />
         )}
       </div>
     </section>

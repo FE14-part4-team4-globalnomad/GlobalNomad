@@ -6,6 +6,7 @@ import {
   GetActivityReviewListPayloadType,
   PostActivityPayloadType,
   PostActivityReservationPayloadType,
+  PostActivityResultType,
 } from "./activity.schema";
 import activityService from "./activity.service";
 import myActivityService from "@/apis/myActivity/myActivity.service";
@@ -130,8 +131,8 @@ export const useActivityReservationMutation = () =>
 
 // 체험 등록 훅 (새 체험 생성 폼에서 사용)
 export const usePostActivityMutation = () =>
-  useMutation({
-    mutationFn: (params: PostActivityPayloadType) =>
+  useMutation<PostActivityResultType, unknown, PostActivityPayloadType>({
+    mutationFn: (params) =>
       activityService.postActivity(params).then((res) => res.data),
   });
 

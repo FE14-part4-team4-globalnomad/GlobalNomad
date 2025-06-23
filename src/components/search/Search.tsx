@@ -16,7 +16,6 @@ export function Search({
 
   const handleSearch = () => {
     const keyword = inputRef.current?.value.trim() ?? "";
-    if (!keyword) return;
     onSearch(keyword);
   };
 
@@ -38,7 +37,7 @@ export function Search({
           onKeyDown={handleKeyDown}
           onFocus={(e) => (e.target.placeholder = "")}
           onBlur={(e) => (e.target.placeholder = placeholder)}
-          className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md border-none"
+          className="pl-[56px] pr-[150px] h-[64px] text-18-m shadow-md border-none !text-gray-600"
         />
         <Icon
           name="Search"

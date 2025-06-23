@@ -22,8 +22,8 @@ import {
   useGetActivityById,
   usePostActivityImage,
 } from "./(components)/usePostActivityImage";
-import activityService from "@/apis/activity/activity.service";
-import myActivityService from "@/apis/myActivity/myActivity.service";
+import { usePostActivityMutation } from "@/apis/activity/activity.query";
+import { usePatchMyActivityMutation } from "@/apis/myActivity/myActivity.query";
 import CalendarIcon from "@/assets/icons/any/calendar/icon_calendar_black.svg?url";
 import CloseEye from "@/assets/icons/any/icon_close_eye.svg?url";
 import BackIcon from "@/assets/icons/arrow/arrow_back.svg?url";
@@ -57,6 +57,8 @@ const CATEGORY_OPTIONS = [
 ];
 
 function ActivityUpdatePage() {
+  const { mutateAsync: patchActivity } = usePatchMyActivityMutation();
+  const { mutateAsync: postActivity } = usePostActivityMutation();
   const { id } = useParams();
   const router = useRouter();
   const isNew = id === "new";
@@ -291,6 +293,26 @@ function ActivityUpdatePage() {
   };
 
   const handleSubmit = async () => {
+    const schedulesToAdd = availableTimes
+      .filter((slot) => {
+        if (slot.id) return false; // 이미 존재하는 경우 추가 금지
+
+        const existsInOriginal = activity?.schedules?.some(
+          (s) =>
+            s.date === format(slot.date!, "yyyy-MM-dd") &&
+            s.startTime === slot.startTime &&
+            s.endTime === slot.endTime,
+        );
+
+        return !existsInOriginal;
+      })
+      .map((slot) => ({
+        id: 0,
+        date: format(slot.date!, "yyyy-MM-dd"),
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+      }));
+
     if (formData.category === "") {
       alert("카테고리를 선택해주세요.");
       return;
@@ -307,18 +329,13 @@ function ActivityUpdatePage() {
         subImageUrlsToAdd: introImageUrls,
         subImageIdsToRemove: [],
         scheduleIdsToRemove: scheduleIdsToRemove,
-        schedulesToAdd: availableTimes.map((slot) => ({
-          id: 0,
-          date: slot.date ? format(slot.date, "yyyy-MM-dd") : "",
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
+        schedulesToAdd,
       };
 
       if (isNew) {
-        await activityService.postActivity({ payload });
+        await postActivity({ payload });
       } else {
-        await myActivityService.patchMyActivity({
+        await patchActivity({
           activityId: Number(id),
           payload,
         });
