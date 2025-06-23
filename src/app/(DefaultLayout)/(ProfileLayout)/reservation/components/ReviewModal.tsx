@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import iconDelete from "@/assets/icons/any/icon_delete.svg";
-import iconStarActive from "@/assets/icons/star/icon_star_active.svg";
-import iconStarInactive from "@/assets/icons/star/icon_star_inactive.svg";
+import iconDelete from "@/assets/icons/any/icon_delete.svg?url";
+import iconStarActive from "@/assets/icons/star/icon_star_active.svg?url";
+import iconStarInactive from "@/assets/icons/star/icon_star_inactive.svg?url";
 import Button from "@/components/button/Button";
 import ModalWrapper from "@/components/modal/ModalWrapper";
 import { useOverlay } from "@/hooks/useOverlay";
