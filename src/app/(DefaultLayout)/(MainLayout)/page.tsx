@@ -71,21 +71,6 @@ function HomePage() {
     </Link>
   );
 
-
-  const filteredActivities = searchKeyword
-    ? allActivities.filter((activity) =>
-        activity.title.toLowerCase().includes(searchKeyword.toLowerCase()),
-      )
-    : activities;
-
-  const totalFiltered = filteredActivities.length;
-  const totalFilteredPages = Math.ceil(totalFiltered / itemsPerPage);
-
-  const paginatedActivities = filteredActivities.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
   return (
     <div className="flex flex-col space-y-6">
       {/* 배너 영역 */}

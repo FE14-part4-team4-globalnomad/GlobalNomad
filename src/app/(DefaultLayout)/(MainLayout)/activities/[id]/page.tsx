@@ -116,7 +116,7 @@ export default function ActivityDetailPage() {
     rating: review.rating,
     content: review.content,
   }));
-
+  
   if (!isActivityLoading && !activity) {
     return notFound();
   }

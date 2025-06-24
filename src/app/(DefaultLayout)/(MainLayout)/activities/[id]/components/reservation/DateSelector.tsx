@@ -31,10 +31,7 @@ export default function DateSelector({
   totalCells,
   availableDates,
 }: DateSelectorProps) {
-  const isAvailable = (
-    date: Date,
-    availableDates: Record<string, string[]>,
-  ) => {
+  const isAvailable = (date: Date, availableDates: Record<string, string[]>) => {
     const formatted = format(date, "yyyy-MM-dd");
     return !!availableDates[formatted];
   };
