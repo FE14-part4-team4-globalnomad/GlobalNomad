@@ -1,25 +1,61 @@
-# GlobalNomad
+# 🌏 GlobalNomad
+
+> 다양한 지역의 체험을 손쉽게 예약하고 공유할 수 있는 플랫폼, GlobalNomad
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-```bash
-npm install npx -g
-npx create-next-app@latest GlobalNomad --typescript
-```
+## 📆 개발기간
 
-## Goals 💡
+- 2025.05.29 ~ 2025.06.24
+
+## 🌐 Url
+
+- **웹사이트**: [https://global-nomad-eight.vercel.app](https://global-nomad-eight.vercel.app)
+
+## 📌 프로젝트 개요
+
+GlobalNomad는 다양한 테마의 지역 체험 콘텐츠를 탐색하고 예약할 수 있는 웹 애플리케이션입니다.  
+사용자는 키워드 검색, 카테고리 필터, 정렬 기능 등을 통해 원하는 체험을 쉽게 찾고, 예약 후 후기를 남기며 다른 사용자와 경험을 공유할 수 있습니다.
+
+## 💡 Goals 
 
 - 공통 디자인 컴포넌트 문서화를 위한 Storybook 적용
 - 전역 상태 관리를 위한 Zustand, 서버 상태 관리를 위한 React-Query 사용
 - 편리한 스타일링 작업을 위한 Tailwind CSS 적용
 - Next.js 통한 SSR, SSG 활용
 
-## Updates 📝
+## 🧑‍💻 팀원
 
-- 250528 프로젝트 생성 및 Tailwind 설정
-- 250529 공통 스타일 적용 및 Storybook, React Query 설정
+<table>
+  <tr>
+    <th><a href="https://github.com/dkozowlk">@김태욱</a></th>
+    <th><a href="https://github.com/callu9">@이수정</a></th>
+    <th><a href="https://github.com/LeeJiEuns">@이지은</a></th>
+    <th><a href="https://github.com/leeunduck">@이현석</a></th>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/56295839?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/49125725?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/87702194?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/110515401?v=4" width="100"></td>
+  </tr>
+</table>
 
-## Folder Structure 📁
+## 🛠 기술스택
+
+### Development
+
+<img src="https://img.shields.io/badge/nextdotjs-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"> <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/zustand-orange?style=for-the-badge&logo=zustand&logoColor=white">
+
+### Management
+
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white"> <img src="https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white">
+
+### Deployment
+
+<img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+
+## 📁 폴더 구조
 
 ```
 .storybook/
@@ -51,7 +87,7 @@ src/
 .
 ```
 
-## Convention
+## 📌 컨벤션
 
 ### 1) Naming Conventions 📝
 
@@ -60,21 +96,6 @@ src/
 - class, component name: PascalCase
 - folder name, route path: nocase
 - html tag properties (ex. className, id etc.): skewer-case
-
-#### 📚 참고
-
-[**Airbnb JavaScript Style Guide**](https://github.com/airbnb/javascript)
-
-```
-1. Avoid single letter names. Be descriptive with your naming.
-  1-1. Also, Avoid Mental Mapping.
-
-2. Use camelCase when naming objects, functions, and instances.
-
-3. Use PascalCase only when naming constructors or classes. (also file name)
-
-...
-```
 
 ### 2) Commit Messages 💬
 
@@ -90,7 +111,7 @@ src/
 | `rename: `   | 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우 ✍️                         |
 | `remove: `   | 파일을 삭제하는 작업만 수행한 경우 🗑️                                         |
 
-## Quick Start 🚀
+## 🚀 Quick Start
 
 ### 1. clone project & install modules
 
@@ -123,17 +144,49 @@ npm run storybook
 
 Open [http://localhost:6006](http://localhost:6006) with your browser to see Storybook Docs.
 
-## Learn More
+## 📄 페이지별 주요 기능
 
-To learn more about Next.js, take a look at the following resources:
+### 🏠 메인 페이지
+- 체험 검색 (키워드 기반)
+- 카테고리 필터 및 정렬 기능
+- 인기 체험 슬라이더
+- 전체 체험 목록 + 페이지네이션
+- 체험 카드 클릭 시 상세 페이지로 이동
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🧭 체험 상세 페이지
+- 체험 이미지 갤러리
+- 체험 정보 (제목, 설명, 위치, 평점 등)
+- 리뷰 목록 및 평균 평점 표시
+- 카카오 지도 연동
+- 예약 가능 날짜 및 시간 선택
+- 예약하기 기능 (비로그인 시 로그인 유도)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 📝 회원가입 페이지
+- 카카오 OAuth 연동 (카카오 계정으로 회원가입)
+- 추가 정보 입력 (닉네임 등)
+- 이용약관 및 개인정보 수집 동의 체크
 
-## Deploy on Vercel
+### 🔐 로그인 페이지
+- 카카오 로그인 연동
+- 로그인 성공 시 메인 혹은 이전 페이지로 리다이렉트
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 👤 내 정보 페이지
+- 닉네임 및 프로필 정보 조회
+- 로그아웃 기능
+- 회원 탈퇴 기능
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📅 예약내역 페이지
+- 내가 예약한 체험 목록 조회
+- 예약 상태 필터링 (진행 예정, 완료, 취소 등)
+- 예약 취소 기능
+- 후기 작성 모달 호출
+
+### 📦 내 체험 관리 페이지
+- 내가 등록한 체험 목록 조회
+- 체험 상세/수정/삭제 기능
+- 예약 현황 페이지로 이동 가능
+
+### 📊 예약 현황 페이지
+- 해당 체험의 전체 예약 목록 조회
+- 날짜별 예약 필터링
+- 예약 승인/거절 처리
